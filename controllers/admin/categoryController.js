@@ -1,6 +1,7 @@
 const User = require('../../models/user')
 const Subject = require('../../models/subject');
 const Course = require('../../models/course');
+const StudentProfile = require('../../models/studentProfile');
 const Section = require('../../models/section');
 const SITE_TITLE = 'DSF';
 
@@ -8,15 +9,19 @@ module.exports.index = async (req, res) => {
     const category = req.query.category;
     const year = req.query.year;
     const semester = req.query.semester;
-    console.log('category',category,'year',year,'semester',semester)
     const sections = await Section.find({
         year: year,
         semester: semester,
-    }).populate({
-        path: 'courseId',
-        match: { category: category }, 
-    }).populate('subjects.subjectId');
+    }).populate('courseId').populate('subjects.subjectId').exec();
+    
+    // Filter sections based on category
+    const filteredSections = sections.filter(section => {
+        return section.courseId && section.courseId.category === category;
+    });
+    
     console.log(sections)
+    const profProfile = await StudentProfile.find().populate('userId').exec();
+    const professors = profProfile.filter(profile => profile.userId.role === 'professor');
     if (sections.length > 0) {
         res.render('admin/categoryView', {
             site_title: SITE_TITLE,
@@ -24,9 +29,10 @@ module.exports.index = async (req, res) => {
             messages: req.flash(),
             currentUrl: req.originalUrl,
             req: req,
-            sections: sections,
+            filteredSections: filteredSections,
+            professors: professors,
         });
-    }else{
+    } else {
         console.log('no sections found!.')
     }
 }

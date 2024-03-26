@@ -39,8 +39,8 @@
                                 <div class="page-wrapper">
                                     <div class="page-body">
                                         <div class="row">
-                                            <% if(sections.length > 0) { %>
-                                                <% sections.forEach(section => { %>
+                                            <% if(filteredSections.length > 0) { %>
+                                                <% filteredSections.forEach(section => { %>
                                                     <div class="col-12">
                                                         <div class="card">
                                                             <div class="card-header">
@@ -63,19 +63,51 @@
                                                                                 <th class="text-center">Subject Code</th>
                                                                                 <th>Descriptive Title</th>
                                                                                 <th class="text-center">Units</th>
-                                                                                <th class="text-center">Grades</th>
+                                                                                <th class="text-center">Professor</th>
+                                                                                <th class="text-center">Start Time</th>
+                                                                                <th class="text-center">End Time</th>
+                                                                                <th class="text-center">Actions</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <% sections.forEach(section => { %>
-                                                                                <% section.subjects.forEach(subject => { %>
-                                                                                    <tr style="white-space: nowrap;">
-                                                                                        <td class="align-middle text-capitalize text-center"><%= subject.subjectId?.subjectCode %></td>
-                                                                                        <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
-                                                                                        <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
-                                                                                        <td class="align-middle text-capitalize text-center"><%= subject.subjectId.grades %></td>
-                                                                                    </tr>
-                                                                                <% }) %>
+                                                                            <% filteredSections.forEach(sect => { %>
+                                                                                <% if(sect.section === section.section) {%>
+                                                                                <% sect.subjects.forEach(subject => { %>
+                                                                                    <form action="" method="post">
+                                                                                        <tr style="white-space: nowrap;">
+                                                                                            <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
+                                                                                            <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
+                                                                                            <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
+                                                                                            <td class="align-middle">
+                                                                                                <div class="form-group">
+                                                                                                    <select name="professorId" id="professorId" class="form-control border" required>
+                                                                                                        <option value="" selected hidden>Select Option</option>
+                                                                                                        <% professors.forEach(professor => { %>
+                                                                                                            <option value="<%= professor._id %>"><%= professor.firstname %></option>
+                                                                                                        <% }); %>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td class="align-middle">
+                                                                                                <div class="form-group">
+                                                                                                    <input type="time" name="startTime" id="endTime" class="form-control">
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td class="align-middle">
+                                                                                                <div class="form-group">
+                                                                                                    <input type="time" name="startTime" id="endTime" class="form-control">
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td class="text-center align-middle">
+                                                                                                <div class="btn-group d-flex justify-content-center">
+                                                                                                    <button type="submit" name="actions" value="approved" class="btn btn-sm btn-primary"><i class="ti-check-box"></i> Update</button>
+                                                                                                    <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel</button>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </form>
+                                                                                    <% }) %>
+                                                                                <% } %>
                                                                             <% }) %>
                                                                         </tbody>
                                                                     </table>
