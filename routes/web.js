@@ -39,7 +39,8 @@ module.exports = function(app){
     app.post('/admin/section/add', adminsectionController.doCreate)
     app.get('/admin/subject/add', adminSubjectController.index)
     app.post('/admin/subject/add', adminSubjectController.doCreate)
-    app.get('/admin/category', adminCategoryController.index)
+    app.get('/admin/category', adminCategoryController.index);
+    app.post('/admin/category', adminCategoryController.actions);
 
 
     //print enrollment

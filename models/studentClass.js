@@ -13,14 +13,33 @@ var schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Section'
     },
-    status: { 
-        type: Boolean, 
-        default: false 
+    subjects: [{
+        subjectId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Subject'
+        },
+        professorId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        startTime: {
+            type: String,
+        },
+        endTime: {
+            type: String,
+        },
+        grade: {
+            type: Number,
+        },
+    }],
+    status: {
+        type: Boolean,
+        default: false
     },
 }, {
     versionKey: false,
     timestamps: true
 }
-); 
+);
 
 module.exports = mongoose.model('StudentClass', schema, 'StudentClass');

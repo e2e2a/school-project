@@ -75,33 +75,36 @@
                                                                                 <% sect.subjects.forEach(subject => { %>
                                                                                     <form action="" method="post">
                                                                                         <tr style="white-space: nowrap;">
+                                                                                            <input type="hidden" name="section" value="<%= section.section %>">
+                                                                                            <input type="hidden" name="link" value="category=<%= category %>&year=<%= year %>&semester=<%= semester %>">
+                                                                                            <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
                                                                                             <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
                                                                                             <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
                                                                                             <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
                                                                                             <td class="align-middle">
                                                                                                 <div class="form-group">
-                                                                                                    <select name="professorId" id="professorId" class="form-control border" required>
+                                                                                                    <select name="professorId" id="professorId" class="form-control border" style="text-transform: capitalize;" required>
                                                                                                         <option value="" selected hidden>Select Option</option>
                                                                                                         <% professors.forEach(professor => { %>
-                                                                                                            <option value="<%= professor._id %>"><%= professor.firstname %></option>
+                                                                                                            <option value="<%= professor._id %>" ><%= professor.lastname %>, <%= professor.firstname %> <%= professor.middlename %></option>
                                                                                                         <% }); %>
                                                                                                     </select>
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td class="align-middle">
                                                                                                 <div class="form-group">
-                                                                                                    <input type="time" name="startTime" id="endTime" class="form-control">
+                                                                                                    <input type="time" name="startTime" id="startTime" class="form-control" value="">
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td class="align-middle">
                                                                                                 <div class="form-group">
-                                                                                                    <input type="time" name="startTime" id="endTime" class="form-control">
+                                                                                                    <input type="time" name="endTime" id="endTime" class="form-control" value="">
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td class="text-center align-middle">
                                                                                                 <div class="btn-group d-flex justify-content-center">
-                                                                                                    <button type="submit" name="actions" value="approved" class="btn btn-sm btn-primary"><i class="ti-check-box"></i> Update</button>
-                                                                                                    <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel</button>
+                                                                                                    <button type="submit" name="actions" value="update" class="btn btn-sm btn-primary"><i class="ti-check-box"></i> Update</button>
+                                                                                                    <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
                                                                                                 </div>
                                                                                             </td>
                                                                                         </tr>

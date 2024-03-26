@@ -15,8 +15,7 @@ module.exports.index = async (req, res) => {
                     if (studentProfile.isVerified) {
                         const studentClass = await StudentClass.find({ studentId: studentProfile._id }).populate('subjects.subjectId');
                         const sectionIds = studentClass.map(studentClass => studentClass.sectionId);
-                        const studentSection = await Section.find({ _id: { $in: sectionIds } }).populate('subjects.subjectId').populate('courseId');
-
+                        const studentSection = await Section.find({ _id: { $in: sectionIds } }).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
                         res.render('user/subjects', {
                             site_title: SITE_TITLE,
                             title: 'Subjects',

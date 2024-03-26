@@ -1,27 +1,14 @@
 var mongoose = require("mongoose");
 
 var schema = mongoose.Schema({
-    courseId: {
+    professorId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
+        ref: 'User'
     },
-    semester: { 
-        type: String
-    },
-    year: { 
-        type: String
-    },
-    section: { 
-        type: String
-    },
-    subjects: [{
+    schedule: [{
         subjectId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Subject'
-        },
-        professorId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
         },
         startTime: {
             type: String,
@@ -29,10 +16,10 @@ var schema = mongoose.Schema({
         endTime: {
             type: String,
         },
-    }], 
+    }],
     status: { 
         type: Boolean, 
-        default: false ,
+        default: false 
     },
 }, {
     versionKey: false,
@@ -40,4 +27,4 @@ var schema = mongoose.Schema({
 }
 ); 
 
-module.exports = mongoose.model('Section', schema, 'Section');
+module.exports = mongoose.model('Schedule', schema, 'Schedule');
