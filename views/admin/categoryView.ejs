@@ -86,25 +86,27 @@
                                                                                                     <select name="professorId" id="professorId" class="form-control border" style="text-transform: capitalize;" required>
                                                                                                         <option value="" selected hidden>Select Option</option>
                                                                                                         <% professors.forEach(professor => { %>
-                                                                                                            <option value="<%= professor._id %>" ><%= professor.lastname %>, <%= professor.firstname %> <%= professor.middlename %></option>
+                                                                                                            <option value="<%= professor._id %>" <%= sect.subjects.some(sub => sub.professorId && sub.professorId.toString() === professor._id.toString()) ? 'selected' : '' %> >
+                                                                                                                <%= professor.lastname %>, <%= professor.firstname %> <%= professor.middlename %>
+                                                                                                            </option>
                                                                                                         <% }); %>
                                                                                                     </select>
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td class="align-middle">
                                                                                                 <div class="form-group">
-                                                                                                    <input type="time" name="startTime" id="startTime" class="form-control" value="">
+                                                                                                    <input type="time" name="startTime" id="startTime" class="form-control" value="<%= subject.startTime %>">
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td class="align-middle">
                                                                                                 <div class="form-group">
-                                                                                                    <input type="time" name="endTime" id="endTime" class="form-control" value="">
+                                                                                                    <input type="time" name="endTime" id="endTime" class="form-control" value="<%= subject.endTime %>">
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td class="text-center align-middle">
                                                                                                 <div class="btn-group d-flex justify-content-center">
                                                                                                     <button type="submit" name="actions" value="update" class="btn btn-sm btn-primary"><i class="ti-check-box"></i> Update</button>
-                                                                                                    <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
+                                                                                                    <button type="submit" name="actions" value="delete" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
                                                                                                 </div>
                                                                                             </td>
                                                                                         </tr>
