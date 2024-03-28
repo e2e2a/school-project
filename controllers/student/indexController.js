@@ -20,6 +20,7 @@ module.exports.index = async (req, res) => {
                             studentProfile: studentProfile,
                         });
                     } else {
+                        req.flash('message', 'Update your profile to begin the enrollment.');
                         return res.redirect('/profile')
                     }
                 } else {

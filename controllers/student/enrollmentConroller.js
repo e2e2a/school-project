@@ -28,6 +28,7 @@ module.exports.index = async (req, res) => {
                             studentSection: studentSection,
                         });
                     } else {
+                        req.flash('message', 'Update your profile to begin the enrollment.');
                         return res.redirect('/profile')
                     }
                 } else {

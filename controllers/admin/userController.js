@@ -43,21 +43,21 @@ module.exports.doCreate = async (req, res) => {
                 const updatedUser = await User.findByIdAndUpdate(existingUser._id, userUpdate, { new: true });
                 if (updatedUser.role === 'student') {
                     const studentProfile = new StudentProfile({
-                        userId: user._id,
+                        userId: updatedUser._id,
                         isVerified: false
                     });
                     await studentProfile.save();
                     console.log('studentProfile created')
                 } else if (updatedUser.role === 'professor') {
                     const professorProfile = new ProfessorProfile({
-                        userId: user._id,
+                        userId: updatedUser._id,
                         isVerified: false
                     });
                     await professorProfile.save();
                     console.log('professorProfile created')
                 } else if (updatedUser.role === 'admin') {
                     const adminProfile = new AdminProfile({
-                        userId: user._id,
+                        userId: updatedUser._id,
                         isVerified: false
                     });
                     await adminProfile.save();
