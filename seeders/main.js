@@ -1,18 +1,22 @@
 require('dotenv').config();
 const mongoose = require("mongoose");
-const seedUsers = require("./user-seeder");
 const dbConnect = require('../database/dbConnect');
+const seedUsers = require("./user-seeder");
+const seedCourses = require("./course-seeder");
+const seedSections = require("./section-seeder");
 
-// Connect to MongoDB
-const conn = dbConnect();
+(async () => {
+    try {
+        await dbConnect();
 
-// Call the seed function from seeder.js
-seedUsers()
-    .then(() => {
-        console.log('Seed data created successfully');
-        // Disconnect from MongoDB
+        await seedUsers();
+        await seedCourses();
+        await seedSections();
+
         mongoose.disconnect();
-    })
-    .catch(err => {
-        console.error('Error seeding data:', err);
-    });
+
+        console.log('Seed data created successfully');
+    } catch (error) {
+        console.error('Error seeding data:', error);
+    }
+})();
