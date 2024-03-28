@@ -27,6 +27,7 @@ module.exports.doCreate = async (req, res) => {
         });
         if (checkSection) {
             const subject = new Subject({
+                subjectCode: req.body.subjectCode,
                 name: req.body.name,
                 unit: req.body.unit,
                 year: req.body.year,

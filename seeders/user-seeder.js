@@ -5,14 +5,17 @@ const StudentProfile = require("../models/studentProfile");
 const ProfessorProfile = require("../models/professorProfile");
 
 async function seedUsers() {
+    const password = '123'
+    const hashedPassword = await bcrypt.hash(password, 10);
     for (let i = 0; i < 10; i++) {
         const adminEmail = `admin${i}@example.com`;
         const adminExists = await User.findOne({ email: adminEmail });
         if (!adminExists) {
             const admin = new User({
                 email: adminEmail,
-                password: bcrypt.hashSync('password', 10),
-                role: 'admin'
+                password: password,
+                role: 'admin',
+                isVerified: true
             });
             await admin.save();
             const adminProfile = new AdminProfile({
@@ -29,8 +32,9 @@ async function seedUsers() {
         if (!studentExists) {
             const student = new User({
                 email: studentEmail,
-                password: bcrypt.hashSync('password', 10),
-                role: 'student'
+                password: password,
+                role: 'student',
+                isVerified: true
             });
             await student.save();
             const studentProfile = new StudentProfile({
@@ -47,8 +51,9 @@ async function seedUsers() {
         if (!professorExists) {
             const professor = new User({
                 email: professorEmail,
-                password: bcrypt.hashSync('password', 10),
-                role: 'professor'
+                password: password,
+                role: 'professor',
+                isVerified: true
             });
             await professor.save();
             const professorProfile = new ProfessorProfile({

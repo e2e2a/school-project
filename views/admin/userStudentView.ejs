@@ -1,0 +1,106 @@
+<%- include('../partials/header/header_css.ejs'); %>
+
+<body>
+    <%- include('../partials/spinner/spinner.ejs'); %>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../partials/nav/nav_admin.ejs') %>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../partials/nav/sidebar.ejs') %>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="page-header-title">
+                                            <h5 class="m-b-10">Sample page</h5>
+                                            <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="index.html"> <i class="fa fa-home"></i> </a>
+                                            </li>
+                                            <li class="breadcrumb-item"><a href="#!">Sample page</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Users Pending</h5>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                <li><i class="fa fa-trash close-card"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block table-border-style">
+                                                        <div class="table-responsive">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Email</th>
+                                                                        <th>Fullname</th>
+                                                                        <th>Contact</th>
+                                                                        <th>Role</th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <% studentProfiles.forEach(profile => { %>
+                                                                        <% if(profile.userId.isVerified){ %>
+                                                                    <form action="/admin/enrollment/doEnroll" method="post">
+                                                                        <tr style="white-space: nowrap;">
+                                                                            <td class="align-middle text-capitalize"> <%= profile.userId.email %></td>
+                                                                            <td class="align-middle text-capitalize"><%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %></td>
+                                                                            <td class="align-middle text-capitalize"> <%= profile.contact %></td>
+                                                                            <td class="align-middle text-capitalize"> <%= profile.userId.role %></td>
+                                                                            <input type="hidden" name="studentId" id="studentId" value="<%= profile._id %>">
+                                                                            <td class="text-center align-middle">
+                                                                                <div class="btn-group d-flex">
+                                                                                    <a href="/<%= profile._id %>" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Update</a>
+                                                                                    <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </form>
+                                                                        <% } %>
+                                                                    <% }) %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include('../partials/footer/footer_js.ejs'); %>

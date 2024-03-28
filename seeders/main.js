@@ -13,7 +13,7 @@ const seedSubjects = require("./subject-seeder");
         await seedUsers();
         await seedCourses();
         await seedSections();
-        await seedSubjects();
+        // await seedSubjects();
 
         mongoose.disconnect();
 

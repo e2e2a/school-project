@@ -8,10 +8,44 @@ const AdminProfile = require('../../models/adminProfile');
 const Section = require('../../models/section');
 const SITE_TITLE = 'DSF';
 
-module.exports.index = async (req, res) => {
+module.exports.student = async (req, res) => {
+    const studentProfiles = await StudentProfile.find().populate('userId');
+    res.render('admin/userStudentView', {
+        site_title: SITE_TITLE,
+        title: 'User',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        studentProfiles: studentProfiles,
+    });
+}
+module.exports.professor = async (req, res) => {
+    const professorProfiles = await ProfessorProfile.find().populate('userId');
+    res.render('admin/userProfessorView', {
+        site_title: SITE_TITLE,
+        title: 'User',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        professorProfiles: professorProfiles,
+    });
+}
+module.exports.admin = async (req, res) => {
+    const adminProfiles = await AdminProfile.find().populate('userId');
+    res.render('admin/userAdminView', {
+        site_title: SITE_TITLE,
+        title: 'User',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        adminProfiles: adminProfiles,
+    });
+}
+
+module.exports.create = async (req, res) => {
     res.render('admin/userAdd', {
         site_title: SITE_TITLE,
-        title: 'Subject',
+        title: 'User',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
