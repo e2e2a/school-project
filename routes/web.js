@@ -15,6 +15,7 @@ const adminEnrollmentController = require('../controllers/admin/enrollmentContro
 const adminSubjectController = require('../controllers/admin/subjectController');
 const adminsectionController = require('../controllers/admin/sectionController');
 const adminCategoryController = require('../controllers/admin/categoryController');
+const adminUserController = require('../controllers/admin/userController');
 //user
 const userIndexController = require('../controllers/student/indexController');
 const userProfileController = require('../controllers/student/profileController');
@@ -31,20 +32,23 @@ module.exports = function(app){
     app.get('/subjects', userEnrollmentController.index);
     
     //admin
-    app.get('/admin/course/add', adminCourseController.index)
-    app.post('/admin/course/add', adminCourseController.doCreate)
-    app.get('/admin/enrollments', adminEnrollmentController.index)
-    app.post('/admin/enrollment/doEnroll', adminEnrollmentController.doEnroll)
-    app.get('/admin/section/add', adminsectionController.index)
-    app.post('/admin/section/add', adminsectionController.doCreate)
-    app.get('/admin/subject/add', adminSubjectController.index)
-    app.post('/admin/subject/add', adminSubjectController.doCreate)
+    app.get('/admin/course/add', adminCourseController.index);
+    app.post('/admin/course/add', adminCourseController.doCreate);
+    app.get('/admin/enrollments', adminEnrollmentController.index);
+    app.post('/admin/enrollment/doEnroll', adminEnrollmentController.doEnroll);
+    app.get('/admin/section/add', adminsectionController.index);
+    app.post('/admin/section/add', adminsectionController.doCreate);
+    app.get('/admin/subject/add', adminSubjectController.index);
+    app.post('/admin/subject/add', adminSubjectController.doCreate);
     app.get('/admin/category', adminCategoryController.index);
     app.post('/admin/category', adminCategoryController.actions);
 
+    // @todo users
+    app.get('/admin/user/add', adminUserController.index);
+    app.post('/admin/user/add', adminUserController.doCreate);
 
     //print enrollment
-    app.post('/print', print.print)
+    app.post('/print', print.print);
 
 
 

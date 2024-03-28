@@ -1,0 +1,67 @@
+<%- include('../partials/header/header_css.ejs'); %>
+
+<body>
+    <%- include('../partials/spinner/spinner.ejs'); %>
+    <div id="pcoded" class="pcoded ">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../partials/nav/nav.ejs') %>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../partials/nav/sidebar.ejs') %>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 text-center">
+                                        <div class="page-header-title">
+                                            <h3 class="m-b-10"><%= title %></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5 class="text-capitalize">Hello <%= studentProfile.firstname %></h5>
+                                                        <span>This is our new Website for Enrollment.</span>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <p>
+                                                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                                            in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                                            laborum."
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Disable right-click menu
+        window.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+<%- include('../partials/footer/footer_js.ejs'); %>

@@ -42,20 +42,26 @@
                                             <div class="col-lg-12 col-xl-12">
                                                 <div class="sub-title"></div>
                                                 <!-- Nav tabs -->
+                                                <% let profileActive = studentProfile.isVerified === false ? 'active' : ''; %>
+                                                <% let emailActive = studentProfile.isVerified === true ? 'active' : ''; %>
+                                                <% let profileShow = studentProfile.isVerified === false ? 'show' : ''; %>
+                                                <% let emailShow = studentProfile.isVerified === true ? 'show' : ''; %>
+                                                <% let emailExpanded = studentProfile.isVerified === true ? 'true' : 'false'; %>
+                                                <% let profileExpanded = studentProfile.isVerified === false ? 'false' : 'true'; %>
                                                 <ul class="nav nav-tabs  tabs" role="tablist">
                                                     <li class="nav-item">
-                                                        <a class="nav-link active show" data-toggle="tab" href="#email" role="tab" aria-selected="true">Email</a>
+                                                        <a class="nav-link <%= emailActive %> <%= emailShow %>" data-toggle="tab" href="#email" role="tab" aria-selected="<%= emailExpanded %>">Email</a>
                                                     </li>
                                                     <li class="nav-item">
                                                         <a class="nav-link" data-toggle="tab" href="#password" role="tab" aria-selected="false">Password</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-selected="false">Profile Details</a>
+                                                        <a class="nav-link <%= profileActive %> <%= profileShow %>" data-toggle="tab" href="#profile" role="tab" aria-selected="<%= profileExpanded %>">Profile Details</a>
                                                     </li>
                                                 </ul>
                                                 <!-- Tab panes -->
                                                 <div class="tab-content tabs card-block">
-                                                    <div class="tab-pane active show" id="email" role="tabpanel">
+                                                    <div class="tab-pane <%= emailActive %> <%= emailShow %>" id="email" role="tabpanel">
                                                         <div class="card">
                                                             <div class="card-header">
                                                                 <h3 class="mt-3 mb-3">Email</h3>
@@ -107,7 +113,7 @@
                                                             </form>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane" id="profile" role="tabpanel">
+                                                    <div class="tab-pane <%= profileActive %> <%= profileShow %>" id="profile" role="tabpanel">
                                                         <div class="card">
                                                             <div class="card-header">
                                                                 <h3 class="mt-3 mb-3">LEARNERS PROFILE FORM</h3>
@@ -282,5 +288,12 @@
             </div>
         </div>
     </div>
+    <% if(studentProfile.isVerified === false){ %>
+        <link rel="stylesheet" href="/public/pages/notification/notification.css">
+        <div data-growl="container" class="alert alert-inverse growl-animated animated fadeInRight fadeOutRight" role="alert" data-growl-position="bottom-right" style="position: fixed; margin: 0px; z-index: 1031; display: inline-block; bottom: 30px; right: 30px;"><button type="button" aria-hidden="true" class="close" data-growl="dismiss" style="display: none; z-index: 1030;">×</button><span data-growl="icon"></span><span data-growl="title"></span><span data-growl="message">Welcome to Notification page</span><a href="#" data-growl="url"></a></div>
+        <script type="text/javascript" src="/public/js/bootstrap-growl.min.js"></script>
+        <script type="text/javascript" src="/public/pages/notification/notification.js"></script>
+        <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
+    <% } %>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

@@ -12,6 +12,7 @@ var schema = mongoose.Schema({
         type: String
     },
     section: { 
+        // @todo change to Number
         type: String
     },
     subjects: [{
@@ -22,6 +23,10 @@ var schema = mongoose.Schema({
         professorId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
+        },
+        days: {
+            type: [String],
+            default: []
         },
         startTime: {
             type: String,

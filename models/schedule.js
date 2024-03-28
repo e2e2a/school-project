@@ -10,6 +10,10 @@ var schema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Subject'
         },
+        days: {
+            type: [String],
+            default: []
+        },
         startTime: {
             type: String,
         },
