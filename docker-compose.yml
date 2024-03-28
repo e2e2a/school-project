@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    container_name: school_app
+    build: .
+    volumes:
+      # connect the current project directory to
+      # ./app directory inside the docker container
+      - .:/app
+    ports:
+      # open port 8080 of the docker container to 
+      # port 80 in the host machine.
+      - "80:8080"
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+  mongo:
+    container_name: school_mongo
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DBNAME}
+    ports:
+      - '27017:27017'
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
