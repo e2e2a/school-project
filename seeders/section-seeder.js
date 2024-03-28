@@ -25,6 +25,8 @@ async function seedSections() {
                                 description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
                             });
                             await newSection.save();
+                        } else {
+                            console.log(`Section already exists for ${category}, ${year}${year === 1 ? 'st' : year === 2 ? 'nd' : 'rd'} Year, ${semester}${semester === 1 ? 'st' : 'nd'} Semester, Section ${section}`);
                         }
                     }
                 }

@@ -4,6 +4,7 @@ const dbConnect = require('../database/dbConnect');
 const seedUsers = require("./user-seeder");
 const seedCourses = require("./course-seeder");
 const seedSections = require("./section-seeder");
+const seedSubjects = require("./subject-seeder");
 
 (async () => {
     try {
@@ -12,6 +13,7 @@ const seedSections = require("./section-seeder");
         await seedUsers();
         await seedCourses();
         await seedSections();
+        await seedSubjects();
 
         mongoose.disconnect();
 
