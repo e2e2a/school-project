@@ -50,11 +50,11 @@ module.exports.enroll = async (req, res) => {
             const course = await Course.findById(courseId);
             if (course) {
                 const studentProfile = await StudentProfile.findOne({ userId: userLogin._id })
-                if(studentProfile.isEnrolled){
+                if (studentProfile.isEnrolled) {
                     console.log('student is already enrolled and making request to enroll')
                     return res.redirect('/courses');
                 }
-                await StudentProfile.findOneAndUpdate({ userId: userLogin._id }, { courseId: course._id }, { new: true })
+                await StudentProfile.findOneAndUpdate({ userId: userLogin._id }, { courseId: course._id, isEnrolling: true }, { new: true })
                 console.log('enrollment pending success');
                 return res.redirect('/courses');
             } else {

@@ -42,7 +42,7 @@
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <h5>Users Pending</h5>
+                                                        <h5>Users Students</h5>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -77,7 +77,7 @@
                                                                             <input type="hidden" name="studentId" id="studentId" value="<%= profile._id %>">
                                                                             <td class="text-center align-middle">
                                                                                 <div class="btn-group d-flex">
-                                                                                    <a href="/<%= profile._id %>" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Update</a>
+                                                                                    <a href="/admin/user/edit/<%= profile._id %>/<%= profile.userId.role %>" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Edit</a>
                                                                                     <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
                                                                                 </div>
                                                                             </td>
