@@ -5,6 +5,18 @@ const Section = require('../../models/section');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
+    const sections = await Section.find().populate('courseId');
+    res.render('admin/sectionView', {
+        site_title: SITE_TITLE,
+        title: 'Section',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        sections: sections,
+    });
+}
+
+module.exports.create = async (req, res) => {
     const courses = await Course.find()
     res.render('admin/sectionAdd', {
         site_title: SITE_TITLE,

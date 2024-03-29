@@ -2,7 +2,7 @@ const User = require('../../models/user')
 const Course = require('../../models/course');
 const SITE_TITLE = 'DSF';
 
-module.exports.index = async(req,res) => {
+module.exports.index = async (req, res) => {
     const courses = await Course.find();
     res.render('admin/courseView', {
         site_title: SITE_TITLE,
@@ -10,10 +10,11 @@ module.exports.index = async(req,res) => {
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
+        courses: courses,
     });
 }
 
-module.exports.create = async (req,res) => {
+module.exports.create = async (req, res) => {
     res.render('admin/courseAdd', {
         site_title: SITE_TITLE,
         title: 'Course',
@@ -22,9 +23,9 @@ module.exports.create = async (req,res) => {
         req: req,
     });
 }
-module.exports.doCreate = async (req,res) => {
-    const existingCourse = await Course.findOne({category: req.body.category})
-    if(existingCourse){
+module.exports.doCreate = async (req, res) => {
+    const existingCourse = await Course.findOne({ category: req.body.category })
+    if (existingCourse) {
         console.log('course is already created. please check the category.');
         return res.redirect('/admin/course/add');
     }
@@ -36,7 +37,7 @@ module.exports.doCreate = async (req,res) => {
     await course.save();
     console.log('save');
     return res.redirect('/admin/course/add')
-} 
+}
 
 //finish add course
 //then

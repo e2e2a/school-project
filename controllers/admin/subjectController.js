@@ -6,6 +6,17 @@ const Section = require('../../models/section');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
+    const subjects = await Subject.find()
+    res.render('admin/subjectView', {
+        site_title: SITE_TITLE,
+        title: 'Subject',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        subjects: subjects,
+    });
+}
+module.exports.create = async (req, res) => {
     const courses = await Course.find()
     res.render('admin/subjectAdd', {
         site_title: SITE_TITLE,
@@ -13,7 +24,7 @@ module.exports.index = async (req, res) => {
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
-        courses:courses,
+        courses: courses,
     });
 }
 module.exports.doCreate = async (req, res) => {
