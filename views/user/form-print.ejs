@@ -5,11 +5,11 @@
     <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
-            <%- include('../partials/nav/nav_admin.ejs') %>
+            <%- include('../partials/nav/nav.ejs') %>
 
             <div class="pcoded-main-container">
                 <div class="pcoded-wrapper">
-                    <%- include('../partials/nav/sidebar.ejs') %>
+                    <%- include('../partials/nav/sidebar_student.ejs') %>
                     <div class="pcoded-content">
                         <!-- Page-header start -->
                         <div class="page-header">
@@ -86,7 +86,11 @@
                                                 <% } else{%>
                                                     <div class="card">
                                                         <div class="card-header">
-                                                            <h5>You haven't enrolled in a course yet. Please browse our available courses.</h5>
+                                                            <% if(studentProfile.isEnrolled) { %>
+                                                                <h5>Your class is on process.</h5>
+                                                            <% } else { %>
+                                                                <h5>You haven't enrolled in a course yet. Please browse our available courses.</h5>
+                                                            <% } %>
                                                             <div class="card-header-right">
                                                                 <ul class="list-unstyled card-option">
                                                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -97,7 +101,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <% }%>
+                                                <% } %>
                                             </div>
                                         </div>
                                     </div>

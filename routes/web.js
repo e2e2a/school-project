@@ -42,12 +42,12 @@ module.exports = function(app){
     app.get('/admin/category', adminCategoryController.index);
     app.post('/admin/category', adminCategoryController.actions);
 
-    // @todo userView
-    app.get('/admin/user/student/list', adminUserController.student)
-    app.get('/admin/user/professor/list', adminUserController.professor)
-    app.get('/admin/user/admin/list', adminUserController.admin)
-    app.get('/admin/user/edit/:id/:role', adminUserController.edit)
-    app.post('/admin/user/edit/:id/:role', adminUserController.doEdit)
+    //users
+    app.get('/admin/user/student/list', adminUserController.student);
+    app.get('/admin/user/professor/list', adminUserController.professor);
+    app.get('/admin/user/admin/list', adminUserController.admin);
+    app.get('/admin/user/edit/:id/:role', adminUserController.edit);
+    app.post('/admin/user/edit/:id/:role', adminUserController.doEdit);
 
     app.get('/admin/user/add', adminUserController.create);
     app.post('/admin/user/add', adminUserController.doCreate);

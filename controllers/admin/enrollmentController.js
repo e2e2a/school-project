@@ -52,7 +52,7 @@ module.exports.doEnroll = async (req, res) => {
                     });
                     console.log('student', studentClass)
                     await studentClass.save();
-                    await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true }, { new: true });
+                    await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false }, { new: true });
                     console.log('student class save.');
                     return res.redirect('/admin/enrollments');
                 } else {
