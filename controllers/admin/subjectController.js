@@ -38,6 +38,7 @@ module.exports.doCreate = async (req, res) => {
         });
         if (checkSection) {
             const subject = new Subject({
+                courseId: req.body.courseId,
                 subjectCode: req.body.subjectCode,
                 name: req.body.name,
                 unit: req.body.unit,

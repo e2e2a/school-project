@@ -1,6 +1,11 @@
 var mongoose = require("mongoose");
 
 var schema = mongoose.Schema({
+    //use courseId easy to find the section
+    courseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    },
     subjectCode: { 
         type: String
     },
@@ -10,6 +15,7 @@ var schema = mongoose.Schema({
     unit: { 
         type: String
     },
+    //remove this
     category: { 
         type: String
     },
