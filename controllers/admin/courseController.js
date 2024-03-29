@@ -12,6 +12,11 @@ module.exports.index = async (req,res) => {
     });
 }
 module.exports.doCreate = async (req,res) => {
+    const existingCourse = await Course.findOne({category: req.body.category})
+    if(existingCourse){
+        console.log('course is already created. please check the category.');
+        return res.redirect('/admin/course/add');
+    }
     const course = new Course({
         name: req.body.name,
         category: req.body.category,

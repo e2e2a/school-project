@@ -24,7 +24,7 @@ module.exports.index = async (req, res) => {
                     studentProfile: studentProfile,
                 });
             } else {
-                return res.status(400).render('404');
+                return res.status(404).render('404');
             }
         } else {
             return res.redirect('/login');

@@ -9,7 +9,7 @@
 
             <div class="pcoded-main-container">
                 <div class="pcoded-wrapper">
-                    <%- include('../partials/nav/sidebar.ejs') %>
+                    <%- include('../partials/nav/sidebar_student.ejs') %>
                     <div class="pcoded-content">
                         <!-- Page-header start -->
                         <div class="page-header">
@@ -241,6 +241,7 @@
                                                                                     <option value="Elementary Graduate" <%= studentProfile.educationAttainment === 'Elementary Graduate' ? 'selected' : '' %>>Elementary Graduate</option>
                                                                                     <option value="High School Level" <%= studentProfile.educationAttainment === 'High School Level' ? 'selected' : '' %>>High School Level</option>
                                                                                     <option value="High School Graduate" <%= studentProfile.educationAttainment === 'High School Graduate' ? 'selected' : '' %>>High School Graduate</option>
+                                                                                    <option value="Post-Secondary Level/Graduate" <%= studentProfile.educationAttainment === 'Post-Secondary Level/Graduate' ? 'selected' : '' %>>Post-Secondary Level/Graduate</option>
                                                                                     <option value="College Level" <%= studentProfile.educationAttainment === 'College Level' ? 'selected' : '' %>>College Level</option>
                                                                                     <option value="College Graduate or Higher" <%= studentProfile.educationAttainment === 'College Graduate or Higher' ? 'selected' : '' %>>College Graduate or Higher</option>
                                                                                 </select>

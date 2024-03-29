@@ -7,8 +7,6 @@ const authLogoutController = require('../controllers/auth/logoutController');
 const authVerifyEditEmailController = require('../controllers/auth/verifyEditEmailController');
 const authResetPassword = require('../controllers/auth/resetPassword/verifyForgot_password');
 
-const print = require('../controllers/printController');
-
 //admin
 const adminCourseController = require('../controllers/admin/courseController');
 const adminEnrollmentController = require('../controllers/admin/enrollmentController');
@@ -21,6 +19,7 @@ const userIndexController = require('../controllers/student/indexController');
 const userProfileController = require('../controllers/student/profileController');
 const userCourseController = require('../controllers/student/courseController');
 const userEnrollmentController = require('../controllers/student/enrollmentConroller');
+const userFormPrintController = require('../controllers/student/form-print');
 
 module.exports = function(app){
     //user
@@ -43,7 +42,6 @@ module.exports = function(app){
     app.get('/admin/category', adminCategoryController.index);
     app.post('/admin/category', adminCategoryController.actions);
 
-
     // @todo userView
     app.get('/admin/user/student/list', adminUserController.student)
     app.get('/admin/user/professor/list', adminUserController.professor)
@@ -53,9 +51,10 @@ module.exports = function(app){
 
     app.get('/admin/user/add', adminUserController.create);
     app.post('/admin/user/add', adminUserController.doCreate);
-
+    
     //print enrollment
-    app.post('/print', print.print);
+    app.get('/form', userFormPrintController.index);
+    app.post('/form/print', userFormPrintController.print);
 
 
 

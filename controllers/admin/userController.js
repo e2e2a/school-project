@@ -112,10 +112,116 @@ module.exports.doEdit = async (req, res) => {
             return res.status(404).render('404');
     }
     if (actions === 'changeEmail') {
-        console.log('changeEmail')
+        if (profile.userId.role === 'student') {
+            const emailToChange = req.body.email;
+            if (profile.email === emailToChange) {
+                console.log('You are already using this email.');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
+            }
+            const user = await User.findOne({ email: emailToChange });
+            if (user) {
+                if (user.isVerified) {
+                    console.log('Email is already used. Try another email.');
+                    return res.redirect(`/admin/user/${profile.userId.role}/list`);
+                }
+                await User.findByIdAndDelete(user._id)
+            }
+            const newData = {
+                email: emailToChange,
+                isVerified: true
+            };
+            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            return res.redirect(`/admin/user/${profile.userId.role}/list`);
+        } else if (profile.userId.role === 'professor') {
+            const emailToChange = req.body.email;
+            if (profile.email === emailToChange) {
+                console.log('You are already using this email.');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
+            }
+            const user = await User.findOne({ email: emailToChange });
+            if (user) {
+                if (user.isVerified) {
+                    console.log('Email is already used. Try another email.');
+                    return res.redirect(`/admin/user/${profile.userId.role}/list`);
+                }
+                await User.findByIdAndDelete(user._id)
+            }
+            const newData = {
+                email: emailToChange,
+                isVerified: true
+            };
+            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            return res.redirect(`/admin/user/${profile.userId.role}/list`);
+        } else if (profile.userId.role === 'admin') {
+            const emailToChange = req.body.email;
+            if (profile.email === emailToChange) {
+                console.log('You are already using this email.');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
+            }
+            const user = await User.findOne({ email: emailToChange });
+            if (user) {
+                if (user.isVerified) {
+                    console.log('Email is already used. Try another email.');
+                    return res.redirect(`/admin/user/${profile.userId.role}/list`);
+                }
+                await User.findByIdAndDelete(user._id)
+            }
+            const newData = {
+                email: emailToChange,
+                isVerified: true
+            };
+            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            return res.redirect(`/admin/user/${profile.userId.role}/list`);
+        } else {
+            console.log('forbidden');
+        }
 
     } else if (actions === 'changePassword') {
-        console.log('changePassword')
+        if (profile.userId.role === 'student') {
+            const newPassword = req.body.newPassword;
+            const confirmPassword = req.body.confirmPassword;
+            if (newPassword !== confirmPassword) {
+                console.log('new password is not equal to re-type password');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
+            }
+            const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+            const newData = {
+                password: hashedNewPassword,
+                isVerified: true
+            };
+            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            return res.redirect(`/admin/user/${profile.userId.role}/list`);
+        } else if (profile.userId.role === 'professor') {
+            const newPassword = req.body.newPassword;
+            const confirmPassword = req.body.confirmPassword;
+            if (newPassword !== confirmPassword) {
+                console.log('new password is not equal to re-type password');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
+            }
+            const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+            const newData = {
+                password: hashedNewPassword,
+                isVerified: true
+            };
+            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            return res.redirect(`/admin/user/${profile.userId.role}/list`);
+        } else if (profile.userId.role === 'admin') {
+            const newPassword = req.body.newPassword;
+            const confirmPassword = req.body.confirmPassword;
+            if (newPassword !== confirmPassword) {
+                console.log('new password is not equal to re-type password');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
+            }
+            const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+            const newData = {
+                password: hashedNewPassword,
+                isVerified: true
+            };
+            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            return res.redirect(`/admin/user/${profile.userId.role}/list`);
+        } else {
+            console.log('forbidden')
+        }
     } else if (actions === 'changeProfile') {
         if (profile.userId.role === 'student') {
             const birthdate = req.body.birthdate;
@@ -179,7 +285,7 @@ module.exports.doEdit = async (req, res) => {
             };
             const profile = await AdminProfile.findByIdAndUpdate(profile._id, newData, { new: true });
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
-        } else{
+        } else {
             console.log('forbidden');
         }
     } else {
