@@ -1,5 +1,5 @@
-const User = require('../../models/user')
-const StudentProfile = require('../../models/studentProfile')
+const User = require('../../models/user');
+const StudentProfile = require('../../models/studentProfile');
 const SITE_TITLE = 'DSF';
 const fs = require('fs').promises;
 const path = require('path');
@@ -68,7 +68,7 @@ module.exports.print = async (req, res) => {
 
         // Set response headers to indicate PDF content
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `inline; filename="enrollment.pdf"`);
+        res.setHeader('Content-Disposition', `inline; filename="enrolly.pdf"`);
         res.send(pdfBuffer);
     } catch (err) {
         console.log('err:', err);
