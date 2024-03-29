@@ -49,7 +49,6 @@
                                                                 <li><i class="fa fa-window-maximize full-card"></i></li>
                                                                 <li><i class="fa fa-minus minimize-card"></i></li>
                                                                 <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                <li><i class="fa fa-trash close-card"></i></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -57,7 +56,7 @@
                                                         <div class="table-responsive">
                                                             <table class="table">
                                                                 <thead>
-                                                                    <tr>
+                                                                    <tr class="text-center">
                                                                         <th>Email</th>
                                                                         <th>Fullname</th>
                                                                         <th>Contact</th>
@@ -69,14 +68,14 @@
                                                                     <% professorProfiles.forEach(profile => { %>
                                                                         <% if(profile.userId.isVerified){ %>
                                                                     <form action="/admin/enrollment/doEnroll" method="post">
-                                                                        <tr style="white-space: nowrap;">
+                                                                        <tr class="text-center" style="white-space: nowrap;">
                                                                             <td class="align-middle text-capitalize"> <%= profile.userId.email %></td>
                                                                             <td class="align-middle text-capitalize"><%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %></td>
                                                                             <td class="align-middle text-capitalize"> <%= profile.contact %></td>
                                                                             <td class="align-middle text-capitalize"> <%= profile.userId.role %></td>
                                                                             <input type="hidden" name="studentId" id="studentId" value="<%= profile._id %>">
                                                                             <td class="text-center align-middle">
-                                                                                <div class="btn-group d-flex">
+                                                                                <div class="btn-group d-flex justify-content-center align-items-center">
                                                                                     <a href="/admin/user/edit/<%= profile._id %>/<%= profile.userId.role %>" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Edit</a>
                                                                                     <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
                                                                                 </div>

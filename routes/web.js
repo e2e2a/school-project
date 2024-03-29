@@ -31,7 +31,7 @@ module.exports = function(app){
     app.get('/subjects', userEnrollmentController.index);
     
     //admin
-    app.get('/admin/course/add', adminCourseController.index);
+    app.get('/admin/course/add', adminCourseController.create);
     app.post('/admin/course/add', adminCourseController.doCreate);
     app.get('/admin/enrollments', adminEnrollmentController.index);
     app.post('/admin/enrollment/doEnroll', adminEnrollmentController.doEnroll);
