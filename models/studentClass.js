@@ -17,6 +17,9 @@ var schema = mongoose.Schema({
     courseName: {
         type: String,
     },
+    category: { 
+        type: String
+    },
     year: {
         type: String,
     },

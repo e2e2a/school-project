@@ -33,6 +33,7 @@ async function seedSubjects() {
                 const subject = new Subject({
                     courseId: course._id,
                     category: course.category,
+                    subjectCode: 'code-12345',
                     name: subjectData.name,
                     unit: subjectData.unit,
                     year: subjectData.year,

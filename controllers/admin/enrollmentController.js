@@ -38,8 +38,14 @@ module.exports.doEnroll = async (req, res) => {
             }
             const studentProfile = await StudentProfile.findById(studentId);
             if (studentProfile) {
+                const courseId = req.body.courseId;
+                if (!mongoose.Types.ObjectId.isValid(courseId)) {
+                    console.log('Invalid ObjectId:', courseId);
+                    return res.status(404).render('404');
+                }
+                const course = await Course.findById(courseId)
                 const checkSection = await Section.findOne({
-                    courseId: req.body.courseId,
+                    courseId: course._id,
                     year: req.body.year,
                     semester: req.body.semester,
                     section: req.body.section
@@ -57,8 +63,13 @@ module.exports.doEnroll = async (req, res) => {
                         studentId: studentProfile._id,
                         courseId: studentProfile.courseId,
                         sectionId: checkSection._id,
+                        subjects: subjects,
+                        courseName: course.name,
+                        category: course.category,
+                        year: req.body.year,
+                        semester: req.body.semester,
+                        section: req.body.section,
                         status: true,
-                        subjects: subjects
                     });
                     console.log('student', studentClass)
                     await studentClass.save();
