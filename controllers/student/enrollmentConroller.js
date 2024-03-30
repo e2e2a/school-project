@@ -13,7 +13,7 @@ module.exports.index = async (req, res) => {
                 const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
                 if (studentProfile) {
                     if (studentProfile.isVerified) {
-                        const studentClass = await StudentClass.find({ studentId: studentProfile._id, status:true }).populate('subjects.subjectId');
+                        const studentClass = await StudentClass.find({ studentId: studentProfile._id, status:true }).populate('subjects.subjectId').populate('subjects.professorId');
                         console.log(studentClass)
                         const sectionIds = studentClass.map(studentClass => studentClass.sectionId);
                         const studentSection = await Section.find({ _id: { $in: sectionIds } }).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');

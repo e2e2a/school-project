@@ -16,7 +16,7 @@ module.exports.schedule = async (req, res) => {
                 const professorProfile = await ProfessorProfile.findOne({ userId: userLogin._id });
                 if (professorProfile) {
                     if (professorProfile.isVerified) {
-                        const schedule = await Schedule.findOne({ professorId: professorProfile._id }).populate('schedule.subjectId').populate('sectionId');
+                        const schedule = await Schedule.findOne({ professorId: professorProfile._id }).populate('schedule.subjectId');
                         res.render('professor/schedule', {
                             site_title: SITE_TITLE,
                             title: 'Schedule',

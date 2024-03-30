@@ -74,7 +74,7 @@
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.professorId ? subject.professorId.firstname : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.grades ? subject.grades : 'N/A' %></td>
                                                                                 </tr>

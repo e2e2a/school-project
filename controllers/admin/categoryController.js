@@ -2,6 +2,7 @@ const User = require('../../models/user')
 const Subject = require('../../models/subject');
 const Course = require('../../models/course');
 const StudentProfile = require('../../models/studentProfile');
+const StudentClass = require('../../models/studentClass');
 const ProfessorProfile = require('../../models/professorProfile');
 const Section = require('../../models/section');
 const Schedule = require('../../models/schedule');
@@ -17,9 +18,6 @@ module.exports.index = async (req, res) => {
         semester: semester,
     }).populate('courseId').populate('subjects.subjectId').populate('subjects.professorId').exec();
     // Filter sections based on category
-    sections.forEach(section => {
-        console.log(`Subjects for Section ${section.section}:`, section.subjects);
-    });
 
     const professors = await ProfessorProfile.find().populate('userId').exec();
 
@@ -45,24 +43,22 @@ module.exports.actions = async (req, res) => {
             if (category && year && semester) {
                 const { subjectId, professorId, startTime, endTime, section, days } = req.body;
                 const sectionFilter = { category, semester, year, section };
-                console.log('days', days)
-                try {
+
+                try {           
                     // Find the section
                     let sectionExists = await Section.findOne(sectionFilter);
                     if (!sectionExists) {
                         console.log('Section not found');
                         return res.status(400).send('Section not found');
                     }
-                    console.log('Section found');
 
-                    let schedule = await Schedule.findOne({ sectionId: sectionExists._id, professorId:professorId });
-                    if (!schedule) {
-                        schedule = new Schedule({ professorId: professorId, sectionId: sectionExists._id, schedule: [] });
+                    let professorSchedule = await Schedule.findOne({ professorId });
+                    if (!professorSchedule) {
+                        professorSchedule = new Schedule({ professorId, schedule: [] });
                         console.log('Schedule not found for professor');
                     }
 
-                    // Check if the subject exists in the schedule
-                    const subjectIndex = schedule.schedule.findIndex(entry => entry.subjectId.toString() === subjectId);
+                    // Convert time to minutes for easier comparison
                     function getTimeInMinutes(time) {
                         const [hour, minute] = time.split(':').map(Number);
                         return hour * 60 + minute;
@@ -70,74 +66,66 @@ module.exports.actions = async (req, res) => {
 
                     // Check if the provided time range is valid
                     const isTimeValid = getTimeInMinutes(startTime) < getTimeInMinutes(endTime);
-
                     if (!isTimeValid) {
                         console.log('Invalid time range');
                         return res.status(400).send('Invalid time range');
                     }
-                    const daysArray = Array.isArray(days) ? days : [days];
-                    const isOverlapping = schedule.schedule.some(existingSchedule => {
-                        if (existingSchedule.subjectId.toString() !== subjectId) {
-                            const overlapDays = daysArray.filter(day => existingSchedule.days.includes(day));
-                            if (overlapDays.length > 0) {
-                                const newStartTime = getTimeInMinutes(startTime);
-                                const newEndTime = getTimeInMinutes(endTime);
-                                const existingStartTime = getTimeInMinutes(existingSchedule.startTime);
-                                const existingEndTime = getTimeInMinutes(existingSchedule.endTime);
+                    //
+                    const index = professorSchedule.schedule.findIndex(entry => entry.subjectId.toString() === subjectId);
+                    // If the subject is found in the professor's schedule, remove the existing entry
+                    if (index !== -1) {
+                        professorSchedule.schedule.splice(index, 1);
+                    }
+                    //
 
-                                // Check if the new schedule overlaps with the existing schedule's days
-                                if (
-                                    existingSchedule.days.some(day => overlapDays.includes(day)) ||
-                                    overlapDays.some(day => existingSchedule.days.includes(day))
-                                ) {
-                                    // Check if the new schedule starts immediately after the existing schedule ends or ends immediately before the existing schedule starts
-                                    if (
-                                        (newStartTime === existingEndTime && newEndTime > existingStartTime) ||
-                                        (newEndTime === existingStartTime && newStartTime < existingEndTime)
-                                    ) {
-                                        console.log(newEndTime, existingStartTime, newStartTime ,existingEndTime)
-                                        return false; 
-                                    }
+                    const isConflict = professorSchedule.schedule.some(existingSchedule => {
+                        const overlapDays = Array.isArray(days) ? days.filter(day => existingSchedule.days.includes(day)) : [days];
+                        if (overlapDays.length > 0) {
+                            const newStartTime = getTimeInMinutes(startTime);
+                            const newEndTime = getTimeInMinutes(endTime);
+                            const existingStartTime = getTimeInMinutes(existingSchedule.startTime);
+                            const existingEndTime = getTimeInMinutes(existingSchedule.endTime);
 
-                                    // Check if the new schedule starts before the existing schedule ends or ends after the existing schedule starts
-                                    if (
-                                        (newStartTime < existingEndTime && newEndTime > existingStartTime) ||
-                                        // Allow new schedule if it starts exactly when existing schedule ends or ends exactly when existing schedule starts
-                                        (newStartTime === existingEndTime || newEndTime === existingStartTime)
-                                    ) {
-                                        return true; // Overlapping schedules found
-                                    }
-                                }
+                            // Check if the new schedule overlaps with the existing schedule
+                            if (
+                                (newStartTime === existingEndTime && newEndTime > existingStartTime) ||
+                                (newEndTime === existingStartTime && newStartTime < existingEndTime)
+                            ) {
+                                console.log(newEndTime, existingStartTime, newStartTime, existingEndTime)
+                                return false;
+                            }
+
+                            // Check if the new schedule starts before the existing schedule ends or ends after the existing schedule starts
+                            if (
+                                (newStartTime < existingEndTime && newEndTime > existingStartTime) ||
+                                // Allow new schedule if it starts exactly when existing schedule ends or ends exactly when existing schedule starts
+                                (newStartTime === existingEndTime || newEndTime === existingStartTime)
+                            ) {
+                                return true; // Overlapping schedules found
                             }
                         }
                         return false;
                     });
 
-                    if (isOverlapping) {
+                    if (isConflict) {
                         console.log('Professor is not available during the specified time');
                         return res.status(400).send('Professor is not available during the specified time');
                     }
-                    if (subjectIndex !== -1) {
-                        // Subject found, update it
-                        const updatedSubject = schedule.schedule[subjectIndex];
 
-                        // Update the subject with the new days, start time, and end time from the request body
-                        updatedSubject.days = days;
-                        updatedSubject.startTime = startTime;
-                        updatedSubject.endTime = endTime;
-                    } else {
+                    // Update or add the subject to the professor's schedule
+                    
                         // Subject not found, create a new entry
-                        schedule.schedule.push({
+                        professorSchedule.schedule.push({
                             subjectId,
                             days,
                             startTime,
                             endTime
                         });
-                    }
-                    // Update the schedule in the Schedule model
-                    await schedule.save();
 
-                    // Update or create the subject entry in sectionExists.subjects
+                    // Save the updated professor's schedule
+                    await professorSchedule.save();
+
+                    // Update or add the subject to the section's subjects
                     let subjectToUpdate = sectionExists.subjects.find(sub => sub.subjectId.toString() === subjectId);
                     if (subjectToUpdate) {
                         // Subject found, update it
@@ -158,8 +146,7 @@ module.exports.actions = async (req, res) => {
 
                     // Save the updated section
                     await sectionExists.save();
-                    console.log('save')
-
+                    console.log('Schedule saved successfully');
                     res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
                 } catch (error) {
                     console.error('Error saving schedule:', error);

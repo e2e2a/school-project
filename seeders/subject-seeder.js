@@ -23,6 +23,7 @@ async function seedSubjects() {
         for (let subjectData of subjectsData) {
             const existingSubject = await Subject.findOne({
                 courseId: course._id,
+                category: course.category,
                 year: subjectData.year,
                 semester: subjectData.semester,
                 section: subjectData.section
@@ -31,6 +32,7 @@ async function seedSubjects() {
             if (!existingSubject) {
                 const subject = new Subject({
                     courseId: course._id,
+                    category: course.category,
                     name: subjectData.name,
                     unit: subjectData.unit,
                     year: subjectData.year,
