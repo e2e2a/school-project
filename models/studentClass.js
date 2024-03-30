@@ -13,6 +13,19 @@ var schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Section'
     },
+    //after end semester
+    courseName: {
+        type: String,
+    },
+    year: {
+        type: String,
+    },
+    semester: {
+        type: String,
+    },
+    section: {
+        type: String,
+    },
     subjects: [{
         subjectId: {
             type: mongoose.Schema.Types.ObjectId,

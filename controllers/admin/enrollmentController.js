@@ -48,7 +48,8 @@ module.exports.doEnroll = async (req, res) => {
                     const studentClass = new StudentClass({
                         studentId: studentProfile._id,
                         courseId: studentProfile.courseId,
-                        sectionId: checkSection._id
+                        sectionId: checkSection._id,
+                        status: true,
                     });
                     console.log('student', studentClass)
                     await studentClass.save();
@@ -65,7 +66,7 @@ module.exports.doEnroll = async (req, res) => {
         } else if (actions === 'print') {
             try {
                 const studentId = req.body.studentId;
-                console.log('studentId',studentId)
+                console.log('studentId', studentId)
                 if (!mongoose.Types.ObjectId.isValid(studentId)) {
                     console.log('Invalid ObjectId:', studentId);
                     return res.status(404).render('404');
@@ -73,32 +74,32 @@ module.exports.doEnroll = async (req, res) => {
                 const studentProfile = await StudentProfile.findById(studentId).populate('userId').populate('courseId');
                 const templatePath = path.join(__dirname, '../../views/pdf/enrollment.ejs');
                 const templateContent = await fs.readFile(templatePath, 'utf-8');
-                const html = ejs.render(templateContent,{studentProfile:studentProfile});
-            
-                    const browser = await puppeteer.launch({
-                        ...puppeteerConfig,
-            
-                        headless: true
-                    });
-            
-                    const page = await browser.newPage();
-                    await page.setContent(html);
-            
-                    const pdfBuffer = await page.pdf({
-                        format: 'Legal',
-                        printBackground: true,
-                    });
-            
-                    await browser.close();
-            
-                    res.setHeader('Content-Type', 'application/pdf');
-                    res.setHeader('Content-Disposition', `inline; filename="enrolly.pdf"`);
-                    res.send(pdfBuffer);
-                } catch (err) {
-                    console.log('err:', err);
-                    req.flash('message', 'Internal error occurred.');
-                    return res.status(500).send('500', err);
-                }
+                const html = ejs.render(templateContent, { studentProfile: studentProfile });
+
+                const browser = await puppeteer.launch({
+                    ...puppeteerConfig,
+
+                    headless: true
+                });
+
+                const page = await browser.newPage();
+                await page.setContent(html);
+
+                const pdfBuffer = await page.pdf({
+                    format: 'Legal',
+                    printBackground: true,
+                });
+
+                await browser.close();
+
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', `inline; filename="enrolly.pdf"`);
+                res.send(pdfBuffer);
+            } catch (err) {
+                console.log('err:', err);
+                req.flash('message', 'Internal error occurred.');
+                return res.status(500).send('500', err);
+            }
         } else if (actions === 'declined') {
             console.log('e')
         }

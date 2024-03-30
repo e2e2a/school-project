@@ -13,7 +13,8 @@ module.exports.index = async (req, res) => {
                 const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
                 if (studentProfile) {
                     if (studentProfile.isVerified) {
-                        const studentClass = await StudentClass.find({ studentId: studentProfile._id }).populate('subjects.subjectId');
+                        const studentClass = await StudentClass.find({ studentId: studentProfile._id, status:true }).populate('subjects.subjectId');
+                        console.log(studentClass)
                         const sectionIds = studentClass.map(studentClass => studentClass.sectionId);
                         const studentSection = await Section.find({ _id: { $in: sectionIds } }).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
                         res.render('user/subjects', {
@@ -68,6 +69,47 @@ module.exports.enroll = async (req, res) => {
             }
         } else {
             return res.redirect('/login')
+        }
+    } catch (error) {
+        console.log('error:', error)
+        return res.status(500).render('500');
+    }
+}
+
+module.exports.prospectus = async (req, res) => {
+    try {
+        const userLogin = await User.findById(req.session.login);
+        if (userLogin) {
+            if (userLogin.role === 'student') {
+                const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
+                if (studentProfile) {
+                    if (studentProfile.isVerified) {
+                        const studentClass = await StudentClass.find({ studentId: studentProfile._id }).populate('subjects.subjectId');
+                        const sectionIds = studentClass.map(studentClass => studentClass.sectionId);
+                        const studentSection = await Section.find({ _id: { $in: sectionIds } }).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
+                        res.render('user/prospectus', {
+                            site_title: SITE_TITLE,
+                            title: 'Prospectus',
+                            messages: req.flash(),
+                            currentUrl: req.originalUrl,
+                            userLogin: userLogin,
+                            req: req,
+                            studentProfile: studentProfile,
+                            studentClass: studentClass,
+                            studentSection: studentSection,
+                        });
+                    } else {
+                        req.flash('message', 'Update your profile to begin the enrollment.');
+                        return res.redirect('/profile')
+                    }
+                } else {
+                    return res.redirect('/register');
+                }
+            } else {
+                return res.status(400).render('404');
+            }
+        } else {
+            return res.redirect('/login');
         }
     } catch (error) {
         console.log('error:', error)

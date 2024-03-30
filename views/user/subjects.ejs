@@ -42,7 +42,7 @@
                                                 <% if(studentClass.length > 0) {%>
                                                     <div class="card">
                                                         <div class="card-header">
-                                                            <h5><%= studentSection[0].year %> - <%= studentSection[0].section %> - <%= studentSection[0].semester %> - <%= studentSection[0].courseId.name %></h5>
+                                                            <h5><%= studentSection[0].year %> - <%= studentSection[0].semester %> - <%= studentSection[0].section %> - <%= studentSection[0].courseId.name %></h5>
                                                             <div class="card-header-right">
                                                                 <ul class="list-unstyled card-option">
                                                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -67,8 +67,9 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <% studentSection.forEach(section => { %>
-                                                                            <% section.subjects.forEach(subject => { %>
+                                                                        <!-- need to find status === true -->
+                                                                        <% studentClass.forEach(student => { %>
+                                                                            <% student.subjects.forEach(subject => { %>
                                                                                 <tr style="white-space: nowrap;">
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>

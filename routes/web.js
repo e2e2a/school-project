@@ -31,7 +31,8 @@ module.exports = function(app){
     app.post('/profile/update', userProfileController.update);
     app.get('/courses', userCourseController.index);
     app.post('/course/enroll', userCourseController.enroll);
-    app.get('/subjects', userEnrollmentController.index);
+    app.get('/enrollment/subjects', userEnrollmentController.index);
+    app.get('/enrollment/prospectus', userEnrollmentController.prospectus);
     //professor
     app.get('/professor', professorIndexController.index);
     app.get('/professor/profile', professorProfileController.index);
