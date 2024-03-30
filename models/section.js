@@ -5,6 +5,10 @@ var schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
     },
+    //added
+    category: { 
+        type: String
+    },
     semester: { 
         type: String
     },

@@ -5,6 +5,10 @@ var schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ProfessorProfile'
     },
+    sectionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Section'
+    },
     schedule: [{
         subjectId: {
             type: mongoose.Schema.Types.ObjectId,

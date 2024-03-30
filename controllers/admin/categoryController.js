@@ -12,24 +12,24 @@ module.exports.index = async (req, res) => {
     const year = req.query.year;
     const semester = req.query.semester;
     const sections = await Section.find({
+        category: category,
         year: year,
         semester: semester,
-    }).populate('courseId').populate('subjects.subjectId').exec();
-
+    }).populate('courseId').populate('subjects.subjectId').populate('subjects.professorId').exec();
     // Filter sections based on category
-    const filteredSections = sections.filter(section => {
-        return section.courseId && section.courseId.category === category;
+    sections.forEach(section => {
+        console.log(`Subjects for Section ${section.section}:`, section.subjects);
     });
 
-    const profProfile = await ProfessorProfile.find().populate('userId').exec();
-    const professors = profProfile.filter(profile => profile.userId.role === 'professor');
+    const professors = await ProfessorProfile.find().populate('userId').exec();
+
     res.render('admin/categoryView', {
         site_title: SITE_TITLE,
         title: 'Category',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
-        filteredSections: filteredSections,
+        filteredSections: sections,
         professors: professors,
         category: category,
         year: year,
@@ -44,20 +44,20 @@ module.exports.actions = async (req, res) => {
             const { category, year, semester, link } = req.query;
             if (category && year && semester) {
                 const { subjectId, professorId, startTime, endTime, section, days } = req.body;
-                const sectionFilter = { semester, year, section };
+                const sectionFilter = { category, semester, year, section };
                 console.log('days', days)
                 try {
                     // Find the section
                     let sectionExists = await Section.findOne(sectionFilter);
-                    console.log(sectionExists);
                     if (!sectionExists) {
                         console.log('Section not found');
                         return res.status(400).send('Section not found');
                     }
+                    console.log('Section found');
 
-                    let schedule = await Schedule.findOne({ professorId });
+                    let schedule = await Schedule.findOne({ sectionId: sectionExists._id, professorId:professorId });
                     if (!schedule) {
-                        schedule = new Schedule({ professorId, schedule: [] });
+                        schedule = new Schedule({ professorId: professorId, sectionId: sectionExists._id, schedule: [] });
                         console.log('Schedule not found for professor');
                     }
 

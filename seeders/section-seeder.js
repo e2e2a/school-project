@@ -12,6 +12,7 @@ async function seedSections() {
                     for (let section = 1; section <= 2; section++) {
                         const existingSection = await Section.findOne({
                             courseId: course._id,
+                            category: course.category,
                             year: `${year}${year === 1 ? 'st' : year === 2 ? 'nd' : 'rd'} Year`,
                             semester: `${semester}${semester === 1 ? 'st' : 'nd'} Semester`,
                             section: `Section ${section}`
@@ -19,6 +20,7 @@ async function seedSections() {
                         if (!existingSection) {
                             const newSection = new Section({
                                 courseId: course._id,
+                                category: course.category,
                                 year: `${year}${year === 1 ? 'st' : year === 2 ? 'nd' : 'rd'} Year`,
                                 semester: `${semester}${semester === 1 ? 'st' : 'nd'} Semester`,
                                 section: `Section ${section}`,

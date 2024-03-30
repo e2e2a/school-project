@@ -24,6 +24,7 @@ const userFormPrintController = require('../controllers/student/form-print');
 //professor
 const professorIndexController = require('../controllers/professor/indexController');
 const professorProfileController = require('../controllers/professor/profileController');
+const professorScheduleController = require('../controllers/professor/scheduleController');
 module.exports = function(app){
     //user
     app.get('/', userIndexController.index);
@@ -36,6 +37,8 @@ module.exports = function(app){
     //professor
     app.get('/professor', professorIndexController.index);
     app.get('/professor/profile', professorProfileController.index);
+    app.post('/professor/profile', professorProfileController.update);
+    app.get('/professor/schedule', professorScheduleController.schedule);
     //admin
     app.get('/admin/courses', adminCourseController.index);
     app.get('/admin/course/add', adminCourseController.create);

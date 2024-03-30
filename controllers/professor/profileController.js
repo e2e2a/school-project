@@ -64,7 +64,6 @@ module.exports.update = async (req, res) => {
         if (actions === 'profile') {
             try {
                 if (userLogin) {
-
                     const birthdate = req.body.birthdate;
                     const [birthYear, birthMonth, birthDay] = birthdate.split('-');
                     const newData = {
@@ -73,18 +72,18 @@ module.exports.update = async (req, res) => {
                         lastname: req.body.lastname,
                         contact: req.body.contact,
                         birthMonth: birthMonth,
-                        birthDay: birthDay,
+                        birthDay: birthDay, 
                         birthYear: birthYear,
                         age: req.body.age,
                         isVerified: true
                     };
-                    const studentProfile = await StudentProfile.findOneAndUpdate({ userId: userLogin._id }, newData, { new: true });
-                    if (studentProfile) {
+                    const professorProfile = await ProfessorProfile.findOneAndUpdate({ userId: userLogin._id }, newData, { new: true });
+                    if (professorProfile) {
                         req.flash('message', 'Updated Profile Successfully!');
-                        return res.redirect('/');
+                        return res.redirect('/professor');
                     } else {
                         req.flash('message', 'Failed to Update Successfully!');
-                        return res.redirect('/');
+                        return res.redirect('/professor');
                     }
                 } else {
                     return res.redirect('/login');
@@ -98,12 +97,12 @@ module.exports.update = async (req, res) => {
             const existingEmail = await User.findOne({ email: emailToChange })
             if (userLogin.email === emailToChange) {
                 console.log('You are already using this email.');
-                return res.redirect('/profile');
+                return res.redirect('/professor/profile');
             }
             if (existingEmail) {
                 if (existingEmail.isVerified) {
                     console.log('Email is already used. Try another email.');
-                    return res.redirect('/profile');
+                    return res.redirect('/professor/profile');
                 } else {
                     await User.findByIdAndDelete(existingEmail._id)
                     console.log('deleted')
@@ -193,12 +192,12 @@ module.exports.update = async (req, res) => {
                     // 400 Bad Request
                     req.flash('error', 'Invalid password.');
                     console.log('password not match in userLogin.password')
-                    return res.redirect('/profile');
+                    return res.redirect('/professor/profile');
                 }
                 // Hash the new password before updating it in the database
                 if (newPassword !== confirmPassword) {
                     console.log('new password is not equal to re-type password')
-                    return res.redirect('/profile')
+                    return res.redirect('/professor/profile')
                 }
                 const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
@@ -207,7 +206,7 @@ module.exports.update = async (req, res) => {
                 await User.findOneAndUpdate(userLogin._id, { password: hashedNewPassword }, { new: true })
 
                 console.log('Password changed successfully')
-                return res.redirect('/profile');
+                return res.redirect('/professor/profile');
             });
         }
     } catch (error) {

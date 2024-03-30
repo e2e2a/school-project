@@ -43,13 +43,22 @@ module.exports.doEnroll = async (req, res) => {
                     year: req.body.year,
                     semester: req.body.semester,
                     section: req.body.section
-                });
+                }).populate('subjects.subjectId');
                 if (checkSection) {
+                    const subjects = checkSection.subjects.map(subject => ({
+                        subjectId: subject.subjectId,
+                        professorId: subject.professorId,
+                        startTime: subject.startTime,
+                        endTime: subject.endTime,
+                        grade: null
+                    }));
+
                     const studentClass = new StudentClass({
                         studentId: studentProfile._id,
                         courseId: studentProfile.courseId,
                         sectionId: checkSection._id,
                         status: true,
+                        subjects: subjects
                     });
                     console.log('student', studentClass)
                     await studentClass.save();

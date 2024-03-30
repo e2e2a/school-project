@@ -71,68 +71,68 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <% filteredSections.forEach(sect => { %>
-                                                                                <% if(sect.section === section.section) {%>
-                                                                                <% sect.subjects.forEach(subject => { %>
-                                                                                    <form action="" method="post">
-                                                                                        <tr style="white-space: nowrap;">
-                                                                                            <input type="hidden" name="section" value="<%= section.section %>">
-                                                                                            <input type="hidden" name="link" value="category=<%= category %>&year=<%= year %>&semester=<%= semester %>">
-                                                                                            <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
-                                                                                            <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
-                                                                                            <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
-                                                                                            <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
-                                                                                            <td class="align-middle">
-                                                                                                <div class="form-group">
-                                                                                                    <select name="professorId" id="professorId" class="form-control border" style="text-transform: capitalize;width: 200px;" required>
-                                                                                                        <option value="" selected hidden>Select Option</option>
-                                                                                                        <% professors.forEach(professor => { %>
-                                                                                                            <!-- typeof subject.professorId, typeof professor._id -->
-                                                                                                            <% if(professor.isVerified === true) { %>
-                                                                                                            <option value="<%= professor._id %>" <%= typeof subject.professorId ===  typeof professor._id ? 'selected' : '' %> >
-                                                                                                                <%= professor.lastname %>, <%= professor.firstname %> <%= professor.middlename %>
-                                                                                                            </option>
+                                                                            <% section.subjects.forEach(subject => { %>
+                                                                                <form action="" method="post">
+                                                                                    <tr style="white-space: nowrap;">
+                                                                                        <input type="hidden" name="section" value="<%= section.section %>">
+                                                                                        <input type="hidden" name="link" value="category=<%= category %>&year=<%= year %>&semester=<%= semester %>">
+                                                                                        <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
+                                                                                        <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
+                                                                                        <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
+                                                                                        <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
+                                                                                        <td class="align-middle">
+                                                                                            <div class="form-group">
+                                                                                                <select name="professorId" id="professorId" class="form-control border" style="text-transform: capitalize;width: 200px;" required>
+                                                                                                    <option value="" selected hidden>Select Option</option>
+                                                                                                    <% professors.forEach(professor => { %>
+                                                                                                        <!-- Check if subject.professorId exists and is equal to professor._id -->
+                                                                                                        <% if (professor.isVerified === true) { %>
+                                                                                                            <% if (subject.professorId && subject.professorId.equals(professor._id)) { %>
+                                                                                                                <option value="<%= professor._id %>" selected>
+                                                                                                            <% } else { %>
+                                                                                                                <option value="<%= professor._id %>">
                                                                                                             <% } %>
-                                                                                                        <% }); %>
-                                                                                                    </select>
+                                                                                                            <%= professor.lastname %>, <%= professor.firstname %> <%= professor.middlename %>
+                                                                                                            </option>
+                                                                                                        <% } %>
+                                                                                                    <% }); %>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td class="align-middle">
+                                                                                            <div class="form-group">
+                                                                                                <div id="days">
+                                                                                                    <input type="checkbox" id="monday" name="days" value="M" <%= subject.days.includes('M') ? 'checked' : '' %>>
+                                                                                                    <label for="monday">Monday</label><br>
+                                                                                                    <input type="checkbox" id="tuesday" name="days" value="T" <%= subject.days.includes('T') ? 'checked' : '' %>>
+                                                                                                    <label for="tuesday">Tuesday</label><br>
+                                                                                                    <input type="checkbox" id="wednesday" name="days" value="W" <%= subject.days.includes('W') ? 'checked' : '' %>>
+                                                                                                    <label for="wednesday">Wednesday</label><br>
+                                                                                                    <input type="checkbox" id="thursday" name="days" value="TH" <%= subject.days.includes('TH') ? 'checked' : '' %>>
+                                                                                                    <label for="thursday">Thursday</label><br>
+                                                                                                    <input type="checkbox" id="friday" name="days" value="F" <%= subject.days.includes('F') ? 'checked' : '' %>>
+                                                                                                    <label for="friday">Friday</label><br>
                                                                                                 </div>
-                                                                                            </td>
-                                                                                            <td class="align-middle">
-                                                                                                <div class="form-group">
-                                                                                                    <div id="days">
-                                                                                                        <input type="checkbox" id="monday" name="days" value="M" <%= subject.days.includes('M') ? 'checked' : '' %>>
-                                                                                                        <label for="monday">Monday</label><br>
-                                                                                                        <input type="checkbox" id="tuesday" name="days" value="T" <%= subject.days.includes('T') ? 'checked' : '' %>>
-                                                                                                        <label for="tuesday">Tuesday</label><br>
-                                                                                                        <input type="checkbox" id="wednesday" name="days" value="W" <%= subject.days.includes('W') ? 'checked' : '' %>>
-                                                                                                        <label for="wednesday">Wednesday</label><br>
-                                                                                                        <input type="checkbox" id="thursday" name="days" value="TH" <%= subject.days.includes('TH') ? 'checked' : '' %>>
-                                                                                                        <label for="thursday">Thursday</label><br>
-                                                                                                        <input type="checkbox" id="friday" name="days" value="F" <%= subject.days.includes('F') ? 'checked' : '' %>>
-                                                                                                        <label for="friday">Friday</label><br>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </td>
-                                                                                            <td class="align-middle">
-                                                                                                <div class="form-group">
-                                                                                                    <input type="time" name="startTime" id="startTime" class="form-control" style="width: 130px;" value="<%= subject.startTime %>">
-                                                                                                </div>
-                                                                                            </td>
-                                                                                            <td class="align-middle">
-                                                                                                <div class="form-group">
-                                                                                                    <input type="time" name="endTime" id="endTime" class="form-control" style="width: 130px;" value="<%= subject.endTime %>">
-                                                                                                </div>
-                                                                                            </td>
-                                                                                            <td class="text-center align-middle">
-                                                                                                <div class="btn-group d-flex justify-content-center">
-                                                                                                    <button type="submit" name="actions" value="update" class="btn btn-sm btn-primary"><i class="ti-check-box"></i> Update</button>
-                                                                                                    <button type="submit" name="actions" value="delete" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
-                                                                                                </div>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </form>
-                                                                                    <% }) %>
-                                                                                <% } %>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td class="align-middle">
+                                                                                            <div class="form-group">
+                                                                                                <input type="time" name="startTime" id="startTime" class="form-control" style="width: 130px;" value="<%= subject.startTime %>">
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td class="align-middle">
+                                                                                            <div class="form-group">
+                                                                                                <input type="time" name="endTime" id="endTime" class="form-control" style="width: 130px;" value="<%= subject.endTime %>">
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td class="text-center align-middle">
+                                                                                            <div class="btn-group d-flex justify-content-center">
+                                                                                                <button type="submit" name="actions" value="update" class="btn btn-sm btn-primary"><i class="ti-check-box"></i> Update</button>
+                                                                                                <button type="submit" name="actions" value="delete" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </form>
                                                                             <% }) %>
                                                                         </tbody>
                                                                     </table>
