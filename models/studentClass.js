@@ -18,9 +18,10 @@ var schema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Subject'
         },
+        // #1
         professorId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'ProfessorProfile'
         },
         startTime: {
             type: String,

@@ -47,7 +47,22 @@ module.exports.doLogin = async (req, res) => {
                     req.flash('error', 'Users not found.');
                     return res.redirect('/login');
                 }
-            } else {
+            } else if(user.role === 'professor') {
+                console.log(user.role)
+                user.comparePassword(req.body.password, (error, valid) => {
+                    if (error) {
+                        req.flash('message', 'WARNING DETECTED!');
+                        return res.status(403).send('Forbidden');
+                    }
+                    if (!valid) {
+                        // 400 Bad Request
+                        req.flash('message', 'WARNING DETECTED!');
+                        return res.redirect('/login');
+                    }
+                    req.session.login = user.id;
+                    return res.redirect('/professor');
+                });
+            }else {
                 user.comparePassword(req.body.password, (error, valid) => {
                     if (error) {
                         req.flash('message', 'WARNING DETECTED!');

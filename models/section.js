@@ -22,7 +22,7 @@ var schema = mongoose.Schema({
         },
         professorId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'ProfessorProfile'
         },
         days: {
             type: [String],

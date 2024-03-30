@@ -50,7 +50,15 @@ module.exports.doCreate = async (req, res) => {
             await subject.save();
             console.log('subject created.');
             checkSection.subjects.push({ subjectId: subject._id });
+            const studentClasses = await StudentClass.find({ sectionId: checkSection._id });
+
             try {
+                // Update subjects array in each found StudentClass document
+                await Promise.all(studentClasses.map(async (studentClass) => {
+                    studentClass.subjects.push({ subjectId: subject._id });
+                    await studentClass.save();
+                    console.log(`Subject added to StudentClass ${studentClass._id}.`);
+                }));
                 await checkSection.save();
                 console.log('Subject added to section.');
                 return res.redirect('/admin/subject/add');

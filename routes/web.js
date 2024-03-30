@@ -21,6 +21,9 @@ const userCourseController = require('../controllers/student/courseController');
 const userEnrollmentController = require('../controllers/student/enrollmentConroller');
 const userFormPrintController = require('../controllers/student/form-print');
 
+//professor
+const professorIndexController = require('../controllers/professor/indexController');
+const professorProfileController = require('../controllers/professor/profileController');
 module.exports = function(app){
     //user
     app.get('/', userIndexController.index);
@@ -29,7 +32,9 @@ module.exports = function(app){
     app.get('/courses', userCourseController.index);
     app.post('/course/enroll', userCourseController.enroll);
     app.get('/subjects', userEnrollmentController.index);
-    
+    //professor
+    app.get('/professor', professorIndexController.index);
+    app.get('/professor/profile', professorProfileController.index);
     //admin
     app.get('/admin/courses', adminCourseController.index);
     app.get('/admin/course/add', adminCourseController.create);
@@ -44,6 +49,7 @@ module.exports = function(app){
     app.post('/admin/subject/add', adminSubjectController.doCreate);
     app.get('/admin/category', adminCategoryController.index);
     app.post('/admin/category', adminCategoryController.actions);
+
 
     //users
     app.get('/admin/user/student/list', adminUserController.student);

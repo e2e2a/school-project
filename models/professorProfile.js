@@ -26,6 +26,9 @@ var schema = mongoose.Schema({
     birthYear: {
         type: String
     },
+    age: {
+        type: String
+    },
     isVerified: { 
         type: Boolean, 
         default: false 
