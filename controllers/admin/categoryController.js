@@ -127,8 +127,8 @@ module.exports.actions = async (req, res) => {
                                 subjectToUpdateStudentClass.days = days;
                                 subjectToUpdateStudentClass.startTime = startTime;
                                 subjectToUpdateStudentClass.endTime = endTime;
+                                await currentStudentClass.save();
                             } 
-                            await currentStudentClass.save();
                         }
                     }
 
