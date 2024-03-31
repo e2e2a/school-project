@@ -5,6 +5,7 @@ const Course = require('../../models/course');
 const StudentClass = require('../../models/studentClass');
 const Section = require('../../models/section');
 const Schedule = require('../../models/schedule');
+const mongoose = require('mongoose');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
@@ -46,10 +47,23 @@ module.exports.index = async (req, res) => {
 }
 
 module.exports.doGrade = async (req, res) => {
+    if (!req.body.grade) {
+        console.log('required field are empty');
+        req.flash('message', 'Grade field is empty');
+        return res.redirect('/professor/class');
+    }
     const grade = req.body.grade;
     const actions = req.body.actions
     const subjectId = req.body.subjectId
     const studentClassId = req.body.studentClassId;
+    if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+        console.log('Invalid subjectId:', subjectId);
+        return res.status(404).render('404');
+    }
+    if (!mongoose.Types.ObjectId.isValid(studentClassId)) {
+        console.log('Invalid studentClassId:', studentClassId);
+        return res.status(404).render('404');
+    }
     if (actions === 'update') {
         const studentClass = await StudentClass.findById(studentClassId)
         if (!studentClass) {

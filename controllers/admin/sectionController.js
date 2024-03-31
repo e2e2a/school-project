@@ -2,6 +2,7 @@ const User = require('../../models/user')
 const Subject = require('../../models/subject');
 const Course = require('../../models/course');
 const Section = require('../../models/section');
+const mongoose = require('mongoose');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {

@@ -64,17 +64,23 @@ module.exports.update = async (req, res) => {
         if (actions === 'profile') {
             try {
                 if (userLogin) {
-                    const birthdate = req.body.birthdate;
+                    const { firstname, middlename, lastname, contact, birthdate, age } = req.body;
+
+                    if (!firstname || !middlename || !lastname || !contact || !birthdate || !age) {
+                        console.log('One or more required fields are empty');
+                        req.flash('message', 'Required fields are empty');
+                        return res.redirect(`/professor/profile`);
+                    }
                     const [birthYear, birthMonth, birthDay] = birthdate.split('-');
                     const newData = {
-                        firstname: req.body.firstname,
-                        middlename: req.body.middlename,
-                        lastname: req.body.lastname,
-                        contact: req.body.contact,
+                        firstname: firstname,
+                        middlename: middlename,
+                        lastname: lastname,
+                        contact: contact,
                         birthMonth: birthMonth,
-                        birthDay: birthDay, 
+                        birthDay: birthDay,
                         birthYear: birthYear,
-                        age: req.body.age,
+                        age: age,
                         isVerified: true
                     };
                     const professorProfile = await ProfessorProfile.findOneAndUpdate({ userId: userLogin._id }, newData, { new: true });
@@ -93,6 +99,11 @@ module.exports.update = async (req, res) => {
                 return res.status(500).render('500');
             }
         } else if (actions === 'changeEmail') {
+            if (!req.body.email) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.redirect(`/professor/profile`);
+            }
             const emailToChange = req.body.email;
             const existingEmail = await User.findOne({ email: emailToChange })
             if (userLogin.email === emailToChange) {
@@ -179,6 +190,11 @@ module.exports.update = async (req, res) => {
                 return res.redirect(`/verify/email?token=${registrationToken}&sendcode=true`,);
             }
         } else if (actions === 'changePassword') {
+            if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.redirect(`/professor/profile`);
+            }
             const userLogin = await User.findById(req.session.login);
             const currentPassword = req.body.currentPassword;
             const newPassword = req.body.newPassword;
@@ -208,8 +224,10 @@ module.exports.update = async (req, res) => {
                 console.log('Password changed successfully')
                 return res.redirect('/professor/profile');
             });
+        } else{
+            console.log('forbidden');
         }
     } catch (error) {
-
+        console.log('error:', error);
     }
 }

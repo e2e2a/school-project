@@ -277,9 +277,9 @@ module.exports.doEdit = async (req, res) => {
             req.flash('message', 'Profile updated successfully');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'professor') {
-            const { firstname, middlename, lastname, contact, birthdate } = req.body;
+            const { firstname, middlename, lastname, contact, birthdate, age } = req.body;
 
-            if (!firstname || !middlename || !lastname || !contact || !birthdate) {
+            if (!firstname || !middlename || !lastname || !contact || !birthdate || !age) {
                 console.log('One or more required fields are empty');
                 req.flash('message', 'Required fields are empty');
                 return res.redirect(`/admin/user/edit/${profile._id}/${profile.userId.role}`);
@@ -293,6 +293,7 @@ module.exports.doEdit = async (req, res) => {
                 birthMonth: birthMonth,
                 birthDay: birthDay,
                 birthYear: birthYear,
+                age: age,
                 isVerified: true
             };
             const profileUpdate = await ProfessorProfile.findByIdAndUpdate(profile._id, newData, { new: true });
