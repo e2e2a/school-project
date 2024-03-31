@@ -15,7 +15,6 @@ var schema = mongoose.Schema({
     unit: { 
         type: String
     },
-    //remove this
     category: { 
         type: String
     },

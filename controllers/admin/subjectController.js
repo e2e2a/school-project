@@ -28,19 +28,26 @@ module.exports.create = async (req, res) => {
     });
 }
 module.exports.doCreate = async (req, res) => {
-    const course = await Course.findById(req.body.courseId)
+    const courseId = req.body.courseId;
+    if (!mongoose.Types.ObjectId.isValid(courseId)) {
+        console.log('Invalid ObjectId:', courseId);
+        req.flash('message', 'Invalid courseId.');
+        return res.redirect('/admin/subject/add');
+    }
+    const course = await Course.findById(courseId)
     if (course) {
         const checkSection = await Section.findOne({
-            courseId: req.body.courseId,
+            courseId: courseId,
             year: req.body.year,
             semester: req.body.semester,
             section: req.body.section
         });
         if (checkSection) {
             const subject = new Subject({
-                courseId: req.body.courseId,
+                courseId: courseId,
                 subjectCode: req.body.subjectCode,
-                name: req.body.name,
+                name: course.name,
+                category: course.category,
                 unit: req.body.unit,
                 year: req.body.year,
                 semester: req.body.semester,
@@ -51,9 +58,7 @@ module.exports.doCreate = async (req, res) => {
             console.log('subject created.');
             checkSection.subjects.push({ subjectId: subject._id });
             const studentClasses = await StudentClass.find({ sectionId: checkSection._id });
-
             try {
-                // Update subjects array in each found StudentClass document
                 await Promise.all(studentClasses.map(async (studentClass) => {
                     studentClass.subjects.push({ subjectId: subject._id });
                     await studentClass.save();
@@ -61,6 +66,7 @@ module.exports.doCreate = async (req, res) => {
                 }));
                 await checkSection.save();
                 console.log('Subject added to section.');
+                req.flash('message', 'Subject created successfully.');
                 return res.redirect('/admin/subject/add');
             } catch (error) {
                 console.error('Error saving section:', error);
@@ -68,10 +74,12 @@ module.exports.doCreate = async (req, res) => {
             }
         } else {
             console.log('A Section didnt exist. Please check the sections list.');
-            return res.redirect('/admin/subject/add')
+            req.flash('message', 'A Section didnt exist. Please check the sections list.');
+            return res.redirect('/admin/subject/add');
         }
     } else {
-        console.log('no courses found.please check the course name.')
-        return res.redirect('/admin/subject/add')
+        console.log('no courses found.please check the course name.');
+        req.flash('message', 'No courses found. Please check the course selected.');
+        return res.redirect('/admin/subject/add');
     }
 } 

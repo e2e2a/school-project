@@ -49,7 +49,7 @@ module.exports.edit = async (req, res) => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log('Invalid ObjectId:', id);
-        return res.status(404).render('404');
+        return res.redirect('/admin');
     }
 
     const role = req.params.role;
@@ -90,8 +90,8 @@ module.exports.doEdit = async (req, res) => {
     const id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        console.log('Invalid ObjectId:', id);
-        return res.status(404).render('404');
+        console.log('Invalid params ObjectId:', id);
+        return res.redirect('/admin');
     }
 
     const role = req.params.role;
@@ -116,12 +116,14 @@ module.exports.doEdit = async (req, res) => {
             const emailToChange = req.body.email;
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
+                req.flash('message', 'You are already using this email.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
             const user = await User.findOne({ email: emailToChange });
             if (user) {
                 if (user.isVerified) {
                     console.log('Email is already used. Try another email.');
+                    req.flash('message', 'Email is already used. Try another email.');
                     return res.redirect(`/admin/user/${profile.userId.role}/list`);
                 }
                 await User.findByIdAndDelete(user._id)
@@ -131,17 +133,20 @@ module.exports.doEdit = async (req, res) => {
                 isVerified: true
             };
             const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            req.flash('message', 'Updated profile success.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'professor') {
             const emailToChange = req.body.email;
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
+                req.flash('message', 'You are already using this email.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
             const user = await User.findOne({ email: emailToChange });
             if (user) {
                 if (user.isVerified) {
                     console.log('Email is already used. Try another email.');
+                    req.flash('message', 'Email is already used. Try another email.');
                     return res.redirect(`/admin/user/${profile.userId.role}/list`);
                 }
                 await User.findByIdAndDelete(user._id)
@@ -151,17 +156,20 @@ module.exports.doEdit = async (req, res) => {
                 isVerified: true
             };
             const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            req.flash('message', 'Updated profile success.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'admin') {
             const emailToChange = req.body.email;
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
+                req.flash('message', 'You are already using this email.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
             const user = await User.findOne({ email: emailToChange });
             if (user) {
                 if (user.isVerified) {
                     console.log('Email is already used. Try another email.');
+                    req.flash('message', 'Email is already used. Try another email.');
                     return res.redirect(`/admin/user/${profile.userId.role}/list`);
                 }
                 await User.findByIdAndDelete(user._id)
@@ -171,17 +179,18 @@ module.exports.doEdit = async (req, res) => {
                 isVerified: true
             };
             const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            req.flash('message', 'Updated profile success.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else {
             console.log('forbidden');
         }
-
     } else if (actions === 'changePassword') {
         if (profile.userId.role === 'student') {
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
                 console.log('new password is not equal to re-type password');
+                req.flash('message', 'New password is not equal to re-type password.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -190,12 +199,14 @@ module.exports.doEdit = async (req, res) => {
                 isVerified: true
             };
             const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            req.flash('message', 'Password Change Successfully.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'professor') {
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
                 console.log('new password is not equal to re-type password');
+                req.flash('message', 'New password is not equal to re-type password.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -204,12 +215,14 @@ module.exports.doEdit = async (req, res) => {
                 isVerified: true
             };
             const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            req.flash('message', 'Password Change Successfully.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'admin') {
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
                 console.log('new password is not equal to re-type password');
+                req.flash('message', 'New password is not equal to re-type password.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -218,75 +231,97 @@ module.exports.doEdit = async (req, res) => {
                 isVerified: true
             };
             const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            req.flash('message', 'Password Change Successfully.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else {
             console.log('forbidden')
         }
     } else if (actions === 'changeProfile') {
         if (profile.userId.role === 'student') {
-            const birthdate = req.body.birthdate;
+            const { firstname, middlename, lastname, numberStreet, barangay, district, cityMunicipality, province, region, emailFbAcc, contact, nationality, sex, civilStatus, employmentStatus, birthdate, age, birthPlaceCity, birthPlaceProvince, birthPlaceRegion, educationAttainment, learnerOrTraineeOrStudentClassification } = req.body;
+
+            if (!firstname || !middlename || !lastname || !numberStreet || !barangay || !district || !cityMunicipality || !province || !region || !emailFbAcc || !contact || !nationality || !sex || !civilStatus || !employmentStatus || !birthdate || !age || !birthPlaceCity || !birthPlaceProvince || !birthPlaceRegion || !educationAttainment || !learnerOrTraineeOrStudentClassification) {
+                console.log('One or more required fields are empty');
+                req.flash('message', 'Required fields are empty');
+                return res.redirect(`/admin/user/edit/${profile._id}/${profile.userId.role}`);
+            }
             const [birthYear, birthMonth, birthDay] = birthdate.split('-');
             const newData = {
-                firstname: req.body.firstname,
-                middlename: req.body.middlename,
-                lastname: req.body.lastname,
-                numberStreet: req.body.numberStreet,
-                barangay: req.body.barangay,
-                district: req.body.district,
-                cityMunicipality: req.body.cityMunicipality,
-                province: req.body.province,
-                region: req.body.region,
-                emailFbAcc: req.body.emailFbAcc,
-                contact: req.body.contact,
-                nationality: req.body.nationality,
-                sex: req.body.sex,
-                civilStatus: req.body.civilStatus,
-                employmentStatus: req.body.employmentStatus,
+                firstname: firstname,
+                middlename: middlename,
+                lastname: lastname,
+                numberStreet: numberStreet,
+                barangay: barangay,
+                district: district,
+                cityMunicipality: cityMunicipality,
+                province: province,
+                region: region,
+                emailFbAcc: emailFbAcc,
+                contact: contact,
+                nationality: nationality,
+                sex: sex,
+                civilStatus: civilStatus,
+                employmentStatus: employmentStatus,
                 birthMonth: birthMonth,
                 birthDay: birthDay,
                 birthYear: birthYear,
-                age: req.body.age,
-                birthPlaceCity: req.body.birthPlaceCity,
-                birthPlaceProvince: req.body.birthPlaceProvince,
-                birthPlaceRegion: req.body.birthPlaceRegion,
-                educationAttainment: req.body.educationAttainment,
-                learnerOrTraineeOrStudentClassification: req.body.learnerOrTraineeOrStudentClassification,
+                age: age,
+                birthPlaceCity: birthPlaceCity,
+                birthPlaceProvince: birthPlaceProvince,
+                birthPlaceRegion: birthPlaceRegion,
+                educationAttainment: educationAttainment,
+                learnerOrTraineeOrStudentClassification: learnerOrTraineeOrStudentClassification,
                 isVerified: true
             };
-            const profile = await StudentProfile.findByIdAndUpdate(profile._id, newData, { new: true });
+            const profileUpdate = await StudentProfile.findByIdAndUpdate(profile._id, newData, { new: true });
+            req.flash('message', 'Profile updated successfully');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'professor') {
-            const birthdate = req.body.birthdate;
+            const { firstname, middlename, lastname, contact, birthdate } = req.body;
+
+            if (!firstname || !middlename || !lastname || !contact || !birthdate) {
+                console.log('One or more required fields are empty');
+                req.flash('message', 'Required fields are empty');
+                return res.redirect(`/admin/user/edit/${profile._id}/${profile.userId.role}`);
+            }
             const [birthYear, birthMonth, birthDay] = birthdate.split('-');
             const newData = {
-                firstname: req.body.firstname,
-                middlename: req.body.middlename,
-                lastname: req.body.lastname,
-                contact: req.body.contact,
+                firstname: firstname,
+                middlename: middlename,
+                lastname: lastname,
+                contact: contact,
                 birthMonth: birthMonth,
                 birthDay: birthDay,
                 birthYear: birthYear,
                 isVerified: true
             };
-            const profile = await ProfessorProfile.findByIdAndUpdate(profile._id, newData, { new: true });
+            const profileUpdate = await ProfessorProfile.findByIdAndUpdate(profile._id, newData, { new: true });
+            req.flash('message', 'Profile updated successfully');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'admin') {
-            const birthdate = req.body.birthdate;
+            const { firstname, middlename, lastname, contact, birthdate } = req.body;
+
+            if (!firstname || !middlename || !lastname || !contact || !birthdate) {
+                console.log('One or more required fields are empty');
+                req.flash('message', 'Required fields are empty');
+                return res.redirect(`/admin/user/edit/${profile._id}/${profile.userId.role}`);
+            }
             const [birthYear, birthMonth, birthDay] = birthdate.split('-');
             const newData = {
-                firstname: req.body.firstname,
-                middlename: req.body.middlename,
-                lastname: req.body.lastname,
-                contact: req.body.contact,
+                firstname: firstname,
+                middlename: middlename,
+                lastname: lastname,
+                contact: contact,
                 birthMonth: birthMonth,
                 birthDay: birthDay,
                 birthYear: birthYear,
                 isVerified: true
             };
-            const profile = await AdminProfile.findByIdAndUpdate(profile._id, newData, { new: true });
+            const profileUpdate = await AdminProfile.findByIdAndUpdate(profile._id, newData, { new: true });
+            req.flash('message', 'Profile updated successfully');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else {
-            console.log('forbidden');
+            console.log('forbidden1');
         }
     } else {
         console.log('forbidden');

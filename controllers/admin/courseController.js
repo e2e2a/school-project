@@ -23,10 +23,12 @@ module.exports.create = async (req, res) => {
         req: req,
     });
 }
+
 module.exports.doCreate = async (req, res) => {
     const existingCourse = await Course.findOne({ category: req.body.category })
     if (existingCourse) {
         console.log('course is already created. please check the category.');
+        req.flash('message', 'Course is already Created. Please check the course list.');
         return res.redirect('/admin/course/add');
     }
     const course = new Course({
@@ -35,7 +37,7 @@ module.exports.doCreate = async (req, res) => {
         description: req.body.description,
     });
     await course.save();
-    console.log('save');
+    console.log('course save');
     return res.redirect('/admin/course/add')
 }
 

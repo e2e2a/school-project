@@ -27,6 +27,7 @@ module.exports.index = async (req, res) => {
         studentProfiles: studentProfiles,
     });
 }
+
 module.exports.doEnroll = async (req, res) => {
     try {
         const actions = req.body.actions;
@@ -34,14 +35,16 @@ module.exports.doEnroll = async (req, res) => {
             const studentId = req.body.studentId;
             if (!mongoose.Types.ObjectId.isValid(studentId)) {
                 console.log('Invalid ObjectId:', studentId);
-                return res.status(404).render('404');
+                req.flash('message', 'Invalid studentId.');
+                return res.redirect('/admin/enrollments');
             }
             const studentProfile = await StudentProfile.findById(studentId);
             if (studentProfile) {
                 const courseId = req.body.courseId;
                 if (!mongoose.Types.ObjectId.isValid(courseId)) {
                     console.log('Invalid ObjectId:', courseId);
-                    return res.status(404).render('404');
+                    req.flash('message', 'Invalid courseId.');
+                    return res.redirect('/admin/enrollments');
                 }
                 const course = await Course.findById(courseId)
                 const checkSection = await Section.findOne({
@@ -75,13 +78,17 @@ module.exports.doEnroll = async (req, res) => {
                     await studentClass.save();
                     await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false }, { new: true });
                     console.log('student class save.');
+                    req.flash('message', 'Student enrolled sucessfully.');
                     return res.redirect('/admin/enrollments');
                 } else {
                     console.log('no section found to enroll.');
+                    req.flash('message', 'No Section found to enroll the student.');
                     return res.redirect('/admin/enrollments');
                 }
             } else {
                 console.log('no student found.');
+                req.flash('message', 'No student found.');
+                return res.redirect('/admin/enrollments');
             }
         } else if (actions === 'print') {
             try {
@@ -89,7 +96,8 @@ module.exports.doEnroll = async (req, res) => {
                 console.log('studentId', studentId)
                 if (!mongoose.Types.ObjectId.isValid(studentId)) {
                     console.log('Invalid ObjectId:', studentId);
-                    return res.status(404).render('404');
+                    req.flash('message', 'Invalid studentId.');
+                    return res.redirect('/admin/enrollments');
                 }
                 const studentProfile = await StudentProfile.findById(studentId).populate('userId').populate('courseId');
                 const templatePath = path.join(__dirname, '../../views/pdf/enrollment.ejs');
@@ -125,6 +133,7 @@ module.exports.doEnroll = async (req, res) => {
         }
     } catch (error) {
         console.log('error', error);
+        req.flash('message', 'Internal error occurred.');
+        return res.status(500).send('500', error);
     }
-
 }

@@ -6,6 +6,7 @@ const StudentClass = require('../../models/studentClass');
 const ProfessorProfile = require('../../models/professorProfile');
 const Section = require('../../models/section');
 const Schedule = require('../../models/schedule');
+const mongoose = require('mongoose');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
@@ -43,13 +44,21 @@ module.exports.actions = async (req, res) => {
             if (category && year && semester) {
                 const { subjectId, professorId, startTime, endTime, section, days } = req.body;
                 const sectionFilter = { category, semester, year, section };
-
+                if (!mongoose.Types.ObjectId.isValid(professorId)) {
+                    console.log('Invalid professorId:', professorId);
+                    return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
+                }
+                if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+                    console.log('Invalid subjectId:', subjectId);
+                    return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
+                }
                 try {
                     // Find the section
                     let sectionExists = await Section.findOne(sectionFilter);
                     if (!sectionExists) {
                         console.log('Section not found');
-                        return res.status(400).send('Section not found');
+                        req.flash('message', 'Section not found');
+                        return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
                     }
 
                     let professorSchedule = await Schedule.findOne({ professorId });
@@ -66,7 +75,8 @@ module.exports.actions = async (req, res) => {
                     const isTimeValid = getTimeInMinutes(startTime) < getTimeInMinutes(endTime);
                     if (!isTimeValid) {
                         console.log('Invalid time range');
-                        return res.status(400).send('Invalid time range');
+                        req.flash('message', 'Invalid time range');
+                        return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
                     }
                     //
                     const index = professorSchedule.schedule.findIndex(entry => entry.subjectId.toString() === subjectId);
@@ -104,7 +114,8 @@ module.exports.actions = async (req, res) => {
 
                     if (isConflict) {
                         console.log('Professor is not available during the specified time');
-                        return res.status(400).send('Professor is not available during the specified time');
+                        req.flash('message', 'Professor is not available during the specified time')
+                        return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
                     }
 
                     professorSchedule.schedule.push({
@@ -150,7 +161,7 @@ module.exports.actions = async (req, res) => {
                     }
 
                     await sectionExists.save();
-                    console.log('Schedule saved successfully');
+                    req.flash('message', 'Schedule saved successfully')
                     res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
                 } catch (error) {
                     console.error('Error saving schedule:', error);
