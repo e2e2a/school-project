@@ -28,6 +28,8 @@ const professorScheduleController = require('../controllers/professor/scheduleCo
 const professorClassController = require('../controllers/professor/classController');
 /**
  * @todo
+ * end the semester
+ * do prospectus
  * /professor/records
  */
 module.exports = function(app){

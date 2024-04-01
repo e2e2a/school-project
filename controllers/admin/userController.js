@@ -77,13 +77,15 @@ module.exports.edit = async (req, res) => {
     }
 
     if (profile) {
+        const coursesSidebar = await Course.find();
         res.render('admin/userEdit', {
             site_title: SITE_TITLE,
-            title: 'User',
+            title: 'User Edit',
             messages: req.flash(),
             currentUrl: req.originalUrl,
             req: req,
             profile: profile,
+            coursesSidebar: coursesSidebar,
         });
     } else {
         console.log('Profile not found for ID:', id);

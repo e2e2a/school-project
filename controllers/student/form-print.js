@@ -16,7 +16,7 @@ module.exports.index = async (req, res) => {
                 const studentProfile = await StudentProfile.findOne({ userId: userLogin._id }).populate('userId').populate('courseId');
                 res.render('user/form-print', {
                     site_title: SITE_TITLE,
-                    title: 'Profile',
+                    title: 'Form',
                     messages: req.flash(),
                     currentUrl: req.originalUrl,
                     userLogin: userLogin,
