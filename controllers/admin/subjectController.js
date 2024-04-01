@@ -20,6 +20,11 @@ module.exports.index = async (req, res) => {
     });
 }
 module.exports.create = async (req, res) => {
+    if (!req.query.category || !req.query.year || !req.query.semester || !req.query.section) {
+        console.log('Query fields are empty');
+        req.flash('message', 'Query fields are empty');
+        return res.status(404).render('404');
+    }
     const courses = await Course.find()
     const coursesSidebar = await Course.find();
     res.render('admin/subjectAdd', {
@@ -33,30 +38,31 @@ module.exports.create = async (req, res) => {
     });
 }
 module.exports.doCreate = async (req, res) => {
-    const courseId = req.body.courseId;
-    if (!mongoose.Types.ObjectId.isValid(courseId)) {
-        console.log('Invalid ObjectId:', courseId);
-        req.flash('message', 'Invalid courseId.');
-        return res.redirect('/admin/subject/add');
-    }
-    const course = await Course.findById(courseId)
+    // 
+    const category = req.query.category;
+    const year = req.query.year;
+    const semester = req.query.semester;
+    const section = req.query.section;
+    // 
+    const course = await Course.findOne({category:category})
+    console.log(category)
     if (course) {
         const checkSection = await Section.findOne({
-            courseId: courseId,
-            year: req.body.year,
-            semester: req.body.semester,
-            section: req.body.section
+            courseId: course._id,
+            year: year,
+            semester: semester,
+            section: section
         });
         if (checkSection) {
             const subject = new Subject({
-                courseId: courseId,
+                courseId: course._id,
                 subjectCode: req.body.subjectCode,
                 name: course.name,
                 category: course.category,
                 unit: req.body.unit,
-                year: req.body.year,
-                semester: req.body.semester,
-                section: req.body.section,
+                year: year,
+                semester: semester,
+                section: section,
                 description: req.body.description,
             });
             await subject.save();
@@ -72,19 +78,19 @@ module.exports.doCreate = async (req, res) => {
                 await checkSection.save();
                 console.log('Subject added to section.');
                 req.flash('message', 'Subject created successfully.');
-                return res.redirect('/admin/subject/add');
+                return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}&section=${section}`);
             } catch (error) {
                 console.error('Error saving section:', error);
-                return res.redirect('/admin/subject/add');
+                return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}&section=${section}`);
             }
         } else {
             console.log('A Section didnt exist. Please check the sections list.');
             req.flash('message', 'A Section didnt exist. Please check the sections list.');
-            return res.redirect('/admin/subject/add');
+            return res.redirect(`/admin/subject/add?category=${category}&year=${year}&semester=${semester}&section=${section}`);
         }
     } else {
         console.log('no courses found.please check the course name.');
         req.flash('message', 'No courses found. Please check the course selected.');
-        return res.redirect('/admin/subject/add');
+        return res.redirect(`/admin/subject/add?category=${category}&year=${year}&semester=${semester}&section=${section}`);
     }
 } 
