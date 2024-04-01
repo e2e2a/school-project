@@ -26,6 +26,10 @@ const professorIndexController = require('../controllers/professor/indexControll
 const professorProfileController = require('../controllers/professor/profileController');
 const professorScheduleController = require('../controllers/professor/scheduleController');
 const professorClassController = require('../controllers/professor/classController');
+/**
+ * @todo
+ * /professor/records
+ */
 module.exports = function(app){
     //user
     app.get('/', userIndexController.index);

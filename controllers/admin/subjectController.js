@@ -8,6 +8,7 @@ const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
     const subjects = await Subject.find()
+    const coursesSidebar = await Course.find();
     res.render('admin/subjectView', {
         site_title: SITE_TITLE,
         title: 'Subject',
@@ -15,10 +16,12 @@ module.exports.index = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         subjects: subjects,
+        coursesSidebar: coursesSidebar,
     });
 }
 module.exports.create = async (req, res) => {
     const courses = await Course.find()
+    const coursesSidebar = await Course.find();
     res.render('admin/subjectAdd', {
         site_title: SITE_TITLE,
         title: 'Subject',
@@ -26,6 +29,7 @@ module.exports.create = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         courses: courses,
+        coursesSidebar: coursesSidebar,
     });
 }
 module.exports.doCreate = async (req, res) => {

@@ -7,6 +7,7 @@ const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
     const sections = await Section.find().populate('courseId');
+    const coursesSidebar = await Course.find();
     res.render('admin/sectionView', {
         site_title: SITE_TITLE,
         title: 'Section',
@@ -14,11 +15,13 @@ module.exports.index = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         sections: sections,
+        coursesSidebar: coursesSidebar,
     });
 }
 
 module.exports.create = async (req, res) => {
     const courses = await Course.find()
+    const coursesSidebar = await Course.find();
     res.render('admin/sectionAdd', {
         site_title: SITE_TITLE,
         title: 'Section',
@@ -26,6 +29,7 @@ module.exports.create = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         courses: courses,
+        coursesSidebar: coursesSidebar,
     });
 }
 module.exports.doCreate = async (req, res) => {

@@ -18,6 +18,7 @@ const mongoose = require('mongoose');
 
 module.exports.index = async (req, res) => {
     const studentProfiles = await StudentProfile.find().populate('courseId')
+    const coursesSidebar = await Course.find();
     res.render('admin/enrollmentView', {
         site_title: SITE_TITLE,
         title: 'Enrollments',
@@ -25,6 +26,7 @@ module.exports.index = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         studentProfiles: studentProfiles,
+        coursesSidebar: coursesSidebar,
     });
 }
 

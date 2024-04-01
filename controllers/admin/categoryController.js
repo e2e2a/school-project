@@ -21,7 +21,7 @@ module.exports.index = async (req, res) => {
     // Filter sections based on category
 
     const professors = await ProfessorProfile.find().populate('userId').exec();
-
+    const coursesSidebar = await Course.find();
     res.render('admin/categoryView', {
         site_title: SITE_TITLE,
         title: 'Category',
@@ -33,6 +33,7 @@ module.exports.index = async (req, res) => {
         category: category,
         year: year,
         semester: semester,
+        coursesSidebar: coursesSidebar,
     });
 }
 
@@ -106,7 +107,7 @@ module.exports.actions = async (req, res) => {
                                 (newStartTime < existingEndTime && newEndTime > existingStartTime) ||
                                 (newStartTime === existingEndTime || newEndTime === existingStartTime)
                             ) {
-                                return true; 
+                                return true;
                             }
                         }
                         return false;
@@ -139,7 +140,7 @@ module.exports.actions = async (req, res) => {
                                 subjectToUpdateStudentClass.startTime = startTime;
                                 subjectToUpdateStudentClass.endTime = endTime;
                                 await currentStudentClass.save();
-                            } 
+                            }
                         }
                     }
 

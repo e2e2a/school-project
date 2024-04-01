@@ -12,6 +12,7 @@ const SITE_TITLE = 'DSF';
 
 module.exports.student = async (req, res) => {
     const studentProfiles = await StudentProfile.find().populate('userId');
+    const coursesSidebar = await Course.find();
     res.render('admin/userStudentView', {
         site_title: SITE_TITLE,
         title: 'User',
@@ -19,10 +20,12 @@ module.exports.student = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         studentProfiles: studentProfiles,
+        coursesSidebar: coursesSidebar,
     });
 }
 module.exports.professor = async (req, res) => {
     const professorProfiles = await ProfessorProfile.find().populate('userId');
+    const coursesSidebar = await Course.find();
     res.render('admin/userProfessorView', {
         site_title: SITE_TITLE,
         title: 'User',
@@ -30,10 +33,12 @@ module.exports.professor = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         professorProfiles: professorProfiles,
+        coursesSidebar: coursesSidebar,
     });
 }
 module.exports.admin = async (req, res) => {
     const adminProfiles = await AdminProfile.find().populate('userId');
+    const coursesSidebar = await Course.find();
     res.render('admin/userAdminView', {
         site_title: SITE_TITLE,
         title: 'User',
@@ -41,6 +46,7 @@ module.exports.admin = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         adminProfiles: adminProfiles,
+        coursesSidebar: coursesSidebar,
     });
 }
 
