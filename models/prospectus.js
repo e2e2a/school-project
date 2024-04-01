@@ -13,10 +13,11 @@ var schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Section'
     },
-    //after end semester
+    // #2
     courseName: {
         type: String,
     },
+    // #2
     category: { 
         type: String
     },

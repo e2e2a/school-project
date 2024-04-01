@@ -1,0 +1,93 @@
+<%- include('../partials/header/header_css.ejs'); %>
+
+<body>
+    <%- include('../partials/spinner/spinner.ejs'); %>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../partials/nav/nav_admin.ejs') %>
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../partials/nav/sidebar_admin.ejs') %>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 text-center">
+                                        <div class="page-header-title">
+                                            <h3 class="m-b-10"><%= title %></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <% if(schedules.length > 0) { %>
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>Professor's Schedules</h5>
+                                                            <div class="card-header-right">
+                                                                <ul class="list-unstyled card-option">
+                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-block table-border-style">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center">Fullname</th>
+                                                                            
+                                                                            <th class="text-center">Actions</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody> 
+                                                                        <% schedules.forEach(schedule => { %>
+                                                                            <tr style="white-space: nowrap;">
+                                                                                <td class="align-middle text-capitalize text-center"><%= schedule.professorId.lastname %>, <%= schedule.professorId.firstname %> <%= schedule.professorId.middlename %></td>
+                                                                                <td class="align-middle text-capitalize text-center">
+                                                                                    <div class="d-flex justify-content-center align-items-center btn-group">
+                                                                                        <a href="/admin/professors/schedule/<%= schedule._id %>" class="btn btn-primary">View Schedule</a>
+                                                                                        <a href="/admin/professors/classes/<%= schedule._id %>" class="btn btn-secondary">View Classes</a>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <% }) %>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                <% } else { %>
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>No Schedule Found.</h5>
+                                                        </div>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include('../partials/footer/footer_js.ejs'); %>

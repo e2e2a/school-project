@@ -14,6 +14,7 @@ const adminSubjectController = require('../controllers/admin/subjectController')
 const adminsectionController = require('../controllers/admin/sectionController');
 const adminCategoryController = require('../controllers/admin/categoryController');
 const adminUserController = require('../controllers/admin/userController');
+const adminScheduleController = require('../controllers/admin/scheduleController');
 //user
 const userIndexController = require('../controllers/student/indexController');
 const userProfileController = require('../controllers/student/profileController');
@@ -63,6 +64,17 @@ module.exports = function(app){
     app.get('/admin/category', adminCategoryController.index);
     app.post('/admin/category', adminCategoryController.actions);
 
+    /**
+     * @todo
+     * schedule list
+     */
+    app.get('/admin/professors/schedule', adminScheduleController.professor);
+    app.get('/admin/professors/schedule/:id', adminScheduleController.professorView);
+    app.get('/admin/professors/classes/:id', adminScheduleController.professorClassesView);
+    app.get('/admin/students/schedule', adminScheduleController.student);
+    /**
+     * schedule list end
+     */
 
     //users
     app.get('/admin/user/student/list', adminUserController.student);
