@@ -1,6 +1,7 @@
 const User = require('../../models/user')
 const StudentProfile = require('../../models/studentProfile');
 const Course = require('../../models/course');
+const mongoose = require('mongoose');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
@@ -47,6 +48,10 @@ module.exports.enroll = async (req, res) => {
         const userLogin = await User.findById(req.session.login);
         if (userLogin) {
             const courseId = req.body.courseId;
+            if (!mongoose.Types.ObjectId.isValid(courseId)) {
+                console.log('Invalid courseId:', courseId);
+                return res.status(404).render('404');
+            }
             const course = await Course.findById(courseId);
             if (course) {
                 const studentProfile = await StudentProfile.findOne({ userId: userLogin._id })

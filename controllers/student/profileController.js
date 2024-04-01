@@ -64,7 +64,13 @@ module.exports.update = async (req, res) => {
             try {
                 if (userLogin) {
                     if (userLogin.role === 'student') {
-                        const birthdate = req.body.birthdate;
+                        const { firstname, middlename, lastname, numberStreet, barangay, district, cityMunicipality, province, region, emailFbAcc, contact, nationality, sex, civilStatus, employmentStatus, birthdate, age, birthPlaceCity, birthPlaceProvince, birthPlaceRegion, educationAttainment, learnerOrTraineeOrStudentClassification } = req.body;
+
+                        if (!firstname || !middlename || !lastname || !numberStreet || !barangay || !district || !cityMunicipality || !province || !region || !emailFbAcc || !contact || !nationality || !sex || !civilStatus || !employmentStatus || !birthdate || !age || !birthPlaceCity || !birthPlaceProvince || !birthPlaceRegion || !educationAttainment || !learnerOrTraineeOrStudentClassification) {
+                            console.log('One or more required fields are empty');
+                            req.flash('message', 'Required fields are empty');
+                            return res.redirect(`/admin/user/edit/${profile._id}/${profile.userId.role}`);
+                        }
                         const [birthYear, birthMonth, birthDay] = birthdate.split('-');
                         const newData = {
                             firstname: req.body.firstname,
@@ -113,6 +119,11 @@ module.exports.update = async (req, res) => {
             }
         } else if (actions === 'changeEmail') {
             const emailToChange = req.body.email;
+            if (!req.body.email) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.status(404).render('404');
+            }
             const existingEmail = await User.findOne({ email: emailToChange })
             if (userLogin.email === emailToChange) {
                 console.log('You are already using this email.');
@@ -199,10 +210,15 @@ module.exports.update = async (req, res) => {
             }
         } else if (actions === 'changePassword') {
             const userLogin = await User.findById(req.session.login);
+            if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.status(404).render('404');
+            }
             const currentPassword = req.body.currentPassword;
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
-                
+
             userLogin.comparePassword(currentPassword, async (error, valid) => {
                 if (error) {
                     return res.status(403).send('Forbidden'); // 403 Forbidden
@@ -214,19 +230,21 @@ module.exports.update = async (req, res) => {
                     return res.redirect('/profile');
                 }
                 // Hash the new password before updating it in the database
-                if(newPassword !== confirmPassword){
+                if (newPassword !== confirmPassword) {
                     console.log('new password is not equal to re-type password')
                     return res.redirect('/profile')
                 }
                 const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    
+
                 // Update the password in the database
                 userLogin.password = hashedNewPassword;
-                await User.findOneAndUpdate(userLogin._id, {password: hashedNewPassword}, {new:true})
-    
+                await User.findOneAndUpdate(userLogin._id, { password: hashedNewPassword }, { new: true })
+
                 console.log('Password changed successfully')
                 return res.redirect('/profile');
             });
+        } else {
+            console.log('forbidden')
         }
     } catch (error) {
 

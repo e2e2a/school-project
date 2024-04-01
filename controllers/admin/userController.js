@@ -113,6 +113,11 @@ module.exports.doEdit = async (req, res) => {
     }
     if (actions === 'changeEmail') {
         if (profile.userId.role === 'student') {
+            if (!req.body.email) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.status(404).render('404');
+            }
             const emailToChange = req.body.email;
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
@@ -137,6 +142,11 @@ module.exports.doEdit = async (req, res) => {
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'professor') {
             const emailToChange = req.body.email;
+            if (!req.body.email) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.status(404).render('404');
+            }
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
                 req.flash('message', 'You are already using this email.');
@@ -160,6 +170,11 @@ module.exports.doEdit = async (req, res) => {
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'admin') {
             const emailToChange = req.body.email;
+            if (!req.body.email) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.status(404).render('404');
+            }
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
                 req.flash('message', 'You are already using this email.');
@@ -186,6 +201,11 @@ module.exports.doEdit = async (req, res) => {
         }
     } else if (actions === 'changePassword') {
         if (profile.userId.role === 'student') {
+            if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.status(404).render('404');
+            }
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
@@ -202,6 +222,11 @@ module.exports.doEdit = async (req, res) => {
             req.flash('message', 'Password Change Successfully.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'professor') {
+            if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.status(404).render('404');
+            }
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
@@ -218,6 +243,11 @@ module.exports.doEdit = async (req, res) => {
             req.flash('message', 'Password Change Successfully.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'admin') {
+            if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
+                console.log('required field are empty');
+                req.flash('message', 'Required field are empty');
+                return res.status(404).render('404');
+            }
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
