@@ -158,39 +158,40 @@
         </ul>
         <div class="pcoded-navigation-label">Category</div>
 
-<% coursesSidebar.forEach(course => { %>
-    <ul class="pcoded-item pcoded-left-item">
-        <li class="pcoded-hasmenu">
-            <a href="javascript:void(0)" class="waves-effect waves-dark">
-                <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
-                <span class="pcoded-mtext"><%= course.category %></span>
-                <span class="pcoded-mcaret"></span>
-            </a>
-            <ul class="pcoded-submenu">
-                <% for (let year = 1; year <= 3; year++) { %>
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
-                            <span class="pcoded-mtext"><%= year %>st Year</span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                        <ul class="pcoded-submenu">
-                            <% for (let semester = 1; semester <= 2; semester++) { %>
-                                <li>
-                                    <a href="/admin/category?category=<%= course.category %>&year=<%= year %>st%20Year&semester=<%= semester %>st%20Semester" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                        <span class="pcoded-mtext"><%= semester %>st Semester</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                            <% } %>
-                        </ul>
-                    </li>
-                <% } %>
+        <% coursesSidebar.forEach(course => { %>
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="pcoded-hasmenu">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
+                        <span class="pcoded-mtext"><%= course.category %></span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <% for (let year = 1; year <= 3; year++) { %>
+                            <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
+                                    <span class="pcoded-mtext"><%= year + (year === 1 ? 'st' : year === 2 ? 'nd' : 'rd') %> Year</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <% for (let semester = 1; semester <= 2; semester++) { %>
+                                        <li>
+                                            <a href="/admin/category?category=<%= course.category %>&year=<%= year + (year === 1 ? 'st' : year === 2 ? 'nd' : 'rd') %>%20Year&semester=<%= semester + (semester === 1 ? 'st' : 'nd') %>%20Semester" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext"><%= semester + (semester === 1 ? 'st' : 'nd') %> Semester</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                            </li>
+                        <% } %>
+                    </ul>
+                </li>
             </ul>
-        </li>
-    </ul>
-<% }) %>
+        <% }) %>
+        
 
     </div>
 </nav>

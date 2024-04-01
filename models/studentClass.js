@@ -49,6 +49,7 @@ var schema = mongoose.Schema({
             type: Number,
         },
     }],
+    //if true show subjects if false show continue studying
     status: {
         type: Boolean,
         default: false
