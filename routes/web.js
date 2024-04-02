@@ -1,4 +1,4 @@
-
+const User = require('../models/user');
 
 const authRegisterController = require('../controllers/auth/registerController');
 const authVerifyController = require('../controllers/auth/verifyController');
@@ -15,6 +15,7 @@ const adminsectionController = require('../controllers/admin/sectionController')
 const adminCategoryController = require('../controllers/admin/categoryController');
 const adminUserController = require('../controllers/admin/userController');
 const adminScheduleController = require('../controllers/admin/scheduleController');
+const adminEndSemesterController = require('../controllers/admin/endSemesterController');
 //user
 const userIndexController = require('../controllers/student/indexController');
 const userProfileController = require('../controllers/student/profileController');
@@ -33,69 +34,48 @@ const professorClassController = require('../controllers/professor/classControll
  * do prospectus
  * /professor/records
  */
-module.exports = function(app){
-    //user
-    app.get('/', userIndexController.index);
-    app.get('/profile', userProfileController.index);
-    app.post('/profile/update', userProfileController.update);
-    app.get('/courses', userCourseController.index);
-    app.post('/course/enroll', userCourseController.enroll);
-    app.get('/enrollment/subjects', userEnrollmentController.index);
-    app.get('/enrollment/prospectus', userEnrollmentController.prospectus);
-    //professor
-    app.get('/professor', professorIndexController.index);
-    app.get('/professor/profile', professorProfileController.index);
-    app.post('/professor/profile', professorProfileController.update);
-    app.get('/professor/schedule', professorScheduleController.schedule);
-    app.get('/professor/class', professorClassController.index);
-    app.post('/professor/class/doGrade', professorClassController.doGrade);
-    //admin
-    app.get('/admin/courses', adminCourseController.index);
-    app.get('/admin/course/add', adminCourseController.create);
-    app.post('/admin/course/add', adminCourseController.doCreate);
-    app.get('/admin/enrollments', adminEnrollmentController.index);
-    app.post('/admin/enrollment/doEnroll', adminEnrollmentController.doEnroll);
-    app.get('/admin/sections', adminsectionController.index);
-    app.get('/admin/section/add', adminsectionController.create);
-    app.post('/admin/section/add', adminsectionController.doCreate);
-    app.get('/admin/subjects', adminSubjectController.index);
-    app.get('/admin/subject/add', adminSubjectController.create);
-    app.post('/admin/subject/add', adminSubjectController.doCreate);
-    app.get('/admin/category', adminCategoryController.index);
-    app.post('/admin/category', adminCategoryController.actions);
+async function isAuthenticated(req, res, next) {
+    if (req.session.login) {
+        next();
+    } else {
+        return res.redirect('/login');
+    }
+}
 
-    /**
-     * @todo
-     * schedule list
-     */
-    app.get('/admin/professors/schedule', adminScheduleController.professor);
-    app.get('/admin/professors/schedule/:id', adminScheduleController.professorView);
-    app.get('/admin/professors/classes/:id', adminScheduleController.professorClassesView);
-    app.get('/admin/students/schedule', adminScheduleController.student);
-    /**
-     * schedule list end
-     */
+async function isAdmin(req, res, next) {
+    await isAuthenticated(req, res, async () => {
+        const user = await User.findById(req.session.login);
+        if (user && user.role === 'admin') {
+            next();
+        } else {
+            res.status(404).render('404');
+        }
+    });
+}
 
-    //users
-    app.get('/admin/user/student/list', adminUserController.student);
-    app.get('/admin/user/professor/list', adminUserController.professor);
-    app.get('/admin/user/admin/list', adminUserController.admin);
-    app.get('/admin/user/edit/:id/:role', adminUserController.edit);
-    app.post('/admin/user/edit/:id/:role', adminUserController.doEdit);
+async function isProfessor(req, res, next) {
+    await isAuthenticated(req, res, async () => {
+        const user = await User.findById(req.session.login);
+        if (user && user.role === 'professor') {
+            next();
+        } else {
+            res.status(404).render('404');
+        }
+    });
+}
 
-    app.get('/admin/user/add', adminUserController.create);
-    app.post('/admin/user/add', adminUserController.doCreate);
-    
-    //print enrollment
-    app.get('/form', userFormPrintController.index);
-    app.post('/form/print', userFormPrintController.print);
+async function isStudent(req, res, next) {
+    await isAuthenticated(req, res, async () => {
+        const user = await User.findById(req.session.login);
+        if (user && user.role === 'student') {
+            next();
+        } else {
+            res.status(404).render('404');
+        }
+    });
+}
 
-
-
-
-
-
-
+module.exports = function (app) {
     //auth
     app.get('/login', authLoginController.login);
     app.post('/doLogin', authLoginController.doLogin);
@@ -113,4 +93,62 @@ module.exports = function(app){
     app.post('/email/verify', authResetPassword.doVerify);
     app.get('/new/password/verify', authResetPassword.newPassword);
     app.post('/new/password/verify', authResetPassword.doNewPassword);
+
+
+
+
+
+    //user
+    app.get('/', isStudent, userIndexController.index);
+    app.get('/profile', userProfileController.index);
+    app.post('/profile/update', userProfileController.update);
+    app.get('/courses', userCourseController.index);
+    app.post('/course/enroll', userCourseController.enroll);
+    app.get('/enrollment/subjects', userEnrollmentController.index);
+    app.get('/enrollment/prospectus', userEnrollmentController.prospectus);
+
+    //professor
+    app.get('/professor', professorIndexController.index);
+    app.get('/professor/profile', professorProfileController.index);
+    app.post('/professor/profile', professorProfileController.update);
+    app.get('/professor/schedule', professorScheduleController.schedule);
+    app.get('/professor/class', professorClassController.index);
+    app.post('/professor/class/doGrade', professorClassController.doGrade);
+
+    //admin
+    app.get('/admin/courses', isAdmin, adminCourseController.index);
+    app.get('/admin/course/add', isAdmin, adminCourseController.create);
+    app.post('/admin/course/add', isAdmin, adminCourseController.doCreate);
+    app.get('/admin/enrollments/enrolling', isAdmin, adminEnrollmentController.index);
+    app.post('/admin/enrollment/doEnroll', isAdmin, adminEnrollmentController.doEnroll);
+    app.get('/admin/enrollments/enrolled', isAdmin, adminEnrollmentController.enrolled);
+    app.get('/admin/enrollment/student/schedule/:id', isAdmin, adminEnrollmentController.studentScheduleView);
+    app.post('/admin/enrollment/enrolled/cancel', isAdmin, adminEnrollmentController.enrolledCancel);
+    app.get('/admin/sections', isAdmin, adminsectionController.index);
+    app.get('/admin/section/add', isAdmin, adminsectionController.create);
+    app.post('/admin/section/add', isAdmin, adminsectionController.doCreate);
+    app.get('/admin/subjects', isAdmin, adminSubjectController.index);
+    app.get('/admin/subject/add', isAdmin, adminSubjectController.create);
+    app.post('/admin/subject/add', isAdmin, adminSubjectController.doCreate);
+    app.get('/admin/category', isAdmin, adminCategoryController.index);
+    app.post('/admin/category', isAdmin, adminCategoryController.actions);
+    /**
+     * @todo
+     * # add student prospectus
+     */
+    app.post('/admin/category/endSemester', adminEndSemesterController.endSemester)
+    app.get('/admin/professors/schedule', isAdmin, adminScheduleController.professor);
+    app.get('/admin/professor/schedule/:id', isAdmin, adminScheduleController.professorView);
+    app.get('/admin/professor/classes/:id', isAdmin, adminScheduleController.professorClassesView);
+    app.get('/admin/user/student/list', isAdmin, adminUserController.student);
+    app.get('/admin/user/professor/list', isAdmin, adminUserController.professor);
+    app.get('/admin/user/admin/list', isAdmin, adminUserController.admin);
+    app.get('/admin/user/edit/:id/:role', isAdmin, adminUserController.edit);
+    app.post('/admin/user/edit/:id/:role', isAdmin, adminUserController.doEdit);
+    app.get('/admin/user/add', isAdmin, adminUserController.create);
+    app.post('/admin/user/add', isAdmin, adminUserController.doCreate);
+
+    //print enrollment
+    app.get('/form', userFormPrintController.index);
+    app.post('/form/print', userFormPrintController.print);
 }

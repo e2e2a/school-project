@@ -29,8 +29,7 @@
                                     <div class="page-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <% if(schedules.length > 0) { %>
-                                                    <% schedules.forEach(schedule => { %>
+                                                <% if(schedule) { %>
                                                     <div class="card">
                                                         <div class="card-header">
                                                             <h5><%= schedule.studentId.lastname %>, <%= schedule.studentId.firstname %> <%= schedule.studentId.middlename %> </h5>
@@ -49,19 +48,25 @@
                                                                 <table class="table table-bordered">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th class="text-center">Time</th>
-                                                                            <th class="text-center">Category</th>
+                                                                            <th class="text-center">Subject Code</th>
                                                                             <th>Descriptive Title</th>
+                                                                            <th class="text-center">Units</th>
+                                                                            <th class="text-center">Professor</th>
+                                                                            <th class="text-center">Time</th>
                                                                             <th class="text-center">Days</th>
+                                                                            <th class="text-center">Grades</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody> 
                                                                         <% schedule.subjects.forEach(subject => { %>
                                                                             <tr style="white-space: nowrap;">
-                                                                                <td class="align-middle text-capitalize text-center"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
-                                                                                <td class="align-middle text-capitalize text-center"><%= subject.subjectId.category %> - <%= subject.subjectId.year %> - <%= subject.subjectId.semester %> - <%= subject.subjectId.section %></td>
-                                                                                <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
-                                                                                <td class="align-middle text-capitalize text-center"><%= subject.days %></td>
+                                                                                <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.days ? subject.days : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.grade ? subject.grade : 'N/A' %></td>
                                                                             </tr>
                                                                         <% }) %>
                                                                     </tbody>
@@ -69,7 +74,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <% }) %>
                                                 <% } else { %>
                                                     <div class="card">
                                                         <div class="card-header">

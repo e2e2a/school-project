@@ -14,10 +14,9 @@ module.exports.index = async (req, res) => {
                 const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
                 if (studentProfile) {
                     if (studentProfile.isVerified) {
-                        const studentClass = await StudentClass.find({ studentId: studentProfile._id, status:true }).populate('subjects.subjectId').populate('subjects.professorId');
+                        const studentClass = await StudentClass.findOne({ studentId: studentProfile._id }).populate('subjects.subjectId').populate('subjects.professorId');
                         console.log(studentClass)
-                        const sectionIds = studentClass.map(studentClass => studentClass.sectionId);
-                        const studentSection = await Section.find({ _id: { $in: sectionIds } }).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
+                        const studentSection = await Section.findById(studentClass._id).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
                         res.render('user/subjects', {
                             site_title: SITE_TITLE,
                             title: 'Subjects',
@@ -48,6 +47,9 @@ module.exports.index = async (req, res) => {
     }
 }
 
+/**
+ * @todo delete enroll
+ */
 module.exports.enroll = async (req, res) => {
     //double check if user is already enrolled
     try {
@@ -81,6 +83,9 @@ module.exports.enroll = async (req, res) => {
     }
 }
 
+/**
+ * @todo change Section to prospectus
+ */
 module.exports.prospectus = async (req, res) => {
     try {
         const userLogin = await User.findById(req.session.login);
@@ -89,7 +94,7 @@ module.exports.prospectus = async (req, res) => {
                 const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
                 if (studentProfile) {
                     if (studentProfile.isVerified) {
-                        const studentClass = await StudentClass.find({ studentId: studentProfile._id, status: false }).populate('subjects.subjectId');
+                        const studentClass = await StudentClass.find({ studentId: studentProfile._id }).populate('subjects.subjectId');
                         const sectionIds = studentClass.map(studentClass => studentClass.sectionId);
                         const studentSection = await Section.find({ _id: { $in: sectionIds } }).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
                         res.render('user/prospectus', {

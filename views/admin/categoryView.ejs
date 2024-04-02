@@ -127,9 +127,12 @@
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="d-flex justify-content-end align-items-center">
-                                                                    <button type="submit" class="btn btn-warning">End Semester</button>
-                                                                </div>
+                                                                <form action="/admin/category/endSemester" method="post">
+                                                                    <input type="hidden" name="sectionId" id="sectionId" value="<%= section._id %>">
+                                                                    <div class="d-flex justify-content-end align-items-center">
+                                                                        <button type="submit" class="btn btn-warning">End Semester</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>

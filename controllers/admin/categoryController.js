@@ -1,7 +1,5 @@
 const User = require('../../models/user')
-const Subject = require('../../models/subject');
 const Course = require('../../models/course');
-const StudentProfile = require('../../models/studentProfile');
 const StudentClass = require('../../models/studentClass');
 const ProfessorProfile = require('../../models/professorProfile');
 const Section = require('../../models/section');

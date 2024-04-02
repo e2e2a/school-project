@@ -29,10 +29,11 @@
                                     <div class="page-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <% if(studentClass.length > 0) {%>
+                                                <% if(studentClass) {%>
                                                     <div class="card">
                                                         <div class="card-header">
-                                                            <h5><%= studentSection[0].year %> - <%= studentSection[0].semester %> - <%= studentSection[0].section %> - <%= studentSection[0].courseId.name %></h5>
+                                                            <!-- @todo change the section to studentcClass data -->
+                                                            <h5><%= studentClass.year %> - <%= studentClass.semester %> - <%= studentClass.section %> - <%= studentClass.courseName %></h5>
                                                             <div class="card-header-right">
                                                                 <ul class="list-unstyled card-option">
                                                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -53,23 +54,22 @@
                                                                             <th class="text-center">Units</th>
                                                                             <th class="text-center">Professor</th>
                                                                             <th class="text-center">Time</th>
+                                                                            <th class="text-center">Days</th>
                                                                             <th class="text-center">Grades</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <!-- need to find status === true -->
-                                                                        <% studentClass.forEach(student => { %>
-                                                                            <% student.subjects.forEach(subject => { %>
+                                                                            <% studentClass.subjects.forEach(subject => { %>
                                                                                 <tr style="white-space: nowrap;">
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.days ? subject.days : 'N/A' %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.grade ? subject.grade : 'N/A' %></td>
                                                                                 </tr>
                                                                             <% }) %>
-                                                                        <% }) %>
                                                                     </tbody>
                                                                 </table>
                                                             </div>

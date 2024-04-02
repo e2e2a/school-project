@@ -39,6 +39,10 @@ var schema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'ProfessorProfile'
         },
+        days: {
+            type: [String],
+            default: []
+        },
         startTime: {
             type: String,
         },

@@ -5,15 +5,18 @@ var schema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'StudentProfile'
     },
-    courseId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
-    },
-    sectionId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Section'
-    },
     // #2
+    studentName: {
+        lastname: {
+            type: String,
+        },
+        firstname: {
+            type: String,
+        },
+        middlename: {
+            type: String,
+        }
+    },
     courseName: {
         type: String,
     },
@@ -36,9 +39,16 @@ var schema = mongoose.Schema({
             ref: 'Subject'
         },
         // #1
-        professorId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'ProfessorProfile'
+        professorName: {
+            lastname: {
+                type: String,
+            },
+            firstname: {
+                type: String,
+            },
+            middlename: {
+                type: String,
+            }
         },
         startTime: {
             type: String,

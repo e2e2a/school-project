@@ -38,7 +38,7 @@ module.exports.doEnroll = async (req, res) => {
             if (!mongoose.Types.ObjectId.isValid(studentId)) {
                 console.log('Invalid ObjectId:', studentId);
                 req.flash('message', 'Invalid studentId.');
-                return res.redirect('/admin/enrollments');
+                return res.redirect('/admin/enrollments/enrolling');
             }
             const studentProfile = await StudentProfile.findById(studentId);
             if (studentProfile) {
@@ -46,7 +46,7 @@ module.exports.doEnroll = async (req, res) => {
                 if (!mongoose.Types.ObjectId.isValid(courseId)) {
                     console.log('Invalid ObjectId:', courseId);
                     req.flash('message', 'Invalid courseId.');
-                    return res.redirect('/admin/enrollments');
+                    return res.redirect('/admin/enrollments/enrolling');
                 }
                 const course = await Course.findById(courseId)
                 const checkSection = await Section.findOne({
@@ -81,16 +81,16 @@ module.exports.doEnroll = async (req, res) => {
                     await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false }, { new: true });
                     console.log('student class save.');
                     req.flash('message', 'Student enrolled sucessfully.');
-                    return res.redirect('/admin/enrollments');
+                    return res.redirect('/admin/enrollments/enrolling');
                 } else {
                     console.log('no section found to enroll.');
                     req.flash('message', 'No Section found to enroll the student.');
-                    return res.redirect('/admin/enrollments');
+                    return res.redirect('/admin/enrollments/enrolling');
                 }
             } else {
                 console.log('no student found.');
                 req.flash('message', 'No student found.');
-                return res.redirect('/admin/enrollments');
+                return res.redirect('/admin/enrollments/enrolling');
             }
         } else if (actions === 'print') {
             try {
@@ -138,4 +138,54 @@ module.exports.doEnroll = async (req, res) => {
         req.flash('message', 'Internal error occurred.');
         return res.status(500).send('500', error);
     }
+}
+
+module.exports.enrolled = async (req, res) => {
+    const schedules = await StudentClass.find().populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId');
+    const coursesSidebar = await Course.find();
+    res.render('admin/enrolledView', {
+        site_title: SITE_TITLE,
+        title: 'Professors Schedule',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        schedules: schedules,
+        coursesSidebar: coursesSidebar
+    });
+}
+
+module.exports.studentScheduleView = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid ObjectId:', id);
+        return res.status(404).render('404');
+    }
+    const schedule = await StudentClass.findById(id).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId').populate('subjects.professorId');
+    const coursesSidebar = await Course.find();
+    res.render('admin/studentScheduleView', {
+        site_title: SITE_TITLE,
+        title: 'Professors Schedule',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        schedule: schedule,
+        coursesSidebar: coursesSidebar
+    });
+}
+
+module.exports.enrolledCancel = async (req, res) => {
+    const studentId = req.body.studentId;
+    if (!mongoose.Types.ObjectId.isValid(studentId)) {
+        console.log('Invalid ObjectId:', studentId);
+        req.flash('message', 'Invalid studentId.');
+        return res.redirect('/admin/enrollments');
+    }
+    const studentClassId = req.body.studentClassId;
+    if (!mongoose.Types.ObjectId.isValid(studentClassId)) {
+        console.log('Invalid ObjectId:', studentClassId);
+        req.flash('message', 'Invalid studentClassId.');
+        return res.redirect('/admin/enrollments');
+    }
+    await StudentClass.findByIdAndDelete(studentClassId);
+    await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true }, { new: true });
+    console.log('enrollment cancel successfully');
+    return res.redirect('/admin/enrollments/enrolled');
 }

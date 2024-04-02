@@ -65,16 +65,3 @@ module.exports.professorClassesView = async (req, res) => {
         coursesSidebar: coursesSidebar
     });
 }
-
-module.exports.student = async (req, res) => {
-    const schedules = await StudentClass.find().populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId');
-    const coursesSidebar = await Course.find();
-    res.render('admin/studentScheduleView', {
-        site_title: SITE_TITLE,
-        title: 'Professors Schedule',
-        messages: req.flash(),
-        currentUrl: req.originalUrl,
-        schedules: schedules,
-        coursesSidebar: coursesSidebar
-    });
-}
