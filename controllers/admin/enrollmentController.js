@@ -1,20 +1,17 @@
-const User = require('../../models/user')
-const Course = require('../../models/course');
-const StudentClass = require('../../models/studentClass');
-const StudentProfile = require('../../models/studentProfile');
-const Section = require('../../models/section');
-const SITE_TITLE = 'DSF';
-/****
- * #
- * #modules for print
- * #
-*****/
 const fs = require('fs').promises;
 const path = require('path');
 const puppeteer = require('puppeteer');
 const puppeteerConfig = require('../../puppeteer.config.cjs');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+
+const User = require('../../models/user')
+const Course = require('../../models/course');
+const StudentClass = require('../../models/studentClass');
+const StudentProfile = require('../../models/studentProfile');
+const Section = require('../../models/section');
+const Prospectus = require('../../models/prospectus');
+const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
     const studentProfiles = await StudentProfile.find().populate('courseId')
@@ -74,6 +71,7 @@ module.exports.doEnroll = async (req, res) => {
                         year: req.body.year,
                         semester: req.body.semester,
                         section: req.body.section,
+                        batch: req.body.batch,
                         status: true,
                     });
                     console.log('student', studentClass)
@@ -188,4 +186,38 @@ module.exports.enrolledCancel = async (req, res) => {
     await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true }, { new: true });
     console.log('enrollment cancel successfully');
     return res.redirect('/admin/enrollments/enrolled');
+}
+
+module.exports.studentProspectus = async (req, res) => {
+    const students = await StudentProfile.find({ isVerified: true }).populate('courseId')
+    const coursesSidebar = await Course.find();
+    res.render('admin/studentProspectus', {
+        site_title: SITE_TITLE,
+        title: 'Prospectus',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        students: students,
+        coursesSidebar: coursesSidebar,
+    });
+}
+
+module.exports.studentProspectusView = async (req, res) => {
+    const studentId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(studentId)) {
+        console.log('Invalid ObjectId:', studentId);
+        req.flash('message', 'Invalid studentId.');
+        return res.redirect('/admin/enrollments');
+    }
+    const studentProspectus = await Prospectus.find({ studentId: studentId });
+    const coursesSidebar = await Course.find();
+    res.render('admin/studentProspectusView', {
+        site_title: SITE_TITLE,
+        title: 'Prospectus',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        studentProspectus: studentProspectus,
+        coursesSidebar: coursesSidebar,
+    });
 }

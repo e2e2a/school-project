@@ -14,40 +14,36 @@ module.exports.endSemester = async (req, res) => {
         req.flash('message', 'Invalid sectionId.');
         return res.status(404).render('404');
     }
-    const section = await Section.findById(sectionId)
+    const section = await Section.findById(sectionId);
     const studentClasses = await StudentClass.find({ sectionId: sectionId })
         .populate('studentId')
-        .populate('subjects.professorId');
+        .populate('subjects.professorId')
+        .populate('subjects.subjectId');
+    
 
     for (const studentClass of studentClasses) {
-        const {
-            studentId,
-            courseName,
-            category,
-            year,
-            semester,
-            section,
-            subjects,
-        } = studentClass;
-        
-        
-        const prospectusSubjects = [];
-        for (const subject of subjects) {
+        const { studentId, courseName, category, year, semester, section, subjects, batch} = studentClass;
+        const prospectusSubjects = subjects.map(subject => {
             const professor = subject.professorId;
+            const subjectId = subject.subjectId;
             const professorName = {
                 lastname: professor.lastname,
                 firstname: professor.firstname,
                 middlename: professor.middlename
             };
 
-            prospectusSubjects.push({
-                subjectId: subject._id,
+            return {
+                subject: {
+                    subjectCode: subjectId.subjectCode,
+                    name: subjectId.name,
+                    unit: subjectId.unit
+                },
                 professorName: professorName,
                 startTime: subject.startTime,
                 endTime: subject.endTime,
                 grade: subject.grade
-            });
-        }
+            };
+        });
 
         const prospectus = new Prospectus({
             studentId: studentId._id,
@@ -61,6 +57,7 @@ module.exports.endSemester = async (req, res) => {
             year,
             semester,
             section,
+            batch,
             subjects: prospectusSubjects,
         });
 
@@ -69,6 +66,4 @@ module.exports.endSemester = async (req, res) => {
 
     console.log('Prospectus documents created successfully');
     res.redirect(`/admin/category?category=${section.category}&year=${section.year}&semester=${section.semester}`);
-
-
-}
+};

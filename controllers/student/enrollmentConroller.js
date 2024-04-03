@@ -4,6 +4,7 @@ const Course = require('../../models/course');
 const StudentClass = require('../../models/studentClass');
 const Section = require('../../models/section');
 const mongoose = require('mongoose');
+const Prospectus = require('../../models/prospectus');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
@@ -72,9 +73,7 @@ module.exports.prospectus = async (req, res) => {
     const userLogin = await User.findById(req.session.login);
     const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
     if (studentProfile.isVerified) {
-        const studentClass = await StudentClass.find({ studentId: studentProfile._id }).populate('subjects.subjectId');
-        const sectionIds = studentClass.map(studentClass => studentClass.sectionId);
-        const studentSection = await Section.find({ _id: { $in: sectionIds } }).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
+        const studentProspectus = await Prospectus.find({ studentId: studentProfile._id })   ;
         res.render('user/prospectus', {
             site_title: SITE_TITLE,
             title: 'Prospectus',
@@ -83,8 +82,7 @@ module.exports.prospectus = async (req, res) => {
             userLogin: userLogin,
             req: req,
             studentProfile: studentProfile,
-            studentClass: studentClass,
-            studentSection: studentSection,
+            studentProspectus: studentProspectus,
         });
     } else {
         req.flash('message', 'Update your profile to begin the enrollment.');

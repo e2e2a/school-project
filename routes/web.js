@@ -127,6 +127,9 @@ module.exports = function (app) {
     app.get('/admin/enrollments/enrolled', isAdmin, adminEnrollmentController.enrolled);
     app.get('/admin/enrollment/student/schedule/:id', isAdmin, adminEnrollmentController.studentScheduleView);
     app.post('/admin/enrollment/enrolled/cancel', isAdmin, adminEnrollmentController.enrolledCancel);
+    //
+    app.get('/admin/enrollment/student/prospectus', isAdmin, adminEnrollmentController.studentProspectus);
+    app.get('/admin/enrollment/student/prospectus/:id', isAdmin, adminEnrollmentController.studentProspectusView);
     app.get('/admin/sections', isAdmin, adminsectionController.index);
     app.get('/admin/section/add', isAdmin, adminsectionController.create);
     app.post('/admin/section/add', isAdmin, adminsectionController.doCreate);
@@ -135,10 +138,6 @@ module.exports = function (app) {
     app.post('/admin/subject/add', isAdmin, adminSubjectController.doCreate);
     app.get('/admin/category', isAdmin, adminCategoryController.index);
     app.post('/admin/category', isAdmin, adminCategoryController.actions);
-    /**
-     * @todo
-     * # add student prospectus
-     */
     app.post('/admin/category/endSemester', isAdmin, adminEndSemesterController.endSemester)
     app.get('/admin/professors/schedule', isAdmin, adminScheduleController.professor);
     app.get('/admin/professor/schedule/:id', isAdmin, adminScheduleController.professorView);
@@ -150,6 +149,4 @@ module.exports = function (app) {
     app.post('/admin/user/edit/:id/:role', isAdmin, adminUserController.doEdit);
     app.get('/admin/user/add', isAdmin, adminUserController.create);
     app.post('/admin/user/add', isAdmin, adminUserController.doCreate);
-
-
 }

@@ -100,8 +100,11 @@ var schema = mongoose.Schema({
         type: Boolean, 
         default: false 
     },
-    //use to put a logic in pdf print
     isEnrolling: { 
+        type: Boolean, 
+        default: false 
+    },
+    isStudying: { 
         type: Boolean, 
         default: false 
     },

@@ -20,7 +20,6 @@ var schema = mongoose.Schema({
     courseName: {
         type: String,
     },
-    // #2
     category: { 
         type: String
     },
@@ -33,12 +32,21 @@ var schema = mongoose.Schema({
     section: {
         type: String,
     },
+    batch: {
+        type: String,
+    },
     subjects: [{
-        subjectId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Subject'
+        subject: {
+            subjectCode: { 
+                type: String
+            },
+            name: { 
+                type: String
+            },
+            unit: { 
+                type: String
+            },
         },
-        // #1
         professorName: {
             lastname: {
                 type: String,

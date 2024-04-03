@@ -5,10 +5,10 @@
     <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
-            <%- include('../partials/nav/nav_student.ejs') %>
+            <%- include('../partials/nav/nav_admin.ejs') %>
             <div class="pcoded-main-container">
                 <div class="pcoded-wrapper">
-                    <%- include('../partials/nav/sidebar_student.ejs') %>
+                    <%- include('../partials/nav/sidebar_admin.ejs') %>
                     <div class="pcoded-content">
                         <!-- Page-header start -->
                         <div class="page-header">
@@ -29,6 +29,7 @@
                                     <div class="page-body">
                                         <div class="row">
                                             <div class="col-12">
+                                                <h4><%= studentProspectus[0].studentName.firstname %> <%= studentProspectus[0].studentName.middlename %> <%= studentProspectus[0].studentName.lastname %></h4>
                                                 <% if(studentProspectus.length > 0) { %>
                                                     <% studentProspectus.forEach(student => { %>
                                                         <div class="card">

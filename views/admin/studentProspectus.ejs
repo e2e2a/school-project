@@ -32,7 +32,7 @@
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <h5>Students Enrolled</h5>
+                                                        <h5>Students Propestus</h5>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -45,28 +45,24 @@
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table class="table table-bordered">
+                                                            <table class="table">
                                                                 <thead>
                                                                     <tr class="text-center">
                                                                         <th>Fullname</th>
-                                                                        <th>Category</th>
-                                                                        <th>Batch</th>
+                                                                        <th>Course</th>
                                                                         <th>Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <% schedules.forEach(schedule => { %>
-                                                                        <form action="/admin/enrollment/enrolled/cancel" method="post">
+                                                                    <% students.forEach(student => { %>
+                                                                        <form action="" method="post">
                                                                             <tr class="text-center" style="white-space: nowrap;">
-                                                                                <td class="align-middle text-capitalize"><%= schedule.studentId.lastname %>, <%= schedule.studentId.firstname %> <%= schedule.studentId.middlename %></td>
-                                                                                <td class="align-middle"><%= schedule.courseId.name %> - <%= schedule.sectionId.year %> - <%= schedule.sectionId.semester %> - <%= schedule.sectionId.section %></td>
-                                                                                <td class="align-middle text-capitalize"><%= schedule.batch %></td>
-                                                                                <input type="hidden" name="studentClassId" id="studentClassId" value="<%= schedule._id %>">
-                                                                                <input type="hidden" name="studentId" id="studentId" value="<%= schedule.studentId._id %>">
+                                                                                <td class="align-middle text-capitalize"><%= student.lastname %>, <%= student.firstname %> <%= student.middlename %></td>
+                                                                                <td class="align-middle"><%= student.courseId.name %> </td>
+                                                                                <input type="hidden" name="studentId" id="studentId" value="<%= student._id %>">
                                                                                 <td class="text-center align-middle">
-                                                                                    <div class="btn-group d-flex">
-                                                                                        <a href="/admin/enrollment/student/schedule/<%= schedule._id %>" value="approved" class="btn btn-sm btn-primary"><i class="ti-eye"></i> View Subjects</a>
-                                                                                        <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel Enrolled</button>
+                                                                                    <div class="btn-group d-flex justify-content-center align-items-center">
+                                                                                        <a href="/admin/enrollment/student/prospectus/<%= student._id %>" value="approved" class="btn btn-sm btn-primary"><i class="ti-eye"></i> View Prospectus</a>
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>

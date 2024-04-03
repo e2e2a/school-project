@@ -29,6 +29,9 @@ var schema = mongoose.Schema({
     section: {
         type: String,
     },
+    batch: {
+        type: String,
+    },
     subjects: [{
         subjectId: {
             type: mongoose.Schema.Types.ObjectId,
