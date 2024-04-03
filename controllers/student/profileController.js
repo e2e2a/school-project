@@ -9,29 +9,20 @@ const sixDigitCode = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
 const bcrypt = require('bcrypt')
 
 module.exports.index = async (req, res) => {
-    try {
-        const userLogin = await User.findById(req.session.login);
-        if (userLogin) {
-            if (userLogin.role === 'student') {
-                const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
-                res.render('user/profile', {
-                    site_title: SITE_TITLE,
-                    title: 'Profile',
-                    messages: req.flash(),
-                    currentUrl: req.originalUrl,
-                    userLogin: userLogin,
-                    req: req,
-                    studentProfile: studentProfile,
-                });
-            } else {
-                return res.status(404).render('404');
-            }
-        } else {
-            return res.redirect('/login');
-        }
-    } catch (error) {
-        console.log('error:', error)
-        return res.status(500).render('500');
+    const userLogin = await User.findById(req.session.login);
+    if (userLogin.role === 'student') {
+        const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
+        res.render('user/profile', {
+            site_title: SITE_TITLE,
+            title: 'Profile',
+            messages: req.flash(),
+            currentUrl: req.originalUrl,
+            userLogin: userLogin,
+            req: req,
+            studentProfile: studentProfile,
+        });
+    } else {
+        return res.status(404).render('404');
     }
 }
 module.exports.update = async (req, res) => {

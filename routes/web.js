@@ -100,12 +100,15 @@ module.exports = function (app) {
 
     //user
     app.get('/', isStudent, userIndexController.index);
-    app.get('/profile', userProfileController.index);
-    app.post('/profile/update', userProfileController.update);
-    app.get('/courses', userCourseController.index);
-    app.post('/course/enroll', userCourseController.enroll);
-    app.get('/enrollment/subjects', userEnrollmentController.index);
-    app.get('/enrollment/prospectus', userEnrollmentController.prospectus);
+    app.get('/profile', isStudent, userProfileController.index);
+    app.post('/profile/update', isStudent, userProfileController.update);
+    app.get('/courses', isStudent, userCourseController.index);
+    app.post('/course/enroll', isStudent, userCourseController.enroll);
+    app.get('/enrollment/subjects', isStudent, userEnrollmentController.index);
+    app.get('/enrollment/prospectus', isStudent, userEnrollmentController.prospectus);
+    //print enrollment
+    app.get('/form', userFormPrintController.index);
+    app.post('/form/print', userFormPrintController.print);
     
     //professor
     app.get('/professor', professorIndexController.index);
@@ -136,7 +139,7 @@ module.exports = function (app) {
      * @todo
      * # add student prospectus
      */
-    app.post('/admin/category/endSemester', adminEndSemesterController.endSemester)
+    app.post('/admin/category/endSemester', isAdmin, adminEndSemesterController.endSemester)
     app.get('/admin/professors/schedule', isAdmin, adminScheduleController.professor);
     app.get('/admin/professor/schedule/:id', isAdmin, adminScheduleController.professorView);
     app.get('/admin/professor/classes/:id', isAdmin, adminScheduleController.professorClassesView);
@@ -148,7 +151,5 @@ module.exports = function (app) {
     app.get('/admin/user/add', isAdmin, adminUserController.create);
     app.post('/admin/user/add', isAdmin, adminUserController.doCreate);
 
-    //print enrollment
-    app.get('/form', userFormPrintController.index);
-    app.post('/form/print', userFormPrintController.print);
+
 }
