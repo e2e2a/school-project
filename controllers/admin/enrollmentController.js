@@ -76,7 +76,7 @@ module.exports.doEnroll = async (req, res) => {
                     });
                     console.log('student', studentClass)
                     await studentClass.save();
-                    await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false }, { new: true });
+                    await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false, isStudying: true }, { new: true });
                     console.log('student class save.');
                     req.flash('message', 'Student enrolled sucessfully.');
                     return res.redirect('/admin/enrollments/enrolling');
@@ -183,13 +183,13 @@ module.exports.enrolledCancel = async (req, res) => {
         return res.redirect('/admin/enrollments');
     }
     await StudentClass.findByIdAndDelete(studentClassId);
-    await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true }, { new: true });
+    await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true, isStudying: false }, { new: true });
     console.log('enrollment cancel successfully');
     return res.redirect('/admin/enrollments/enrolled');
 }
 
 module.exports.studentProspectus = async (req, res) => {
-    const students = await StudentProfile.find({ isVerified: true }).populate('courseId')
+    const students = await StudentProfile.find({ isVerified: true, isStudying: true }).populate('courseId')
     const coursesSidebar = await Course.find();
     res.render('admin/studentProspectus', {
         site_title: SITE_TITLE,
