@@ -57,7 +57,7 @@ module.exports.doCreate = async (req, res) => {
             const subject = new Subject({
                 courseId: course._id,
                 subjectCode: req.body.subjectCode,
-                name: course.name,
+                name: req.body.name,
                 category: course.category,
                 unit: req.body.unit,
                 year: year,

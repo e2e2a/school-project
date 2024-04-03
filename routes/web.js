@@ -106,7 +106,7 @@ module.exports = function (app) {
     app.post('/course/enroll', userCourseController.enroll);
     app.get('/enrollment/subjects', userEnrollmentController.index);
     app.get('/enrollment/prospectus', userEnrollmentController.prospectus);
-
+    
     //professor
     app.get('/professor', professorIndexController.index);
     app.get('/professor/profile', professorProfileController.index);

@@ -29,21 +29,25 @@ module.exports.endSemester = async (req, res) => {
             section,
             subjects,
         } = studentClass;
-
-        const prospectusSubjects = subjects.map(subject => {
+        
+        
+        const prospectusSubjects = [];
+        for (const subject of subjects) {
             const professor = subject.professorId;
-            return {
+            const professorName = {
+                lastname: professor.lastname,
+                firstname: professor.firstname,
+                middlename: professor.middlename
+            };
+
+            prospectusSubjects.push({
                 subjectId: subject._id,
-                professorName: {
-                    lastname: professor.lastname,
-                    firstname: professor.firstname,
-                    middlename: professor.middlename
-                },
+                professorName: professorName,
                 startTime: subject.startTime,
                 endTime: subject.endTime,
                 grade: subject.grade
-            };
-        });
+            });
+        }
 
         const prospectus = new Prospectus({
             studentId: studentId._id,
@@ -63,65 +67,8 @@ module.exports.endSemester = async (req, res) => {
         await prospectus.save();
     }
 
-
     console.log('Prospectus documents created successfully');
     res.redirect(`/admin/category?category=${section.category}&year=${section.year}&semester=${section.semester}`);
 
 
-
-
-
-
-
-    // if (studentProfile) {
-    //     const courseId = req.body.courseId;
-    //     if (!mongoose.Types.ObjectId.isValid(courseId)) {
-    //         console.log('Invalid ObjectId:', courseId);
-    //         req.flash('message', 'Invalid courseId.');
-    //         return res.redirect('/admin/enrollments/enrolling');
-    //     }
-    //     const course = await Course.findById(courseId)
-    //     const checkSection = await Section.findOne({
-    //         courseId: course._id,
-    //         year: req.body.year,
-    //         semester: req.body.semester,
-    //         section: req.body.section
-    //     }).populate('subjects.subjectId');
-    //     if (checkSection) {
-    //         const subjects = checkSection.subjects.map(subject => ({
-    //             subjectId: subject.subjectId,
-    //             professorId: subject.professorId,
-    //             startTime: subject.startTime,
-    //             endTime: subject.endTime,
-    //             grade: null
-    //         }));
-
-    //         const studentClass = new StudentClass({
-    //             studentId: studentProfile._id,
-    //             courseId: studentProfile.courseId,
-    //             sectionId: checkSection._id,
-    //             subjects: subjects,
-    //             courseName: course.name,
-    //             category: course.category,
-    //             year: req.body.year,
-    //             semester: req.body.semester,
-    //             section: req.body.section,
-    //             status: true,
-    //         });
-    //         console.log('student', studentClass)
-    //         await studentClass.save();
-    //         await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false }, { new: true });
-    //         console.log('student class save.');
-    //         req.flash('message', 'Student enrolled sucessfully.');
-    //         return res.redirect('/admin/enrollments/enrolling');
-    //     } else {
-    //         console.log('no section found to enroll.');
-    //         req.flash('message', 'No Section found to enroll the student.');
-    //         return res.redirect('/admin/enrollments/enrolling');
-    //     }
-    // } else {
-    //     console.log('no student found.');
-    //     req.flash('message', 'No student found.');
-    //     return res.redirect('/admin/enrollments/enrolling');
-    // }
 }
