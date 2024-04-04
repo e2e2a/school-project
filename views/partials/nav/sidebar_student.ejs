@@ -57,7 +57,6 @@
                 </a>
             </li>
         </ul>
-        <% if(studentProfile.isEnrolled === true){ %>
         <div class="pcoded-navigation-label">Enrollments</div>
         <ul class="pcoded-item pcoded-left-item">
             <li class="pcoded-hasmenu">
@@ -74,6 +73,7 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
+                    <% if(studentProfile.isStudying === true){ %>
                     <li class="">
                         <a href="/enrollment/prospectus" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -81,9 +81,9 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
+                    <% } %>
                 </ul>
             </li>
         </ul>
-        <% } %>
     </div>
 </nav>

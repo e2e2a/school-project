@@ -28,7 +28,7 @@ module.exports.endSemester = async (req, res) => {
         if (hasMissingGrades) {
             console.log('subject grade:', studentClass.subjects)
             req.flash('message', 'Some students have subjects without grades.');
-            return res.redirect('/admin/enrollments/enrolling');
+            return res.redirect(`/admin/category?category=${section.category}&year=${section.year}&semester=${section.semester}`);
         }
     }
     for (const studentClass of studentClasses) {
@@ -72,7 +72,7 @@ module.exports.endSemester = async (req, res) => {
         });
 
         await prospectus.save();
-        await StudentProfile.findByIdAndUpdate(studentClass._id, { year: prospectus.year, semester: prospectus.semester, isEnrolled: false, isEnrolling: true, isStudying: true }, { new: true })
+        await StudentProfile.findByIdAndUpdate(studentClass.studentId._id, { year: prospectus.year, semester: prospectus.semester, isEnrolled: false, isEnrolling: true, isStudying: true }, { new: true })
         await StudentClass.findByIdAndDelete(studentClass._id);
     }
 

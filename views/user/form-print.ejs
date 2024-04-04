@@ -64,7 +64,9 @@
                                                                             <td class="justify-content-center d-flex">
                                                                                 <div class="btn-group d-flex">
                                                                                     <button type="submit" name="actions" value="print" class="btn btn-sm btn-secondary"><i class="ti-download"></i> Print</button>
-                                                                                    <button type="submit" name="actions" value="cancel" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel</button>
+                                                                                    <% if(studentProfile.isStudying === false) {%>
+                                                                                        <button type="submit" name="actions" value="cancel" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel</button>
+                                                                                    <% } %>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>

@@ -183,7 +183,7 @@ module.exports.enrolledCancel = async (req, res) => {
         return res.redirect('/admin/enrollments');
     }
     await StudentClass.findByIdAndDelete(studentClassId);
-    await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true }, { new: true });
+    await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true, printLimit: 0 }, { new: true });
     console.log('enrollment cancel successfully');
     return res.redirect('/admin/enrollments/enrolled');
 }
