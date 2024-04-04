@@ -7,22 +7,18 @@ const SITE_TITLE = 'DSF';
 module.exports.index = async (req, res) => {
     const userLogin = await User.findById(req.session.login);
     const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
-    if (studentProfile.isVerified) {
-        const courses = await Course.find()
-        res.render('user/courses', {
-            site_title: SITE_TITLE,
-            title: 'Courses',
-            messages: req.flash(),
-            currentUrl: req.originalUrl,
-            userLogin: userLogin,
-            req: req,
-            studentProfile: studentProfile,
-            courses: courses,
-        });
-    } else {
-        req.flash('message', 'Update your profile to begin the enrollment.');
-        return res.redirect('/profile');
-    }
+    const courses = await Course.find()
+    res.render('user/courses', {
+        site_title: SITE_TITLE,
+        title: 'Courses',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        userLogin: userLogin,
+        req: req,
+        studentProfile: studentProfile,
+        courses: courses,
+    });
+
 }
 
 module.exports.enroll = async (req, res) => {
@@ -36,11 +32,14 @@ module.exports.enroll = async (req, res) => {
     if (course) {
         const studentProfile = await StudentProfile.findOne({ userId: userLogin._id })
         if (studentProfile.isEnrolled) {
-            console.log('student is already enrolled and making request to enroll')
+            req.flash('message', 'You are already enrolled.')
+            return res.redirect('/courses');
+        }
+        if (studentProfile.isEnrolling) {
+            req.flash('message', 'You are already enrolling. Please check your form.')
             return res.redirect('/courses');
         }
         await StudentProfile.findOneAndUpdate({ userId: userLogin._id }, { courseId: course._id, isEnrolling: true }, { new: true })
-        console.log('enrollment pending success');
         return res.redirect('/courses');
     } else {
         console.log('no course found to be enrolled.')

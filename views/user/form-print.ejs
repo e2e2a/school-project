@@ -29,26 +29,26 @@
                                 <div class="page-wrapper">
                                     <div class="page-body">
                                         <div class="row">
+                                            <% if(studentProfile.isEnrolling) { %>
+                                            <div class="col-12 col-xl-5 col-lg-5 col-md-5 ">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Note: You can only print 3 times.</h5>
+                                                        <span><code>Count: <%= studentProfile.printLimit %></code></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-12">
-                                                <% if(studentProfile.isEnrolling) { %>
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5>Print Form</h5>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered">
                                                                 <thead>
                                                                     <tr class="text-center" style="white-space: nowrap;">
-                                                                        <th >Email</th>
+                                                                        <th>Email</th>
                                                                         <th>Fullname</th>
                                                                         <th>Course Enrolling</th>
                                                                         <th>Action</th>
@@ -59,11 +59,12 @@
                                                                         <tr style="white-space: nowrap;">
                                                                             <td class="align-middle text-capitalize"> <%= studentProfile.userId.email %></td>
                                                                             <td class="align-middle text-capitalize"><%= studentProfile.lastname %>, <%= studentProfile.firstname %> <%= studentProfile.middlename %></td>
-                                                                            <td class="align-middle text-capitalize"> <%= studentProfile.courseId.category %></td>
+                                                                            <td class="align-middle text-capitalize"> <%= studentProfile.courseId.name %></td>
                                                                             <input type="hidden" name="studentId" id="studentId" value="<%= studentProfile._id %>">
                                                                             <td class="justify-content-center d-flex">
                                                                                 <div class="btn-group d-flex">
                                                                                     <button type="submit" name="actions" value="print" class="btn btn-sm btn-secondary"><i class="ti-download"></i> Print</button>
+                                                                                    <button type="submit" name="actions" value="cancel" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel</button>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -81,14 +82,6 @@
                                                             <% } else { %>
                                                                 <h5>You haven't enrolled in a course yet. Please browse our available courses.</h5>
                                                             <% } %>
-                                                            <div class="card-header-right">
-                                                                <ul class="list-unstyled card-option">
-                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                </ul>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 <% } %>

@@ -10,21 +10,18 @@ const bcrypt = require('bcrypt')
 
 module.exports.index = async (req, res) => {
     const userLogin = await User.findById(req.session.login);
-    if (userLogin.role === 'student') {
-        const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
-        res.render('user/profile', {
-            site_title: SITE_TITLE,
-            title: 'Profile',
-            messages: req.flash(),
-            currentUrl: req.originalUrl,
-            userLogin: userLogin,
-            req: req,
-            studentProfile: studentProfile,
-        });
-    } else {
-        return res.status(404).render('404');
-    }
+    const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
+    res.render('user/profile', {
+        site_title: SITE_TITLE,
+        title: 'Profile',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        userLogin: userLogin,
+        req: req,
+        studentProfile: studentProfile,
+    });
 }
+
 module.exports.update = async (req, res) => {
     try {
         const transporter = nodemailer.createTransport({

@@ -5,6 +5,7 @@ const Section = require('../../models/section');
 const Schedule = require('../../models/schedule');
 const Prospectus = require('../../models/prospectus');
 const mongoose = require('mongoose');
+const StudentProfile = require('../../models/studentProfile');
 const SITE_TITLE = 'DSF';
 
 module.exports.endSemester = async (req, res) => {
@@ -19,10 +20,19 @@ module.exports.endSemester = async (req, res) => {
         .populate('studentId')
         .populate('subjects.professorId')
         .populate('subjects.subjectId');
-    
-
     for (const studentClass of studentClasses) {
-        const { studentId, courseName, category, year, semester, section, subjects, batch} = studentClass;
+        const hasMissingGrades = studentClass.subjects.some(subject => {
+            return !subject.grade || subject.grade === '' || subject.grade === null || subject.grade === undefined; 
+            
+        });
+        if (hasMissingGrades) {
+            console.log('subject grade:', studentClass.subjects)
+            req.flash('message', 'Some students have subjects without grades.');
+            return res.redirect('/admin/enrollments/enrolling');
+        }
+    }
+    for (const studentClass of studentClasses) {
+        const { studentId, courseName, category, year, semester, section, subjects, batch } = studentClass;
         const prospectusSubjects = subjects.map(subject => {
             const professor = subject.professorId;
             const subjectId = subject.subjectId;
@@ -62,6 +72,8 @@ module.exports.endSemester = async (req, res) => {
         });
 
         await prospectus.save();
+        await StudentProfile.findByIdAndUpdate(studentClass._id, { year: prospectus.year, semester: prospectus.semester, isEnrolled: false, isEnrolling: true, isStudying: true }, { new: true })
+        await StudentClass.findByIdAndDelete(studentClass._id);
     }
 
     console.log('Prospectus documents created successfully');

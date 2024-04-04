@@ -96,6 +96,12 @@ var schema = mongoose.Schema({
     takenNcaeOrYp4sc: {
         type: String
     },
+    year: {
+        type: String
+    },
+    semester: {
+        type: String
+    },
     isEnrolled: { 
         type: Boolean, 
         default: false 
@@ -107,6 +113,10 @@ var schema = mongoose.Schema({
     isStudying: { 
         type: Boolean, 
         default: false 
+    },
+    printLimit: { 
+        type: Number, 
+        default: 0 
     },
     isVerified: { 
         type: Boolean, 

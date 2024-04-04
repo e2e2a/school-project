@@ -10,24 +10,19 @@ const SITE_TITLE = 'DSF';
 module.exports.index = async (req, res) => {
     const userLogin = await User.findById(req.session.login);
     const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
-    if (studentProfile.isVerified) {
-        const studentClass = await StudentClass.findOne({ studentId: studentProfile._id }).populate('subjects.subjectId').populate('subjects.professorId');
-        const studentSection = await Section.findById(studentClass._id).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
-        res.render('user/subjects', {
-            site_title: SITE_TITLE,
-            title: 'Subjects',
-            messages: req.flash(),
-            currentUrl: req.originalUrl,
-            userLogin: userLogin,
-            req: req,
-            studentProfile: studentProfile,
-            studentClass: studentClass,
-            studentSection: studentSection,
-        });
-    } else {
-        req.flash('message', 'Update your profile to begin the enrollment.');
-        return res.redirect('/profile')
-    }
+    const studentClass = await StudentClass.findOne({ studentId: studentProfile._id }).populate('subjects.subjectId').populate('subjects.professorId');
+    const studentSection = await Section.findById(studentClass._id).populate('subjects.subjectId').populate('courseId').populate('subjects.professorId');
+    res.render('user/subjects', {
+        site_title: SITE_TITLE,
+        title: 'Subjects',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        userLogin: userLogin,
+        req: req,
+        studentProfile: studentProfile,
+        studentClass: studentClass,
+        studentSection: studentSection,
+    });
 }
 
 /**
@@ -73,7 +68,7 @@ module.exports.prospectus = async (req, res) => {
     const userLogin = await User.findById(req.session.login);
     const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
     if (studentProfile.isVerified) {
-        const studentProspectus = await Prospectus.find({ studentId: studentProfile._id })   ;
+        const studentProspectus = await Prospectus.find({ studentId: studentProfile._id });
         res.render('user/prospectus', {
             site_title: SITE_TITLE,
             title: 'Prospectus',

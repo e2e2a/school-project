@@ -76,7 +76,7 @@ module.exports.doEnroll = async (req, res) => {
                     });
                     console.log('student', studentClass)
                     await studentClass.save();
-                    await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false, isStudying: true }, { new: true });
+                    await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false }, { new: true });
                     console.log('student class save.');
                     req.flash('message', 'Student enrolled sucessfully.');
                     return res.redirect('/admin/enrollments/enrolling');
@@ -183,7 +183,7 @@ module.exports.enrolledCancel = async (req, res) => {
         return res.redirect('/admin/enrollments');
     }
     await StudentClass.findByIdAndDelete(studentClassId);
-    await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true, isStudying: false }, { new: true });
+    await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true }, { new: true });
     console.log('enrollment cancel successfully');
     return res.redirect('/admin/enrollments/enrolled');
 }
@@ -212,6 +212,20 @@ module.exports.studentProspectusView = async (req, res) => {
     const studentProspectus = await Prospectus.find({ studentId: studentId });
     const coursesSidebar = await Course.find();
     res.render('admin/studentProspectusView', {
+        site_title: SITE_TITLE,
+        title: 'Prospectus',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        studentProspectus: studentProspectus,
+        coursesSidebar: coursesSidebar,
+    });
+}
+
+module.exports.studentProspectusViewAll = async (req, res) => {
+    const studentProspectus = await Prospectus.find();
+    const coursesSidebar = await Course.find();
+    res.render('admin/studentProspectusViewAll', {
         site_title: SITE_TITLE,
         title: 'Prospectus',
         messages: req.flash(),

@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const { isAdmin, isProfessor, isStudent, isStudentProfileVerified } = require('../helper/auth-helper');
 
 const authRegisterController = require('../controllers/auth/registerController');
 const authVerifyController = require('../controllers/auth/verifyController');
@@ -34,46 +34,7 @@ const professorClassController = require('../controllers/professor/classControll
  * do prospectus
  * /professor/records
  */
-async function isAuthenticated(req, res, next) {
-    if (req.session.login) {
-        next();
-    } else {
-        return res.redirect('/login');
-    }
-}
 
-async function isAdmin(req, res, next) {
-    await isAuthenticated(req, res, async () => {
-        const user = await User.findById(req.session.login);
-        if (user && user.role === 'admin') {
-            next();
-        } else {
-            res.status(404).render('404');
-        }
-    });
-}
-
-async function isProfessor(req, res, next) {
-    await isAuthenticated(req, res, async () => {
-        const user = await User.findById(req.session.login);
-        if (user && user.role === 'professor') {
-            next();
-        } else {
-            res.status(404).render('404');
-        }
-    });
-}
-
-async function isStudent(req, res, next) {
-    await isAuthenticated(req, res, async () => {
-        const user = await User.findById(req.session.login);
-        if (user && user.role === 'student') {
-            next();
-        } else {
-            res.status(404).render('404');
-        }
-    });
-}
 
 module.exports = function (app) {
     //auth
@@ -99,16 +60,16 @@ module.exports = function (app) {
 
 
     //user
-    app.get('/', isStudent, userIndexController.index);
+    app.get('/', isStudent, isStudentProfileVerified, userIndexController.index);
     app.get('/profile', isStudent, userProfileController.index);
     app.post('/profile/update', isStudent, userProfileController.update);
-    app.get('/courses', isStudent, userCourseController.index);
-    app.post('/course/enroll', isStudent, userCourseController.enroll);
-    app.get('/enrollment/subjects', isStudent, userEnrollmentController.index);
-    app.get('/enrollment/prospectus', isStudent, userEnrollmentController.prospectus);
+    app.get('/courses', isStudent, isStudentProfileVerified, userCourseController.index);
+    app.post('/course/enroll', isStudent, isStudentProfileVerified, userCourseController.enroll);
+    app.get('/enrollment/subjects', isStudent, isStudentProfileVerified, userEnrollmentController.index);
+    app.get('/enrollment/prospectus', isStudent, isStudentProfileVerified, userEnrollmentController.prospectus);
     //print enrollment
-    app.get('/form', userFormPrintController.index);
-    app.post('/form/print', userFormPrintController.print);
+    app.get('/form', isStudent, isStudentProfileVerified, userFormPrintController.index);
+    app.post('/form/print', isStudent, isStudentProfileVerified, userFormPrintController.print);
     
     //professor
     app.get('/professor', professorIndexController.index);
@@ -127,9 +88,9 @@ module.exports = function (app) {
     app.get('/admin/enrollments/enrolled', isAdmin, adminEnrollmentController.enrolled);
     app.get('/admin/enrollment/student/schedule/:id', isAdmin, adminEnrollmentController.studentScheduleView);
     app.post('/admin/enrollment/enrolled/cancel', isAdmin, adminEnrollmentController.enrolledCancel);
-    //
     app.get('/admin/enrollment/student/prospectus', isAdmin, adminEnrollmentController.studentProspectus);
     app.get('/admin/enrollment/student/prospectus/:id', isAdmin, adminEnrollmentController.studentProspectusView);
+    app.get('/admin/enrollment/student/prospectus/view/all', isAdmin, adminEnrollmentController.studentProspectusViewAll);
     app.get('/admin/sections', isAdmin, adminsectionController.index);
     app.get('/admin/section/add', isAdmin, adminsectionController.create);
     app.post('/admin/section/add', isAdmin, adminsectionController.doCreate);
