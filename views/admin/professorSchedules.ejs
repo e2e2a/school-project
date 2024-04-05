@@ -29,18 +29,27 @@
                                     <div class="page-body">
                                         <div class="row">
                                             <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="row">
+                                                            <div class="col-6 align-middle">
+                                                                <h5>Note: <code>This can only be press once all sections is ended.</code></h5>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="justify-content-end align-items-center d-flex">
+                                                                    <button type="submit" class="btn btn-sm btn-warning">Remark Schedules</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
                                                 <% if(schedules.length > 0) { %>
                                                     <div class="card">
                                                         <div class="card-header">
                                                             <h5>Professor's Schedules</h5>
-                                                            <div class="card-header-right">
-                                                                <ul class="list-unstyled card-option">
-                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                </ul>
-                                                            </div>
                                                         </div>
                                                         <div class="card-block table-border-style">
                                                             <div class="table-responsive">
@@ -58,8 +67,9 @@
                                                                                 <td class="align-middle text-capitalize text-center"><%= schedule.professorId.lastname %>, <%= schedule.professorId.firstname %> <%= schedule.professorId.middlename %></td>
                                                                                 <td class="align-middle text-capitalize text-center">
                                                                                     <div class="d-flex justify-content-center align-items-center btn-group">
-                                                                                        <a href="/admin/professor/schedule/<%= schedule._id %>" class="btn btn-primary">View Schedule</a>
-                                                                                        <a href="/admin/professor/classes/<%= schedule._id %>" class="btn btn-secondary">View Classes</a>
+                                                                                        <a href="/admin/professor/schedule/<%= schedule._id %>" class="btn btn-sm btn-primary"><i class="ti-eye"></i>View Schedule</a>
+                                                                                        <a href="/admin/professor/classes/<%= schedule._id %>" class="btn btn-sm btn-secondary"><i class="ti-eye"></i>View Classes</a>
+                                                                                        <a href="/admin/professor/classes/<%= schedule._id %>" class="btn btn-sm btn-info"><i class="ti-eye"></i>View Old Schedules</a>
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>

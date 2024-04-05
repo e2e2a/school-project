@@ -15,7 +15,7 @@ async function isAdmin(req, res, next) {
         if (user && user.role === 'admin') {
             next();
         } else {
-            return res.status(404).render('404');
+            return res.status(404).render('404', {role: user.role});
         }
     });
 }
@@ -26,7 +26,7 @@ async function isProfessor(req, res, next) {
         if (user && user.role === 'professor') {
             next();
         } else {
-            return res.status(404).render('404');
+            return res.status(404).render('404', {role: user.role});
         }
     });
 }
@@ -37,7 +37,7 @@ async function isStudent(req, res, next) {
         if (user && user.role === 'student') {
             next();
         } else {
-            return res.status(404).render('404');
+            return res.status(404).render('404', {role: user.role});
         }
     });
 }

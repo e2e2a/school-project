@@ -36,20 +36,19 @@ app.use(function (req, res, next) {
     next();
 });
 require('./routes/web')(app);
-// app.use((req, res, next) => {
-//     if (!req.session.login) {
-//         return res.redirect('/login');
-//     }
-//     next();
-// });
+app.use((req, res, next) => {
+    if (!req.session.login) {
+        return res.redirect('/login');
+    }
+    next();
+});
 
-// app.use(async (req, res, next) => {
-//     const userLogin = await User.findById(req.session.login)
-//     return res.status(404).render('404', {
-//         login: req.session.login,
-//         userLogin: userLogin,
-//     });
-// });
+app.use(async (req, res, next) => {
+    const user = await User.findById(req.session.login)
+    return res.status(404).render('404', {
+        role: user.role,
+    });
+});
 
 const PORT = process.env.PORT
 app.listen(PORT, async () => {

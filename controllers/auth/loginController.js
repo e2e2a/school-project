@@ -4,7 +4,15 @@ module.exports.login = async (req, res) => {
     try {
         const userLogin = await User.findById(req.session.login);
         if (req.session.login) {
-            return res.redirect('/');
+            if (userLogin.role === 'student') {
+                return res.redirect('/');
+            } else if (userLogin.role === 'professor') {
+                return res.redirect('/professor');
+            }else if (userLogin.role === 'admin') {
+                return res.redirect('/admin');
+            } else{
+                console.log('forbidden')
+            }
         } else {
             res.render('auth/login', {
                 site_title: SITE_TITLE,
@@ -12,7 +20,6 @@ module.exports.login = async (req, res) => {
                 session: req.session,
                 messages: req.flash(),
                 currentUrl: req.originalUrl,
-                userLogin: userLogin,
                 req: req,
             });
         }
@@ -47,7 +54,7 @@ module.exports.doLogin = async (req, res) => {
                     req.flash('error', 'Users not found.');
                     return res.redirect('/login');
                 }
-            } else if(user.role === 'professor') {
+            } else if (user.role === 'professor') {
                 console.log(user.role)
                 user.comparePassword(req.body.password, (error, valid) => {
                     if (error) {
@@ -62,7 +69,7 @@ module.exports.doLogin = async (req, res) => {
                     req.session.login = user.id;
                     return res.redirect('/professor');
                 });
-            }else {
+            } else {
                 user.comparePassword(req.body.password, (error, valid) => {
                     if (error) {
                         req.flash('message', 'WARNING DETECTED!');

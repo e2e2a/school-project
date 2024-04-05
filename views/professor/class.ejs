@@ -51,6 +51,7 @@
                                                                             <thead>
                                                                                 <tr>
                                                                                     <th class="text-center">Student Name</th>
+                                                                                    <th class="text-center">Subject Code</th>
                                                                                     <th>Descriptive Title</th>
                                                                                     <th class="text-center">Units</th>
                                                                                     <th class="text-center">Grades</th>
@@ -67,6 +68,7 @@
                                                                                                     <input type="hidden" name="studentClassId" id="studentClassId" value="<%= studentClass._id %>">
                                                                                                     <input type="hidden" name="subjectId" id="subjectId" value="<%= subject._id %>">
                                                                                                     <td class="align-middle text-capitalize text-center"><%= studentClass.studentId.lastname %>, <%= studentClass.studentId.firstname %> <%= studentClass.studentId.middlename %></td>
+                                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.subjectCode %></td>
                                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
                                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
                                                                                                     <td class="align-middle">
