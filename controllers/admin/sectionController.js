@@ -33,40 +33,47 @@ module.exports.create = async (req, res) => {
     });
 }
 module.exports.doCreate = async (req, res) => {
-    const courseId = req.body.courseId;
-    if (!mongoose.Types.ObjectId.isValid(courseId)) {
-        console.log('Invalid ObjectId:', courseId);
-        req.flash('message', 'Invalid courseId.');
-        return res.redirect('/admin/section/add');
+    const category = req.query.category;
+    const year = req.query.year;
+    const semester = req.query.semester;
+
+    if (!category || !year || !semester || category.trim() === '' || year.trim() === '' || semester.trim() === '') {
+        console.log('One or more parameters are missing or empty.');
+        return res.status(404).render('404', { role: 'admin' });
     }
-    const course = await Course.findById(courseId)
-    if (course) {
-        const existingSection = await Section.findOne({
-            courseId: courseId,
-            year: req.body.year,
-            semester: req.body.semester,
-            section: req.body.section
-        });
-        if (existingSection) {
-            console.log('A section with the same year, semester, and section already exists. Please check the sections list.');
-            req.flash('message', 'Section already exists. Please check the sections list.');
-            return res.redirect('/admin/section/add');
-        }
-        const section = new Section({
-            courseId: courseId,
-            category: course.category,
-            year: req.body.year,
-            semester: req.body.semester,
-            section: req.body.section,
-            description: req.body.description,
-        });
-        await section.save();
-        console.log('Section created save.');
-        req.flash('message', 'Section created successfully.');
-        return res.redirect('/admin/section/add');
-    } else {
-        console.log('no courses found.please check the course name.');
-        req.flash('message', 'No courses found. Please check the course name.');
-        return res.redirect('/admin/section/add');
+
+    const course = await Course.findOne({ category: category }); 
+
+    if (!course) {
+        console.log('No courses found. Please check the course name.');
+        return res.status(404).render('404', { role: 'admin' });
     }
+    console.log('course', course)
+    const existingSection = await Section.findOne({
+        courseId: course._id,
+        year: year,
+        semester: semester,
+        section: req.body.section
+    });
+
+    if (existingSection) {
+        console.log('A section with the same year, semester, and section already exists. Please check the sections list.');
+        req.flash('message', 'Section already exists. Please check the sections list.');
+        return res.redirect(`/admin/section/add?category=${category}&year=${year}&semester=${semester}`);
+    }
+
+    const section = new Section({
+        courseId: course._id,
+        category: course.category,
+        year: year,
+        semester: semester,
+        section: req.body.section,
+        description: req.body.description,
+    });
+
+    await section.save(); // Save the section
+
+    console.log('Section created successfully.');
+    req.flash('message', 'Section created successfully.');
+    return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
 } 
