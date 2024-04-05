@@ -79,13 +79,13 @@
                                                                         <tbody>
                                                                             <% section.subjects.forEach(subject => { %>
                                                                                 <form action="" method="post">
-                                                                                    <tr class="text-center" style="white-space: nowrap;">
+                                                                                    <tr style="white-space: nowrap;">
                                                                                         <input type="hidden" name="section" value="<%= section.section %>">
                                                                                         <input type="hidden" name="link" value="category=<%= category %>&year=<%= year %>&semester=<%= semester %>">
                                                                                         <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
-                                                                                        <td class="align-middle text-capitalize"><%= subject.subjectId.subjectCode %></td>
-                                                                                        <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
-                                                                                        <td class="align-middle text-capitalize"><%= subject.subjectId.unit %></td>
+                                                                                        <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
+                                                                                        <td class="align-middle text-capitalize text-center"><%= subject.subjectId.name %></td>
+                                                                                        <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
                                                                                         <td class="align-middle">
                                                                                             <div class="form-group">
                                                                                                 <select name="professorId" id="professorId" class="form-control border" style="text-transform: capitalize;width: 200px;" required>
