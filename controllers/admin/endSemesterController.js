@@ -13,7 +13,7 @@ module.exports.endSemester = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(sectionId)) {
         console.log('Invalid ObjectId:', sectionId);
         req.flash('message', 'Invalid sectionId.');
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const section = await Section.findById(sectionId);
     const studentClasses = await StudentClass.find({ sectionId: sectionId })

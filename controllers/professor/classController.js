@@ -58,11 +58,11 @@ module.exports.doGrade = async (req, res) => {
     const studentClassId = req.body.studentClassId;
     if (!mongoose.Types.ObjectId.isValid(subjectId)) {
         console.log('Invalid subjectId:', subjectId);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'professor' });
     }
     if (!mongoose.Types.ObjectId.isValid(studentClassId)) {
         console.log('Invalid studentClassId:', studentClassId);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'professor' });
     }
     if (actions === 'update') {
         const studentClass = await StudentClass.findById(studentClassId)
@@ -73,7 +73,7 @@ module.exports.doGrade = async (req, res) => {
         const subject = studentClass.subjects.find(sub => sub._id.toString() === subjectId);
         if (!subject) {
             console.log('Subject not found in student class');
-            return res.redirect('/professor/class');
+            return res.status(404).render('404', { role: 'professor' });
         }
 
         subject.grade = grade;

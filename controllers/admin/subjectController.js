@@ -19,11 +19,12 @@ module.exports.index = async (req, res) => {
         coursesSidebar: coursesSidebar,
     });
 }
+
 module.exports.create = async (req, res) => {
     if (!req.query.category || !req.query.year || !req.query.semester || !req.query.section) {
         console.log('Query fields are empty');
         req.flash('message', 'Query fields are empty');
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const courses = await Course.find()
     const coursesSidebar = await Course.find();
@@ -37,14 +38,18 @@ module.exports.create = async (req, res) => {
         coursesSidebar: coursesSidebar,
     });
 }
+
 module.exports.doCreate = async (req, res) => {
-    // 
     const category = req.query.category;
     const year = req.query.year;
     const semester = req.query.semester;
     const section = req.query.section;
-    // 
-    const course = await Course.findOne({category:category})
+    if (!req.query.category || !req.query.year || !req.query.semester || !req.query.section) {
+        console.log('Query fields are empty');
+        req.flash('message', 'Query fields are empty');
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const course = await Course.findOne({ category: category })
     console.log(category)
     if (course) {
         const checkSection = await Section.findOne({
@@ -93,4 +98,53 @@ module.exports.doCreate = async (req, res) => {
         req.flash('message', 'No courses found. Please check the course selected.');
         return res.redirect(`/admin/subject/add?category=${category}&year=${year}&semester=${semester}&section=${section}`);
     }
-} 
+}
+
+module.exports.edit = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid subjectId:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    if (!req.query.category || !req.query.year || !req.query.semester) {
+        console.log('Query fields are empty');
+        req.flash('message', 'Query fields are empty');
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const subject = await Subject.findById(id);
+    const coursesSidebar = await Course.find();
+    res.render('admin/subjectEdit', {
+        site_title: SITE_TITLE,
+        title: 'Subject',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        subject: subject,
+        coursesSidebar: coursesSidebar,
+    });
+}
+
+module.exports.doEdit = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid subjectId:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    if (!req.query.category || !req.query.year || !req.query.semester) {
+        console.log('Query fields are empty');
+        req.flash('message', 'Query fields are empty');
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const data = {
+        subjectCode: req.body.subjectCode,
+        name: req.body.code,
+        unit: req.body.unit,
+        description: req.body.description,
+    }
+    const subject = await Subject.findByIdAndUpdate(id, data, { new: true });
+    if (subject) {
+        console.log('success update');
+        return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`)
+    }
+
+}

@@ -334,7 +334,7 @@ module.exports.doEdit = async (req, res) => {
                 age: age,
                 isVerified: true
             };
-            const profileUpdate = await ProfessorProfile.findByIdAndUpdate(profile._id, newData, { new: true });
+            await ProfessorProfile.findByIdAndUpdate(profile._id, newData, { new: true });
             req.flash('message', 'Profile updated successfully');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'admin') {

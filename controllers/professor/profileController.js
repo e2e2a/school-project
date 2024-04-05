@@ -69,7 +69,7 @@ module.exports.update = async (req, res) => {
                     if (!firstname || !middlename || !lastname || !contact || !birthdate || !age) {
                         console.log('One or more required fields are empty');
                         req.flash('message', 'Required fields are empty');
-                        return res.redirect(`/professor/profile`);
+                        return res.status(404).render('404', { role: 'professor' });
                     }
                     const [birthYear, birthMonth, birthDay] = birthdate.split('-');
                     const newData = {
@@ -102,7 +102,7 @@ module.exports.update = async (req, res) => {
             if (!req.body.email) {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
-                return res.redirect(`/professor/profile`);
+                return res.status(404).render('404', { role: 'professor' });
             }
             const emailToChange = req.body.email;
             const existingEmail = await User.findOne({ email: emailToChange })
@@ -193,7 +193,7 @@ module.exports.update = async (req, res) => {
             if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
-                return res.redirect(`/professor/profile`);
+                return res.status(404).render('404', { role: 'professor' });
             }
             const userLogin = await User.findById(req.session.login);
             const currentPassword = req.body.currentPassword;

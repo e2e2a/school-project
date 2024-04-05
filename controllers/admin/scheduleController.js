@@ -28,7 +28,7 @@ module.exports.professorView = async (req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log('Invalid ObjectId:', id);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const schedule = await Schedule.findById(id).populate('schedule.subjectId').populate('professorId');
     const coursesSidebar = await Course.find();
@@ -46,7 +46,7 @@ module.exports.professorClassesView = async (req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log('Invalid ObjectId:', id);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const professorSchedule = await Schedule.findById(id).populate('schedule.subjectId')
         .populate({
@@ -122,7 +122,7 @@ module.exports.professorHistory = async (req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log('Invalid ObjectId:', id);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const histories = await ProfessorScheduleHistory.find({ professorId: id }).populate('professorId');
     const coursesSidebar = await Course.find();

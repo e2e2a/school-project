@@ -26,7 +26,7 @@ module.exports.enroll = async (req, res) => {
     const courseId = req.body.courseId;
     if (!mongoose.Types.ObjectId.isValid(courseId)) {
         console.log('Invalid courseId:', courseId);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'student' });
     }
     const course = await Course.findById(courseId);
     if (course) {
@@ -43,6 +43,6 @@ module.exports.enroll = async (req, res) => {
         return res.redirect('/courses');
     } else {
         console.log('no course found to be enrolled.')
-        return res.redirect('/courses')
+        return res.status(404).render('404', { role: 'student' });
     }
 }

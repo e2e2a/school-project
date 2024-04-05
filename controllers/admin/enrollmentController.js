@@ -174,13 +174,13 @@ module.exports.enrolledCancel = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(studentId)) {
         console.log('Invalid ObjectId:', studentId);
         req.flash('message', 'Invalid studentId.');
-        return res.redirect('/admin/enrollments');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const studentClassId = req.body.studentClassId;
     if (!mongoose.Types.ObjectId.isValid(studentClassId)) {
         console.log('Invalid ObjectId:', studentClassId);
         req.flash('message', 'Invalid studentClassId.');
-        return res.redirect('/admin/enrollments');
+        return res.status(404).render('404', { role: 'admin' });
     }
     await StudentClass.findByIdAndDelete(studentClassId);
     await StudentProfile.findByIdAndUpdate(studentId, { isEnrolled: false, isEnrolling: true, printLimit: 0 }, { new: true });
@@ -207,7 +207,7 @@ module.exports.studentProspectusView = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(studentId)) {
         console.log('Invalid ObjectId:', studentId);
         req.flash('message', 'Invalid studentId.');
-        return res.redirect('/admin/enrollments');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const studentProspectus = await Prospectus.find({ studentId: studentId });
     const coursesSidebar = await Course.find();

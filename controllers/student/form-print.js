@@ -25,10 +25,9 @@ module.exports.index = async (req, res) => {
 module.exports.print = async (req, res) => {
     const actions = req.body.actions;
     const studentId = req.body.studentId;
-    console.log('studentId', studentId)
     if (!mongoose.Types.ObjectId.isValid(studentId)) {
         console.log('Invalid ObjectId:', studentId);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'student' });
     }
     if (actions === 'print') {
         const studentProfile = await StudentProfile.findById(studentId).populate('userId').populate('courseId');

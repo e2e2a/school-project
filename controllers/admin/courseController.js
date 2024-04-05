@@ -44,8 +44,3 @@ module.exports.doCreate = async (req, res) => {
     console.log('course save');
     return res.redirect('/admin/course/add')
 }
-
-//finish add course
-//then
-//add section
-//then loop the section in the s

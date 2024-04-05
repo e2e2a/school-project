@@ -47,11 +47,11 @@ module.exports.actions = async (req, res) => {
             const sectionFilter = { category, semester, year, section };
             if (!mongoose.Types.ObjectId.isValid(professorId)) {
                 console.log('Invalid professorId:', professorId);
-                return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
+                return res.status(404).render('404', { role: 'admin' });
             }
             if (!mongoose.Types.ObjectId.isValid(subjectId)) {
                 console.log('Invalid subjectId:', subjectId);
-                return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
+                return res.status(404).render('404', { role: 'admin' });
             }
             try {
                 // Find the section
@@ -59,7 +59,7 @@ module.exports.actions = async (req, res) => {
                 if (!sectionExists) {
                     console.log('Section not found');
                     req.flash('message', 'Section not found');
-                    return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
+                    return res.status(404).render('404', { role: 'admin' });
                 }
 
                 let professorSchedule = await Schedule.findOne({ professorId });
