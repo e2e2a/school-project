@@ -35,40 +35,31 @@
                                                             <!-- @todo change the section to studentcClass data -->
                                                             <h5><%= studentClass.year %> - <%= studentClass.semester %> - <%= studentClass.section %> - <%= studentClass.courseName %></h5>
                                                             <span>Batch : <%= studentClass.batch %></span>
-                                                            <div class="card-header-right">
-                                                                <ul class="list-unstyled card-option">
-                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                    <li><i class="fa fa-trash close-card"></i></li>
-                                                                </ul>
-                                                            </div>
                                                         </div>
                                                         <div class="card-block table-border-style">
                                                             <div class="table-responsive">
                                                                 <table class="table table-bordered">
                                                                     <thead>
-                                                                        <tr>
-                                                                            <th class="text-center">Subject Code</th>
+                                                                        <tr class="text-center" style="white-space: nowrap;">
+                                                                            <th>Subject Code</th>
                                                                             <th>Descriptive Title</th>
-                                                                            <th class="text-center">Units</th>
-                                                                            <th class="text-center">Professor</th>
-                                                                            <th class="text-center">Time</th>
-                                                                            <th class="text-center">Days</th>
-                                                                            <th class="text-center">Grades</th>
+                                                                            <th>Units</th>
+                                                                            <th>Professor</th>
+                                                                            <th>Time</th>
+                                                                            <th>Days</th>
+                                                                            <th>Grades</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                             <% studentClass.subjects.forEach(subject => { %>
-                                                                                <tr style="white-space: nowrap;">
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
+                                                                                <tr class="text-center" style="white-space: nowrap;">
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.days ? subject.days : 'N/A' %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.grade ? subject.grade : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.unit %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.days ? subject.days : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.grade %></td>
                                                                                 </tr>
                                                                             <% }) %>
                                                                     </tbody>

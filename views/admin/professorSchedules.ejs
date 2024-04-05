@@ -23,6 +23,30 @@
                             </div>
                         </div>
                         <!-- Page-header end -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Remark All Schedules</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <form action="/admin/professors/schedule/doHistory" method="post">
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="batch" class="col-form-label">Schedule Batch:</label>
+                                            <input type="text" class="form-control" name="batch" id="batch" placeholder="YYYY-YYYY" pattern="\d{4}-\d{4}" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-sm btn-warning">Submit</button>
+                                    </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
                         <div class="pcoded-inner-content">
                             <div class="main-body">
                                 <div class="page-wrapper">
@@ -33,15 +57,14 @@
                                                     <div class="card-header">
                                                         <div class="row">
                                                             <div class="col-6 align-middle">
-                                                                <h5>Note: <code>This can only be press once all sections is ended.</code></h5>
+                                                                <h5>Note: <code>This can only be press once all classes is ended.</code></h5>
                                                             </div>
                                                             <div class="col-6">
                                                                 <div class="justify-content-end align-items-center d-flex">
-                                                                    <button type="submit" class="btn btn-sm btn-warning">Remark Schedules</button>
+                                                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal">Remark All Schedules</button>
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -69,7 +92,7 @@
                                                                                     <div class="d-flex justify-content-center align-items-center btn-group">
                                                                                         <a href="/admin/professor/schedule/<%= schedule._id %>" class="btn btn-sm btn-primary"><i class="ti-eye"></i>View Schedule</a>
                                                                                         <a href="/admin/professor/classes/<%= schedule._id %>" class="btn btn-sm btn-secondary"><i class="ti-eye"></i>View Classes</a>
-                                                                                        <a href="/admin/professor/classes/<%= schedule._id %>" class="btn btn-sm btn-info"><i class="ti-eye"></i>View Old Schedules</a>
+                                                                                        <a href="/admin/professors/schedule/history/<%= schedule.professorId._id %>" class="btn btn-sm btn-info"><i class="ti-eye"></i>View Old Schedules</a>
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>

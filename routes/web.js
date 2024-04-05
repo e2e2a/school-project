@@ -28,12 +28,7 @@ const professorIndexController = require('../controllers/professor/indexControll
 const professorProfileController = require('../controllers/professor/profileController');
 const professorScheduleController = require('../controllers/professor/scheduleController');
 const professorClassController = require('../controllers/professor/classController');
-/**
- * @todo
- * end the semester
- * do prospectus
- * /professor/records
- */
+const professorRecordController = require('../controllers/professor/recordController');
 
 
 module.exports = function (app) {
@@ -78,6 +73,7 @@ module.exports = function (app) {
     app.get('/professor/schedule', professorScheduleController.schedule);
     app.get('/professor/class', professorClassController.index);
     app.post('/professor/class/doGrade', professorClassController.doGrade);
+    app.get('/professor/records', professorRecordController.professorRecord);
 
     //admin
     app.get('/admin/courses', isAdmin, adminCourseController.index);
@@ -101,6 +97,8 @@ module.exports = function (app) {
     app.post('/admin/category', isAdmin, adminCategoryController.actions);
     app.post('/admin/category/endSemester', isAdmin, adminEndSemesterController.endSemester)
     app.get('/admin/professors/schedule', isAdmin, adminScheduleController.professor);
+    app.get('/admin/professors/schedule/history/:id', isAdmin, adminScheduleController.professorHistory);
+    app.post('/admin/professors/schedule/doHistory', isAdmin, adminScheduleController.professorDoHistory);
     app.get('/admin/professor/schedule/:id', isAdmin, adminScheduleController.professorView);
     app.get('/admin/professor/classes/:id', isAdmin, adminScheduleController.professorClassesView);
     app.get('/admin/user/student/list', isAdmin, adminUserController.student);

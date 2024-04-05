@@ -35,27 +35,18 @@
                                                                 <div class="card-header">
                                                                     <h5><%= schedule.subjectId.courseId.name %> - <%= schedule.subjectId.year %> - <%= schedule.subjectId.semester %> - <%= schedule.subjectId.section %></h5>
                                                                     <span>Subject: <%= schedule.subjectId.subjectCode %> - <%= schedule.subjectId.name %> <code>Time: <%= schedule.startTime ? schedule.startTime : 'N/A' %> - <%= schedule.endTime ? schedule.endTime : 'N/A'  %></code> </span>
-                                                                    <div class="card-header-right">
-                                                                        <ul class="list-unstyled card-option">
-                                                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                            <li><i class="fa fa-trash close-card"></i></li>
-                                                                        </ul>
-                                                                    </div>
                                                                 </div>
                                                                 <div class="card-block table-border-style">
                                                                     <div class="table-responsive">
                                                                         <table class="table table-bordered">
                                                                             <thead>
-                                                                                <tr>
-                                                                                    <th class="text-center">Student Name</th>
-                                                                                    <th class="text-center">Subject Code</th>
+                                                                                <tr class="text-center" style="white-space: nowrap;">
+                                                                                    <th>Student Name</th>
+                                                                                    <th>Subject Code</th>
                                                                                     <th>Descriptive Title</th>
-                                                                                    <th class="text-center">Units</th>
-                                                                                    <th class="text-center">Grades</th>
-                                                                                    <th class="text-center">Actions</th>
+                                                                                    <th>Units</th>
+                                                                                    <th>Grades</th>
+                                                                                    <th>Actions</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -64,16 +55,16 @@
                                                                                     <% studentClass.subjects.forEach(subject => { %>
                                                                                         <% if (subject.subjectId._id.toString() === schedule.subjectId._id.toString()) { %> 
                                                                                             <form action="/professor/class/doGrade" method="post">                                                                                      <tr style="white-space: nowrap;">
-                                                                                                <tr>    
+                                                                                                <tr class="text-center" style="white-space: nowrap;">    
                                                                                                     <input type="hidden" name="studentClassId" id="studentClassId" value="<%= studentClass._id %>">
                                                                                                     <input type="hidden" name="subjectId" id="subjectId" value="<%= subject._id %>">
-                                                                                                    <td class="align-middle text-capitalize text-center"><%= studentClass.studentId.lastname %>, <%= studentClass.studentId.firstname %> <%= studentClass.studentId.middlename %></td>
+                                                                                                    <td class="align-middle text-capitalize"><%= studentClass.studentId.lastname %>, <%= studentClass.studentId.firstname %> <%= studentClass.studentId.middlename %></td>
                                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.subjectCode %></td>
                                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
-                                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
+                                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.unit %></td>
                                                                                                     <td class="align-middle">
                                                                                                         <div class="d-flex justify-content-center align-items-center">
-                                                                                                            <input type="text" name="grade" id="grade" class="form-control border border-success" style="width: 200px;" placeholder="Grades" value="<%= subject.grade %>">
+                                                                                                            <input type="text" name="grade" id="grade" class="form-control border border-primary" style="width: 200px;" placeholder="Grades" value="<%= subject.grade %>">
                                                                                                         </div>
                                                                                                     </td>
                                                                                                     <td>
