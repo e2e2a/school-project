@@ -90,13 +90,17 @@ module.exports = function (app) {
     app.get('/admin/sections', isAdmin, adminsectionController.index);
     app.get('/admin/section/add', isAdmin, adminsectionController.create);
     app.post('/admin/section/add', isAdmin, adminsectionController.doCreate);
+    app.get('/admin/section/edit/:id', isAdmin, adminsectionController.edit);
+    app.post('/admin/section/edit/:id', isAdmin, adminsectionController.doEdit);
+    app.post('/admin/section/delete/:id', isAdmin, adminsectionController.delete);
+    /**
+     * @todo
+     */
     app.get('/admin/subjects', isAdmin, adminSubjectController.index);
     app.get('/admin/subject/add', isAdmin, adminSubjectController.create);
     app.post('/admin/subject/add', isAdmin, adminSubjectController.doCreate);
-    //
     app.get('/admin/subject/edit/:id', isAdmin, adminSubjectController.edit);
     app.post('/admin/subject/edit/:id', isAdmin, adminSubjectController.doEdit);
-    //
     app.get('/admin/category', isAdmin, adminCategoryController.index);
     app.post('/admin/category', isAdmin, adminCategoryController.actions);
     app.post('/admin/category/endSemester', isAdmin, adminEndSemesterController.endSemester)

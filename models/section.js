@@ -38,6 +38,9 @@ var schema = mongoose.Schema({
             type: String,
         },
     }], 
+    description: { 
+        type: String
+    },
     status: { 
         type: Boolean, 
         default: false ,

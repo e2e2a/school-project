@@ -49,15 +49,18 @@
                                                         <div class="card">
                                                             <div class="card-header">
                                                                 <div class="row">
-                                                                    <div class="col-12 col-lg-8 col-xl-8 col-md-8 col-sm-8">
+                                                                    <div class="col-12 col-lg-8 col-xl-8">
                                                                         <h5 class=""><%= section.courseId.name %> - <%= section.year %> - <%= section.semester %> - <%= section.section %></h5>
                                                                     </div>
-                                                                    <div class="col-12 col-lg-4 col-xl-4 col-md-4 col-sm-4 d-flex justify-content-end align-items-center mt-2">
-                                                                        <div class="btn-group">
-                                                                            <a href="/admin/subject/add?category=<%= section.courseId.category %>&year=<%= section.year %>&semester=<%= section.semester %>&section=<%= section.section %>" class="btn btn-sm btn-success"><i class="ti-plus"></i> Add Subject</a>
-                                                                            <a href="" class="btn btn-sm btn-primary text-white"><i class="ti-pencil-alt"></i> Edit Section</a>
-                                                                            <button type="submit" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete Section</button>
-                                                                        </div>
+                                                                    <div class="col-12 col-lg-4 col-xl-4 d-flex justify-content-end align-items-center mt-2">
+                                                                        <!-- @todo task -->
+                                                                        <form action="/admin/section/delete/<%= section._id %>?category=<%= section.courseId.category %>&year=<%= section.year %>&semester=<%= section.semester %>" method="post">
+                                                                            <div class="btn-group d-flex">
+                                                                                <a href="/admin/subject/add?category=<%= section.courseId.category %>&year=<%= section.year %>&semester=<%= section.semester %>&section=<%= section.section %>" class="btn btn-sm btn-success"><i class="ti-plus"></i> Add Subject</a>
+                                                                                <a href="/admin/section/edit/<%= section._id %>?category=<%= section.courseId.category %>&year=<%= section.year %>&semester=<%= section.semester %>" class="btn btn-sm btn-primary text-white"><i class="ti-pencil-alt"></i> Edit Section</a>
+                                                                                <button type="submit" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete Section</button>
+                                                                            </div>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
                                                             </div>

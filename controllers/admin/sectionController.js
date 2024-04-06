@@ -3,6 +3,8 @@ const Subject = require('../../models/subject');
 const Course = require('../../models/course');
 const Section = require('../../models/section');
 const mongoose = require('mongoose');
+const section = require('../../models/section');
+const StudentClass = require('../../models/studentClass');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
@@ -77,3 +79,72 @@ module.exports.doCreate = async (req, res) => {
     req.flash('message', 'Section created successfully.');
     return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
 } 
+
+module.exports.edit = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid subjectId:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    if (!req.query.category || !req.query.year || !req.query.semester) {
+        console.log('Query fields are empty');
+        req.flash('message', 'Query fields are empty');
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const section = await Section.findById(id);
+    const coursesSidebar = await Course.find();
+    res.render('admin/sectionEdit', {
+        site_title: SITE_TITLE,
+        title: 'Subject',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        section: section,
+        coursesSidebar: coursesSidebar,
+    });
+}
+
+module.exports.doEdit = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid subjectId:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    if (!req.query.category || !req.query.year || !req.query.semester) {
+        console.log('Query fields are empty');
+        req.flash('message', 'Query fields are empty');
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const data = {
+        section: req.body.section,
+        description: req.body.description,
+    }
+    const section = await Section.findByIdAndUpdate(id, data, { new: true });
+    if (section) {
+        console.log('success update');
+        return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`)
+    }
+}
+
+module.exports.delete = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid subjectId:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    if (!req.query.category || !req.query.year || !req.query.semester) {
+        console.log('Query fields are empty');
+        req.flash('message', 'Query fields are empty');
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const studentClass = await StudentClass.find({sectionId: id});
+    if(studentClass.length > 0){
+        req.flash('message', 'Cannot be deleted. There are student enrolled to this section.');
+        return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`)
+    }
+    const section = await Section.findByIdAndDelete(id);
+    if (section) {
+        return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`)
+    }
+    return res.status(404).render('404', { role: 'admin' });
+}
