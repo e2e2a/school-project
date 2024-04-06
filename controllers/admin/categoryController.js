@@ -46,6 +46,11 @@ module.exports.actions = async (req, res) => {
         const { category, year, semester, link } = req.query;
         if (category && year && semester) {
             const { subjectId, professorId, startTime, endTime, section, days } = req.body;
+            if (!subjectId || !professorId || !startTime || !endTime || !section || !days) {
+                console.log('Required fields are missing in the request body');
+                req.flash('message', 'Please provide a professor, schedule and time.')
+                return res.status(404).render('404', { role: 'admin' });
+            }
             const sectionFilter = { category, semester, year, section };
             if (!mongoose.Types.ObjectId.isValid(professorId)) {
                 console.log('Invalid professorId:', professorId);

@@ -12,7 +12,7 @@ module.exports.index = async (req, res) => {
     const coursesSidebar = await Course.find();
     res.render('admin/sectionView', {
         site_title: SITE_TITLE,
-        title: 'Section',
+        title: 'Sections',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
@@ -150,8 +150,13 @@ module.exports.delete = async (req, res) => {
         req.flash('message', 'Cannot be deleted. There are student enrolled to this section.');
         return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`)
     }
-    const section = await Section.findByIdAndDelete(id);
-    if (section) {
+    const section = await Section.findById(id);
+    if (section && section.subjects && section.subjects.length > 0) {
+        req.flash('message', 'Section cannot be deleted if there are subjects assigned.');
+        return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`);
+    }
+    const deletedSection  = await Section.findByIdAndDelete(id);
+    if (deletedSection ) {
         return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`)
     }
     return res.status(404).render('404', { role: 'admin' });

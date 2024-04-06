@@ -33,42 +33,27 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5>Sections List</h5>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table class="table">
+                                                            <table class="table table-bordered">
                                                                 <thead>
-                                                                    <tr class="text-center">
+                                                                    <tr class="text-center" style="white-space: nowrap;">
                                                                         <th>Category</th>
                                                                         <th>Section</th>
                                                                         <th>Year</th>
                                                                         <th>Semester</th>
-                                                                        <th>Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <% sections.forEach(section => { %>
                                                                     <form action="" method="post">
-                                                                        <tr class="text-center">
+                                                                        <tr class="text-center" style="white-space: nowrap;">
                                                                             <td class="align-middle text-capitalize" style="white-space: nowrap;"> <%= section.courseId.category %></td>
                                                                             <td class="align-middle text-capitalize" style="white-space: nowrap;"><%= section.section %></td>
                                                                             <td class="align-middle text-capitalize" style="white-space: nowrap;"> <%= section.year %></td>
                                                                             <td class="align-middle text-capitalize" style="white-space: nowrap;"> <%= section.semester %></td>
                                                                             <input type="hidden" name="sectionId" id="sectionId" value="<%= section._id %>">
-                                                                            <td class="text-center align-middle">
-                                                                                <div class="btn-group d-flex justify-content-center align-items-center">
-                                                                                    <a href="" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Edit</a>
-                                                                                    <button type="submit" name="actions" value="delete" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
-                                                                                </div>
-                                                                            </td>
                                                                         </tr>
                                                                     </form>
                                                                     <% }) %>

@@ -33,20 +33,12 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5>Subjects List</h5>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table class="table">
+                                                            <table class="table table-bordered">
                                                                 <thead>
-                                                                    <tr class="text-center">
+                                                                    <tr class="text-center" style="white-space: nowrap;">
                                                                         <th>Subject Code</th>
                                                                         <th>Name</th>
                                                                         <th>Unit</th>
@@ -55,7 +47,6 @@
                                                                         <th>Semester</th>
                                                                         <th>Section</th>
                                                                         <th>Description</th>
-                                                                        <th>Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -71,12 +62,6 @@
                                                                             <td class="align-middle text-capitalize" style="white-space: nowrap;"><%= subject.section %></td>
                                                                             <td class="align-middle text-capitalize" style="width: 30%;"> <%= subject.description %></td>
                                                                             <input type="hidden" name="subjectId" id="subjectId" value="<%= subject._id %>">
-                                                                            <td class="text-center align-middle">
-                                                                                <div class="btn-group d-flex justify-content-center align-items-center">
-                                                                                    <a href="" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Edit</a>
-                                                                                    <button type="submit" name="actions" value="delete" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
-                                                                                </div>
-                                                                            </td>
                                                                         </tr>
                                                                     </form>
                                                                     <% }) %>

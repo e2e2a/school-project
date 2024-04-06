@@ -45,6 +45,11 @@ module.exports.doEnroll = async (req, res) => {
                     req.flash('message', 'Invalid courseId.');
                     return res.redirect('/admin/enrollments/enrolling');
                 }
+                if (!req.body.year || !req.body.semester || !req.body.section || !req.body.batch ) {
+                    console.log('Required fields are missing in the request body');
+                    req.flash('message', 'Please make sure to put year, semester, section and batch.');
+                    return res.redirect('/admin/enrollments/enrolling');
+                }
                 const course = await Course.findById(courseId)
                 const checkSection = await Section.findOne({
                     courseId: course._id,

@@ -65,7 +65,7 @@
                                                                             <td class="align-middle text-capitalize"><%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %></td>
                                                                             <td class="align-middle"><%= profile.courseId.name %></td>
                                                                             <td class="align-middle">
-                                                                                <select name="year" class="form-control" id="year" style="width: 200px;" required>
+                                                                                <select name="year" class="form-control" id="year" style="width: 200px;" >
                                                                                     <option value="" selected hidden>Select Year</option>
                                                                                     <option value="1st Year">1st Year</option>
                                                                                     <option value="2nd Year">2nd Year</option>
@@ -73,21 +73,21 @@
                                                                                 </select>
                                                                             </td>
                                                                             <td class="align-middle">
-                                                                                <select name="semester" class="form-control" id="semester" style="width: 200px;" required>
+                                                                                <select name="semester" class="form-control" id="semester" style="width: 200px;" >
                                                                                     <option value="" selected hidden>Select Semester</option>
                                                                                     <option value="1st Semester">1st Semester</option>
                                                                                     <option value="2nd Semester">2nd Semester</option>
                                                                                 </select>
                                                                             </td>
                                                                             <td class="align-middle">
-                                                                                <select name="section" class="form-control" id="section" style="width: 200px;" required>
+                                                                                <select name="section" class="form-control" id="section" style="width: 200px;" >
                                                                                     <option value="" selected hidden>Select Section</option>
                                                                                     <option value="Section 1">Section 1</option>
                                                                                     <option value="Section 2">Section 2</option>
                                                                                 </select>
                                                                             </td>
                                                                             <td class="align-middle">
-                                                                                <input type="text" class="form-control" pattern="\d{4}-\d{4}" name="batch" id="batch" style="width: 200px;" required>
+                                                                                <input type="text" class="form-control" pattern="\d{4}-\d{4}" name="batch" id="batch" style="width: 200px;" >
                                                                             </td>
                                                                             <input type="hidden" name="courseId" id="courseId" value="<%= profile.courseId._id %>">
                                                                             <input type="hidden" name="studentId" id="studentId" value="<%= profile._id %>">

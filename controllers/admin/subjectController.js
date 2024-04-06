@@ -11,7 +11,7 @@ module.exports.index = async (req, res) => {
     const coursesSidebar = await Course.find();
     res.render('admin/subjectView', {
         site_title: SITE_TITLE,
-        title: 'Subject',
+        title: 'Subjects',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
