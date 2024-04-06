@@ -32,7 +32,9 @@ const professorRecordController = require('../controllers/professor/recordContro
 
 
 module.exports = function (app) {
-    //auth
+    /**
+     * auth
+     */
     app.get('/login', authLoginController.login);
     app.post('/doLogin', authLoginController.doLogin);
     app.get('/register', authRegisterController.register);
@@ -54,7 +56,9 @@ module.exports = function (app) {
 
 
 
-    //user
+    /**
+     * student
+     */
     app.get('/', isStudent, isStudentProfileVerified, userIndexController.index);
     app.get('/profile', isStudent, userProfileController.index);
     app.post('/profile/update', isStudent, userProfileController.update);
@@ -62,11 +66,12 @@ module.exports = function (app) {
     app.post('/course/enroll', isStudent, isStudentProfileVerified, userCourseController.enroll);
     app.get('/enrollment/subjects', isStudent, isStudentProfileVerified, userEnrollmentController.index);
     app.get('/enrollment/prospectus', isStudent, isStudentProfileVerified, userEnrollmentController.prospectus);
-    //print enrollment
     app.get('/form', isStudent, isStudentProfileVerified, userFormPrintController.index);
     app.post('/form/print', isStudent, isStudentProfileVerified, userFormPrintController.print);
     
-    //professor
+    /**
+     * professor
+     */
     app.get('/professor', professorIndexController.index);
     app.get('/professor/profile', professorProfileController.index);
     app.post('/professor/profile', professorProfileController.update);
@@ -75,7 +80,9 @@ module.exports = function (app) {
     app.post('/professor/class/doGrade', professorClassController.doGrade);
     app.get('/professor/records', professorRecordController.professorRecord);
 
-    //admin
+    /**
+     * admin
+     */
     app.get('/admin/courses', isAdmin, adminCourseController.index);
     app.get('/admin/course/add', isAdmin, adminCourseController.create);
     app.post('/admin/course/add', isAdmin, adminCourseController.doCreate);
@@ -93,14 +100,12 @@ module.exports = function (app) {
     app.get('/admin/section/edit/:id', isAdmin, adminsectionController.edit);
     app.post('/admin/section/edit/:id', isAdmin, adminsectionController.doEdit);
     app.post('/admin/section/delete/:id', isAdmin, adminsectionController.delete);
-    /**
-     * @todo
-     */
     app.get('/admin/subjects', isAdmin, adminSubjectController.index);
     app.get('/admin/subject/add', isAdmin, adminSubjectController.create);
     app.post('/admin/subject/add', isAdmin, adminSubjectController.doCreate);
     app.get('/admin/subject/edit/:id', isAdmin, adminSubjectController.edit);
     app.post('/admin/subject/edit/:id', isAdmin, adminSubjectController.doEdit);
+    // 
     app.get('/admin/category', isAdmin, adminCategoryController.index);
     app.post('/admin/category', isAdmin, adminCategoryController.actions);
     app.post('/admin/category/endSemester', isAdmin, adminEndSemesterController.endSemester)

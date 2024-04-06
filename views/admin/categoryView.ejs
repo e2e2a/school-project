@@ -86,12 +86,13 @@
                                                                                         <input type="hidden" name="section" value="<%= section.section %>">
                                                                                         <input type="hidden" name="link" value="category=<%= category %>&year=<%= year %>&semester=<%= semester %>">
                                                                                         <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
+                                                                                        <input type="hidden" name="sectionId" id="sectionId" value="<%= section._id %>">
                                                                                         <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
                                                                                         <td class="align-middle text-capitalize text-center"><%= subject.subjectId.name %></td>
                                                                                         <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
                                                                                         <td class="align-middle">
                                                                                             <div class="form-group">
-                                                                                                <select name="professorId" id="professorId" class="form-control border" style="text-transform: capitalize;width: 200px;" required>
+                                                                                                <select name="professorId" id="professorId" class="form-control border" style="text-transform: capitalize;width: 200px;" >
                                                                                                     <option value="" selected hidden>Select Option</option>
                                                                                                     <% professors.forEach(professor => { %>
                                                                                                         <!-- Check if subject.professorId exists and is equal to professor._id -->

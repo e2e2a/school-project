@@ -50,7 +50,6 @@ module.exports.doCreate = async (req, res) => {
         return res.status(404).render('404', { role: 'admin' });
     }
     const course = await Course.findOne({ category: category })
-    console.log(category)
     if (course) {
         const checkSection = await Section.findOne({
             courseId: course._id,

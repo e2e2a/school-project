@@ -1,5 +1,6 @@
 const User = require('../../models/user')
 const Course = require('../../models/course');
+const Subject = require('../../models/subject');
 const StudentClass = require('../../models/studentClass');
 const ProfessorProfile = require('../../models/professorProfile');
 const Section = require('../../models/section');
@@ -169,6 +170,63 @@ module.exports.actions = async (req, res) => {
                 console.error('Error saving schedule:', error);
                 res.status(500).send('Error saving schedule');
             }
+        }
+    } else if (actions === 'delete') {
+        const id = req.body.subjectId;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            console.log('Invalid subjectId:', id);
+            return res.status(404).render('404', { role: 'admin' });
+        }
+        const sectionId = req.body.sectionId;
+        if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+            console.log('Invalid subjectId:', sectionId);
+            return res.status(404).render('404', { role: 'admin' });
+        }
+        const { category, year, semester, section } = req.query;
+        if (!category || !year || !semester) {
+            console.log('Query fields are empty');
+            req.flash('message', 'Query fields are empty');
+            return res.status(404).render('404', { role: 'admin' });
+        }
+        const course = await Course.findOne({ category: category });
+        if (!course) {
+            console.log('No courses found. Please check the course name.');
+            req.flash('message', 'No courses found. Please check the course selected.');
+            return res.status(404).render('404', { role: 'admin' });
+        }
+        const checkSection = await Section.findById(sectionId);
+        console.log(checkSection)
+        if (!checkSection) {
+            console.log('A Section did not exist. Please check the sections list.');
+            req.flash('message', 'A Section did not exist. Please check the sections list.');
+            return res.status(404).render('404', { role: 'admin' });
+        }
+        try {
+            const subject = await Subject.findById(id);
+            const studentClasses = await StudentClass.find({ sectionId: checkSection._id });
+            await Promise.all(studentClasses.map(async (studentClass) => {
+                studentClass.subjects = studentClass.subjects.filter(sub => !sub.subjectId.equals(subject._id));
+                await studentClass.save();
+            }));
+
+            const professorSchedules = await Schedule.find();
+            await Promise.all(professorSchedules.map(async (schedule) => {
+                if (schedule.schedule && Array.isArray(schedule.schedule)) {
+                    schedule.schedule = schedule.schedule.filter(sub => !sub.subjectId.equals(subject._id));
+                    await schedule.save();
+                }
+            }));
+
+            checkSection.subjects = checkSection.subjects.filter(sub => !sub.subjectId.equals(subject._id));
+            await checkSection.save();
+            await Subject.findByIdAndDelete(id);
+            console.log('Subject deleted from section.');
+            req.flash('message', 'Subject deleted successfully.');
+            return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
+        } catch (error) {
+            console.error('Error deleting subject:', error);
+            req.flash('message', 'An error occurred while deleting the subject.');
+            return res.status(500).redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
         }
     }
 }
