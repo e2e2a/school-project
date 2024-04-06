@@ -49,24 +49,24 @@
                                                                 <div class="table-responsive">
                                                                     <table class="table table-bordered">
                                                                         <thead>
-                                                                            <tr>
-                                                                                <th class="text-center">Subject Code</th>
+                                                                            <tr class="text-center" style="white-space: nowrap;">
+                                                                                <th>Subject Code</th>
                                                                                 <th>Descriptive Title</th>
-                                                                                <th class="text-center">Units</th>
-                                                                                <th class="text-center">Professor</th>
-                                                                                <th class="text-center">Time</th>
-                                                                                <th class="text-center">Grades</th>
+                                                                                <th>Units</th>
+                                                                                <th>Professor</th>
+                                                                                <th>Time</th>
+                                                                                <th>Grades</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                             <% student.subjects.forEach(subject => { %>
-                                                                                <tr style="white-space: nowrap;">
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subject.subjectCode %></td>
+                                                                                <tr class="text-center" style="white-space: nowrap;">
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subject.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subject.name %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subject.unit %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.professorName.lastname %>, <%= subject.professorName.firstname %> <%= subject.professorName.middlename %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.startTime %> - <%= subject.endTime %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.grade  %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subject.unit %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.professorName.lastname %>, <%= subject.professorName.firstname %> <%= subject.professorName.middlename %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.startTime %> - <%= subject.endTime %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.grade  %></td>
                                                                                 </tr>
                                                                             <% }) %>
                                                                         </tbody>

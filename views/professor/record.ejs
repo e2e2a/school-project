@@ -39,13 +39,13 @@
                                                                 <div class="table-responsive">
                                                                     <table class="table table-bordered">
                                                                         <thead>
-                                                                            <tr>
-                                                                                <th class="text-center">Time</th>
-                                                                                <th class="text-center">Category</th>
-                                                                                <th class="text-center">Subject Code</th>
-                                                                                <th class="text-center">Descriptive Title</th>
-                                                                                <th class="text-center">Units</th>
-                                                                                <th class="text-center">Days</th>
+                                                                            <tr class="text-center" style="white-space: nowrap;">
+                                                                                <th>Time</th>
+                                                                                <th>Category</th>
+                                                                                <th>Subject Code</th>
+                                                                                <th>Descriptive Title</th>
+                                                                                <th>Units</th>
+                                                                                <th>Days</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -56,13 +56,13 @@
                                                                                 return aStartHour - bStartHour || aStartMinute - bStartMinute;
                                                                             });
                                                                             sortedSchedule.forEach(subject => { %>
-                                                                                <tr style="white-space: nowrap;">
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.startTime %> - <%= subject.endTime %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subject.category %> - <%= subject.subject.year %> - <%= subject.subject.semester %> - <%= subject.subject.section %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subject.subjectCode %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subject.name %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subject.unit %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.days %></td>
+                                                                                <tr class="text-center" style="white-space: nowrap;">
+                                                                                    <td class="align-middle text-capitalize"><%= subject.startTime %> - <%= subject.endTime %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subject.category %> - <%= subject.subject.year %> - <%= subject.subject.semester %> - <%= subject.subject.section %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subject.subjectCode %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subject.name %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subject.unit %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.days %></td>
                                                                                 </tr>
                                                                             <% }) %>
                                                                         </tbody>
