@@ -77,8 +77,12 @@ module.exports.professorDoHistory = async (req, res) => {
         return res.redirect('/admin/professors/schedule')
     }
     const schedules = await Schedule.find().populate('schedule.subjectId').populate('professorId');
+    if(schedules.length === 0){
+        req.flash('message', 'Cannot make a schedule history. All professors have no schedules.')
+        return res.redirect('/admin/professors/schedule')
+    }
     for (const schedule of schedules) {
-        const { professorId, category, year, semester, section } = schedule;
+        const { professorId } = schedule;
 
         const prospectusSubjects = schedule.schedule.map(subject => {
             const subjectId = subject.subjectId;
@@ -88,10 +92,10 @@ module.exports.professorDoHistory = async (req, res) => {
                     subjectCode: subjectId.subjectCode,
                     name: subjectId.name,
                     unit: subjectId.unit,
-                    category: category,
-                    year: year,
-                    semester: semester,
-                    section: section,
+                    category: subjectId.category,
+                    year: subjectId.year,
+                    semester: subjectId.semester,
+                    section: subjectId.section,
                 },
                 days: subject.days,
                 startTime: subject.startTime,
@@ -111,6 +115,13 @@ module.exports.professorDoHistory = async (req, res) => {
         });
         console.log('history', history)
         await history.save();
+    }
+    const sections = await Section.find();
+    for (const section of sections) {
+        await Section.updateOne(
+            { _id: section._id },
+            { $set: { subjects: section.subjects.map(subject => ({ subjectId: subject.subjectId })) } }
+        );
     }
     const result = await Schedule.updateMany({}, { $set: { schedule: [] } });
     console.log(`${result.nModified} documents updated.`);
