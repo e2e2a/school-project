@@ -148,14 +148,22 @@
                                                                     </table>
                                                                 </div>
                                                             </div>
-                                                            <div class="card-footer">
-                                                                <form action="/admin/category/endSemester" method="post">
-                                                                    <input type="hidden" name="sectionId" id="sectionId" value="<%= section._id %>">
-                                                                    <div class="d-flex justify-content-end align-items-center">
-                                                                        <button type="submit" class="btn btn-warning">End Semester</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+                                                            <% const sectionStudentClass = studentClass.filter(data => data.sectionId.equals(section._id)); %>
+                                                            <% console.log(sectionStudentClass.length) %>
+                                                            <% if(sectionStudentClass && sectionStudentClass.length > 0) { %>
+                                                                <div class="card-footer">
+                                                                    <form action="/admin/category/endSemester" method="post">
+                                                                        <input type="hidden" name="sectionId" id="sectionId" value="<%= section._id %>">
+                                                                        <div class="d-flex justify-content-end align-items-center">
+                                                                            <button type="submit" class="btn btn-warning">End Semester</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            <% } else { %>
+                                                                <div class="card-footer text-center">
+                                                                    <div>No students enrolled for this section.</div>
+                                                                </div>
+                                                            <% } %>
                                                         </div>
                                                     </div>
                                                 <% }); %>

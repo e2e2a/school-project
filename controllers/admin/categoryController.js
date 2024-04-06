@@ -20,8 +20,8 @@ module.exports.index = async (req, res) => {
         year: year,
         semester: semester,
     }).populate('courseId').populate('subjects.subjectId').populate('subjects.professorId').exec();
-
     const professors = await ProfessorProfile.find().populate('userId').exec();
+    const studentClass = await StudentClass.find()
     const coursesSidebar = await Course.find();
     res.render('admin/categoryView', {
         site_title: SITE_TITLE,
@@ -34,6 +34,7 @@ module.exports.index = async (req, res) => {
         category: category,
         year: year,
         semester: semester,
+        studentClass: studentClass,
         coursesSidebar: coursesSidebar,
     });
 }

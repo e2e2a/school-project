@@ -22,6 +22,14 @@ module.exports.index = async (req, res) => {
 }
 
 module.exports.create = async (req, res) => {
+    const category = req.query.category;
+    const year = req.query.year;
+    const semester = req.query.semester;
+
+    if (!category || !year || !semester || category.trim() === '' || year.trim() === '' || semester.trim() === '') {
+        console.log('One or more parameters are missing or empty.');
+        return res.status(404).render('404', { role: 'admin' });
+    }
     const courses = await Course.find()
     const coursesSidebar = await Course.find();
     res.render('admin/sectionAdd', {
