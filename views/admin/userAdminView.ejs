@@ -33,20 +33,12 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5>User Admins</h5>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table class="table">
+                                                            <table class="table table-bordered">
                                                                 <thead>
-                                                                    <tr class="text-center">
+                                                                    <tr class="text-center" style="white-space: nowrap;">
                                                                         <th>Email</th>
                                                                         <th>Fullname</th>
                                                                         <th>Contact</th>
@@ -59,7 +51,7 @@
                                                                         <% if(profile.userId.isVerified){ %>
                                                                     <form action="/admin/enrollment/doEnroll" method="post">
                                                                         <tr class="text-center" style="white-space: nowrap;">
-                                                                            <td class="align-middle text-capitalize"> <%= profile.userId.email %></td>
+                                                                            <td class="align-middle"> <%= profile.userId.email %></td>
                                                                             <td class="align-middle text-capitalize"><%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %></td>
                                                                             <td class="align-middle text-capitalize"> <%= profile.contact %></td>
                                                                             <td class="align-middle text-capitalize"> <%= profile.userId.role %></td>

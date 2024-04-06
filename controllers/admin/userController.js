@@ -15,7 +15,7 @@ module.exports.student = async (req, res) => {
     const coursesSidebar = await Course.find();
     res.render('admin/userStudentView', {
         site_title: SITE_TITLE,
-        title: 'User',
+        title: 'Users',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
@@ -28,7 +28,7 @@ module.exports.professor = async (req, res) => {
     const coursesSidebar = await Course.find();
     res.render('admin/userProfessorView', {
         site_title: SITE_TITLE,
-        title: 'User',
+        title: 'Users',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
@@ -41,7 +41,7 @@ module.exports.admin = async (req, res) => {
     const coursesSidebar = await Course.find();
     res.render('admin/userAdminView', {
         site_title: SITE_TITLE,
-        title: 'User',
+        title: 'Users',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
