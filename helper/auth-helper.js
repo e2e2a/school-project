@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const studentProfile = require('../models/studentProfile');
+const ProfessorProfile = require('../models/professorProfile');
 
 async function isAuthenticated(req, res, next) {
     if (req.session.login) {
@@ -53,10 +54,23 @@ async function isStudentProfileVerified(req, res, next) {
     });
 }
 
+async function isProfessorProfileVerified(req, res, next) {
+    await isProfessor(req, res, async () => {
+        const professor = await ProfessorProfile.findOne({userId: req.session.login});
+        if (professor && professor.isVerified) {
+            next();
+        } else {
+            req.flash('message', 'Update your profile to begin the class.');
+            return res.redirect('/professor/profile')
+        }
+    });
+}
+
 module.exports = {
     isAuthenticated,
     isAdmin,
     isProfessor,
     isStudent,
-    isStudentProfileVerified
+    isStudentProfileVerified,
+    isProfessorProfileVerified
 };

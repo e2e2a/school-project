@@ -9,41 +9,28 @@ const mongoose = require('mongoose');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
-    try {
-        const userLogin = await User.findById(req.session.login);
-        if (userLogin) {
-            if (userLogin.role === 'professor') {
-                const professorProfile = await ProfessorProfile.findOne({ userId: userLogin._id });
-                const professorSchedule = await Schedule.findOne({ professorId: professorProfile._id }).populate('schedule.subjectId')
-                    .populate({
-                        path: 'schedule.subjectId',
-                        populate: {
-                            path: 'courseId',
-                            model: 'Course'
-                        }
-                    });
-                const studentClasses = await StudentClass.find({ 'subjects.professorId': professorProfile._id }).populate('subjects.subjectId').populate('studentId');
-                res.render('professor/class', {
-                    site_title: SITE_TITLE,
-                    title: 'Class',
-                    messages: req.flash(),
-                    currentUrl: req.originalUrl,
-                    userLogin: userLogin,
-                    req: req,
-                    professorProfile: professorProfile,
-                    professorSchedule: professorSchedule,
-                    studentClasses: studentClasses,
-                });
-            } else {
-                return res.status(404).render('404');
+    const userLogin = await User.findById(req.session.login);
+    const professorProfile = await ProfessorProfile.findOne({ userId: userLogin._id });
+    const professorSchedule = await Schedule.findOne({ professorId: professorProfile._id }).populate('schedule.subjectId')
+        .populate({
+            path: 'schedule.subjectId',
+            populate: {
+                path: 'courseId',
+                model: 'Course'
             }
-        } else {
-            return res.redirect('/login');
-        }
-    } catch (error) {
-        console.log('error:', error)
-        return res.status(500).render('500');
-    }
+        });
+    const studentClasses = await StudentClass.find({ 'subjects.professorId': professorProfile._id }).populate('subjects.subjectId').populate('studentId');
+    res.render('professor/class', {
+        site_title: SITE_TITLE,
+        title: 'Class',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        userLogin: userLogin,
+        req: req,
+        professorProfile: professorProfile,
+        professorSchedule: professorSchedule,
+        studentClasses: studentClasses,
+    });
 }
 
 module.exports.doGrade = async (req, res) => {

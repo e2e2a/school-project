@@ -56,6 +56,9 @@ module.exports.professorClassesView = async (req, res) => {
                 model: 'Course'
             }
         }).populate('professorId');
+    if(!professorSchedule){
+        return res.status(404).render('404', { role: 'admin' });
+    }
     const studentClasses = await StudentClass.find({ 'subjects.professorId': professorSchedule.professorId }).populate('subjects.subjectId').populate('studentId');
     const coursesSidebar = await Course.find();
     res.render('admin/professorClassesView', {

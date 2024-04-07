@@ -100,6 +100,9 @@ module.exports.edit = async (req, res) => {
         return res.status(404).render('404', { role: 'admin' });
     }
     const section = await Section.findById(id);
+    if(!section){
+        return res.status(404).render('404', { role: 'admin' });
+    }
     const coursesSidebar = await Course.find();
     res.render('admin/sectionEdit', {
         site_title: SITE_TITLE,

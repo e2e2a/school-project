@@ -96,7 +96,7 @@ module.exports.update = async (req, res) => {
                             return res.redirect('/');
                         }
                     } else {
-                        return res.status(400).render('404');
+                        return res.status(404).render('404', { role: 'student' });
                     }
                 } else {
                     return res.redirect('/login');
@@ -232,7 +232,7 @@ module.exports.update = async (req, res) => {
                 return res.redirect('/profile');
             });
         } else {
-            console.log('forbidden')
+            console.log('forbidden');
         }
     } catch (error) {
 

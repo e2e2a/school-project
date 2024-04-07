@@ -73,7 +73,7 @@ module.exports.edit = async (req, res) => {
             break;
         default:
             console.log('Role not recognized:', role);
-            return res.status(404).render('404');
+            return res.status(404).render('404', { role: 'admin' });
     }
 
     if (profile) {
@@ -89,7 +89,7 @@ module.exports.edit = async (req, res) => {
         });
     } else {
         console.log('Profile not found for ID:', id);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
 };
 
@@ -117,14 +117,14 @@ module.exports.doEdit = async (req, res) => {
             break;
         default:
             console.log('Role not recognized:', role);
-            return res.status(404).render('404');
+            return res.status(404).render('404', { role: 'admin' });
     }
     if (actions === 'changeEmail') {
         if (profile.userId.role === 'student') {
             if (!req.body.email) {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
-                return res.status(404).render('404');
+                return res.status(404).render('404', { role: 'admin' });
             }
             const emailToChange = req.body.email;
             if (profile.email === emailToChange) {
@@ -153,7 +153,7 @@ module.exports.doEdit = async (req, res) => {
             if (!req.body.email) {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
-                return res.status(404).render('404');
+                return res.status(404).render('404', { role: 'admin' });
             }
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
@@ -181,7 +181,7 @@ module.exports.doEdit = async (req, res) => {
             if (!req.body.email) {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
-                return res.status(404).render('404');
+                return res.status(404).render('404', { role: 'admin' });
             }
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
@@ -212,7 +212,7 @@ module.exports.doEdit = async (req, res) => {
             if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
-                return res.status(404).render('404');
+                return res.status(404).render('404', { role: 'admin' });
             }
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
@@ -233,7 +233,7 @@ module.exports.doEdit = async (req, res) => {
             if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
-                return res.status(404).render('404');
+                return res.status(404).render('404', { role: 'admin' });
             }
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
@@ -254,7 +254,7 @@ module.exports.doEdit = async (req, res) => {
             if (!req.body.currentPassword || !req.body.newPassword || !req.body.confirmPassword) {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
-                return res.status(404).render('404');
+                return res.status(404).render('404', { role: 'admin' });
             }
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;

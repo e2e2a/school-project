@@ -10,31 +10,19 @@ const sixDigitCode = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
 const bcrypt = require('bcrypt')
 
 module.exports.index = async (req, res) => {
-    try {
-        const userLogin = await User.findById(req.session.login);
-        if (userLogin) {
-            if (userLogin.role === 'professor') {
-                const professorProfile = await ProfessorProfile.findOne({ userId: userLogin._id });
-                res.render('professor/profile', {
-                    site_title: SITE_TITLE,
-                    title: 'Profile',
-                    messages: req.flash(),
-                    currentUrl: req.originalUrl,
-                    userLogin: userLogin,
-                    req: req,
-                    professorProfile: professorProfile,
-                });
-            } else {
-                return res.status(404).render('404');
-            }
-        } else {
-            return res.redirect('/login');
-        }
-    } catch (error) {
-        console.log('error:', error)
-        return res.status(500).render('500');
-    }
+    const userLogin = await User.findById(req.session.login);
+    const professorProfile = await ProfessorProfile.findOne({ userId: userLogin._id });
+    res.render('professor/profile', {
+        site_title: SITE_TITLE,
+        title: 'Profile',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        userLogin: userLogin,
+        req: req,
+        professorProfile: professorProfile,
+    });
 }
+
 module.exports.update = async (req, res) => {
     try {
         const transporter = nodemailer.createTransport({
@@ -224,7 +212,7 @@ module.exports.update = async (req, res) => {
                 console.log('Password changed successfully')
                 return res.redirect('/professor/profile');
             });
-        } else{
+        } else {
             console.log('forbidden');
         }
     } catch (error) {

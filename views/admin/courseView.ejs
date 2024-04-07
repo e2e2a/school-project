@@ -55,7 +55,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <% courses.forEach(course => { %>
-                                                                    <form action="/admin/enrollment/doEnroll" method="post">
+                                                                    <form action="" method="post">
                                                                         <tr class="text-center">
                                                                             <td class="align-middle text-capitalize" style="white-space: nowrap;"> <%= course.name %></td>
                                                                             <td class="align-middle text-capitalize" style="white-space: nowrap;"><%= course.category %></td>
@@ -63,8 +63,8 @@
                                                                             <input type="hidden" name="courseId" id="courseId" value="<%= course._id %>">
                                                                             <td class="text-center align-middle">
                                                                                 <div class="btn-group d-flex justify-content-center align-items-center">
-                                                                                    <a href="" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Edit</a>
-                                                                                    <button type="submit" name="actions" value="delete" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
+                                                                                    <a href="/admin/course/edit/<%= course._id %>" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Edit</a>
+                                                                                    <button type="submit" name="actions" value="delete" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete</button>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>

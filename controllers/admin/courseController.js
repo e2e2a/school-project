@@ -1,6 +1,8 @@
 const User = require('../../models/user')
 const Course = require('../../models/course');
+const Section = require('../../models/section');
 const SITE_TITLE = 'DSF';
+const mongoose = require('mongoose');
 
 module.exports.index = async (req, res) => {
     const courses = await Course.find();
@@ -62,4 +64,43 @@ module.exports.edit = async (req, res) => {
         course: course,
         coursesSidebar: coursesSidebar,
     });
+}
+
+module.exports.doEdit = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid courseId:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const course = await Course.findById(id);
+    const sections = await Section.find({ courseId: course._id });
+    if (sections && sections.length > 0) {
+        req.flash('message', 'Course editing is not possible while there are corresponding sections associated with this course.');
+        return res.redirect(`/admin/course/edit/${course._id}`);
+    }
+    const data = {
+        name: req.body.name,
+        category: req.body.category,
+        description: req.body.description,
+    }
+    await Course.findByIdAndUpdate(course._id, data, { new: true });
+    req.flash('message', 'Course updated successfully.');
+    return res.redirect(`/admin/courses`);
+}
+
+module.exports.delete = async (req, res) => {
+    const courseId = req.body.courseId;
+    if (!mongoose.Types.ObjectId.isValid(courseId)) {
+        console.log('Invalid courseId:', courseId);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const course = await Course.findById(courseId);
+    const sections = await Section.find({ courseId: course._id });
+    if (sections && sections.length > 0) {
+        req.flash('message', 'Course deleting is not possible while there are corresponding sections associated with this course.');
+        return res.redirect(`/admin/courses`);
+    }
+    await Course.findByIdAndUpdate(course._id);
+    req.flash('message', 'Course deleted successfully.');
+    return res.redirect(`/admin/courses`);
 }

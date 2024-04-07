@@ -1,4 +1,4 @@
-const { isAdmin, isProfessor, isStudent, isStudentProfileVerified } = require('../helper/auth-helper');
+const { isAdmin, isProfessor, isProfessorProfileVerified, isStudent, isStudentProfileVerified } = require('../helper/auth-helper');
 
 const authRegisterController = require('../controllers/auth/registerController');
 const authVerifyController = require('../controllers/auth/verifyController');
@@ -68,22 +68,23 @@ module.exports = function (app) {
     /**
      * professor
      */
-    app.get('/professor', professorIndexController.index);
-    app.get('/professor/profile', professorProfileController.index);
-    app.post('/professor/profile', professorProfileController.update);
-    app.get('/professor/schedule', professorScheduleController.schedule);
-    app.get('/professor/class', professorClassController.index);
-    app.post('/professor/class/doGrade', professorClassController.doGrade);
-    app.get('/professor/records', professorRecordController.professorRecord);
+    app.get('/professor', isProfessor, isProfessorProfileVerified, professorIndexController.index);
+    app.get('/professor/profile', isProfessor, professorProfileController.index);
+    app.post('/professor/profile', isProfessor, professorProfileController.update);
+    app.get('/professor/schedule', isProfessor, isProfessorProfileVerified, professorScheduleController.schedule);
+    app.get('/professor/class', isProfessor, isProfessorProfileVerified, professorClassController.index);
+    app.post('/professor/class/doGrade', isProfessor, isProfessorProfileVerified, professorClassController.doGrade);
+    app.get('/professor/records', isProfessor, isProfessorProfileVerified, professorRecordController.professorRecord);
 
     /**
      * admin
      */
     app.get('/admin/courses', isAdmin, adminCourseController.index);
+    app.post('/admin/courses', isAdmin, adminCourseController.delete);
     app.get('/admin/course/add', isAdmin, adminCourseController.create);
     app.post('/admin/course/add', isAdmin, adminCourseController.doCreate);
     app.get('/admin/course/edit/:id', isAdmin, adminCourseController.edit);
-    // 
+    app.post('/admin/course/edit/:id', isAdmin, adminCourseController.doEdit);
     app.get('/admin/enrollments/enrolling', isAdmin, adminEnrollmentController.index);
     app.post('/admin/enrollment/doEnroll', isAdmin, adminEnrollmentController.doEnroll);
     app.get('/admin/enrollments/enrolled', isAdmin, adminEnrollmentController.enrolled);
