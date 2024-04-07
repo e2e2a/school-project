@@ -44,3 +44,22 @@ module.exports.doCreate = async (req, res) => {
     console.log('course save');
     return res.redirect('/admin/course/add')
 }
+
+module.exports.edit = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid subjectId:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const course = await Course.findById(id);
+    const coursesSidebar = await Course.find();
+    res.render('admin/courseEdit', {
+        site_title: SITE_TITLE,
+        title: 'Course',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        req: req,
+        course: course,
+        coursesSidebar: coursesSidebar,
+    });
+}

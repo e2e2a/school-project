@@ -52,10 +52,6 @@ module.exports = function (app) {
     app.get('/new/password/verify', authResetPassword.newPassword);
     app.post('/new/password/verify', authResetPassword.doNewPassword);
 
-
-
-
-
     /**
      * student
      */
@@ -86,6 +82,8 @@ module.exports = function (app) {
     app.get('/admin/courses', isAdmin, adminCourseController.index);
     app.get('/admin/course/add', isAdmin, adminCourseController.create);
     app.post('/admin/course/add', isAdmin, adminCourseController.doCreate);
+    app.get('/admin/course/edit/:id', isAdmin, adminCourseController.edit);
+    // 
     app.get('/admin/enrollments/enrolling', isAdmin, adminEnrollmentController.index);
     app.post('/admin/enrollment/doEnroll', isAdmin, adminEnrollmentController.doEnroll);
     app.get('/admin/enrollments/enrolled', isAdmin, adminEnrollmentController.enrolled);
@@ -109,7 +107,6 @@ module.exports = function (app) {
     app.post('/admin/category', isAdmin, adminCategoryController.actions);
     app.post('/admin/category/endSemester', isAdmin, adminEndSemesterController.endSemester)
     app.get('/admin/professors/schedule', isAdmin, adminScheduleController.professor);
-    //
     app.get('/admin/professors/schedule/histories', isAdmin, adminScheduleController.professorHistory);
     app.get('/admin/professors/schedule/history/:id', isAdmin, adminScheduleController.professorHistoryView);
     app.post('/admin/professors/schedule/doHistory', isAdmin, adminScheduleController.professorDoHistory);
