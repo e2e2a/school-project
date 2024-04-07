@@ -54,16 +54,19 @@
         <h1>404 - Page Not Found</h1>
         <p>Oops! The page you are looking for could not be found.</p>
         <p>Please go back to the 
-            <% if(role === 'student') { %>.
-                <a href="/">home page</a>
-            <% } else if(role === 'professor') { %>
-                <a href="/professor">home page</a>.
-            <% } else if(role === 'admin') { %>
-                <a href="/admin">home page</a>.
-            <% }else{ %>
+            <% if(role) {%>
+                <% if(role === 'student') { %>.
+                    <a href="/">home page</a>.
+                <% } else if(role === 'professor') { %>
+                    <a href="/professor">home page</a>.
+                <% } else if(role === 'admin') { %>
+                    <a href="/admin">home page</a>.
+                <% }else{ %>
+                    <a href="/login">home page</a>.
+                <% } %>
+            <% } else { %>
                 <a href="/login">home page</a>.
             <% } %>
-            
         </p>
     </div>
 </body>

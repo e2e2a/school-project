@@ -60,8 +60,20 @@
                                                                     <form action="/admin/enrollment/doEnroll" method="post">
                                                                         <tr class="text-center" style="white-space: nowrap;">
                                                                             <td class="align-middle"> <%= profile.userId.email %></td>
-                                                                            <td class="align-middle text-capitalize"><%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %></td>
-                                                                            <td class="align-middle text-capitalize"> <%= profile.contact %></td>
+                                                                            <td class="align-middle text-capitalize <% if (!profile.lastname) { %> text-danger <% } %>">
+                                                                                <% if (profile.lastname) { %>
+                                                                                    <%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %>
+                                                                                <% } else { %>
+                                                                                    Profile not verified
+                                                                                <% } %>
+                                                                            </td>
+                                                                            <td class="align-middle text-capitalize">
+                                                                                <% if (profile.contact) { %> 
+                                                                                    <%= profile.contact %>
+                                                                                <% } else { %>
+                                                                                    N/A
+                                                                                <% } %>
+                                                                            </td>
                                                                             <td class="align-middle text-capitalize"> <%= profile.userId.role %></td>
                                                                             <input type="hidden" name="studentId" id="studentId" value="<%= profile._id %>">
                                                                             <td class="text-center align-middle">

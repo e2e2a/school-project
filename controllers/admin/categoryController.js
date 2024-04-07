@@ -6,6 +6,7 @@ const ProfessorProfile = require('../../models/professorProfile');
 const Section = require('../../models/section');
 const Schedule = require('../../models/schedule');
 const mongoose = require('mongoose');
+const AdminProfile = require('../../models/adminProfile');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
@@ -24,6 +25,7 @@ module.exports.index = async (req, res) => {
     const professors = await ProfessorProfile.find().populate('userId').exec();
     const studentClass = await StudentClass.find()
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/categoryView', {
         site_title: SITE_TITLE,
         title: 'Category',
@@ -37,6 +39,7 @@ module.exports.index = async (req, res) => {
         semester: semester,
         studentClass: studentClass,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 

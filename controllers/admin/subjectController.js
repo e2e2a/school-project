@@ -3,12 +3,14 @@ const Subject = require('../../models/subject');
 const Course = require('../../models/course');
 const StudentClass = require('../../models/studentClass');
 const Section = require('../../models/section');
+const AdminProfile = require('../../models/adminProfile');
 const mongoose = require('mongoose');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
     const subjects = await Subject.find()
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/subjectView', {
         site_title: SITE_TITLE,
         title: 'Subjects',
@@ -17,6 +19,7 @@ module.exports.index = async (req, res) => {
         req: req,
         subjects: subjects,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -28,6 +31,7 @@ module.exports.create = async (req, res) => {
     }
     const courses = await Course.find()
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/subjectAdd', {
         site_title: SITE_TITLE,
         title: 'Subject',
@@ -36,6 +40,7 @@ module.exports.create = async (req, res) => {
         req: req,
         courses: courses,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -111,10 +116,11 @@ module.exports.edit = async (req, res) => {
         return res.status(404).render('404', { role: 'admin' });
     }
     const subject = await Subject.findById(id);
-    if(!subject){
+    if (!subject) {
         return res.status(404).render('404', { role: 'admin' });
     }
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/subjectEdit', {
         site_title: SITE_TITLE,
         title: 'Subject',
@@ -123,6 +129,7 @@ module.exports.edit = async (req, res) => {
         req: req,
         subject: subject,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 

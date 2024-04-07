@@ -13,6 +13,7 @@ const SITE_TITLE = 'DSF';
 module.exports.student = async (req, res) => {
     const studentProfiles = await StudentProfile.find().populate('userId');
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/userStudentView', {
         site_title: SITE_TITLE,
         title: 'Users',
@@ -21,11 +22,13 @@ module.exports.student = async (req, res) => {
         req: req,
         studentProfiles: studentProfiles,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 module.exports.professor = async (req, res) => {
     const professorProfiles = await ProfessorProfile.find().populate('userId');
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/userProfessorView', {
         site_title: SITE_TITLE,
         title: 'Users',
@@ -34,11 +37,13 @@ module.exports.professor = async (req, res) => {
         req: req,
         professorProfiles: professorProfiles,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 module.exports.admin = async (req, res) => {
     const adminProfiles = await AdminProfile.find().populate('userId');
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/userAdminView', {
         site_title: SITE_TITLE,
         title: 'Users',
@@ -47,6 +52,7 @@ module.exports.admin = async (req, res) => {
         req: req,
         adminProfiles: adminProfiles,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -78,6 +84,7 @@ module.exports.edit = async (req, res) => {
 
     if (profile) {
         const coursesSidebar = await Course.find();
+        const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
         res.render('admin/userEdit', {
             site_title: SITE_TITLE,
             title: 'User Edit',
@@ -86,6 +93,7 @@ module.exports.edit = async (req, res) => {
             req: req,
             profile: profile,
             coursesSidebar: coursesSidebar,
+            adminProfile: adminProfile,
         });
     } else {
         console.log('Profile not found for ID:', id);
@@ -369,12 +377,14 @@ module.exports.doEdit = async (req, res) => {
 }
 
 module.exports.create = async (req, res) => {
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/userAdd', {
         site_title: SITE_TITLE,
         title: 'User',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         req: req,
+        adminProfile: adminProfile,
     });
 }
 

@@ -11,11 +11,13 @@ const StudentClass = require('../../models/studentClass');
 const StudentProfile = require('../../models/studentProfile');
 const Section = require('../../models/section');
 const Prospectus = require('../../models/prospectus');
+const AdminProfile = require('../../models/adminProfile');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
     const studentProfiles = await StudentProfile.find().populate('courseId')
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/enrollmentView', {
         site_title: SITE_TITLE,
         title: 'Enrollments',
@@ -24,6 +26,7 @@ module.exports.index = async (req, res) => {
         req: req,
         studentProfiles: studentProfiles,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -45,7 +48,7 @@ module.exports.doEnroll = async (req, res) => {
                     req.flash('message', 'Invalid courseId.');
                     return res.redirect('/admin/enrollments/enrolling');
                 }
-                if (!req.body.year || !req.body.semester || !req.body.section || !req.body.batch ) {
+                if (!req.body.year || !req.body.semester || !req.body.section || !req.body.batch) {
                     console.log('Required fields are missing in the request body');
                     req.flash('message', 'Please make sure to put year, semester, section and batch.');
                     return res.redirect('/admin/enrollments/enrolling');
@@ -146,13 +149,15 @@ module.exports.doEnroll = async (req, res) => {
 module.exports.enrolled = async (req, res) => {
     const schedules = await StudentClass.find().populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId');
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/enrolledView', {
         site_title: SITE_TITLE,
         title: 'Enrolled',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         schedules: schedules,
-        coursesSidebar: coursesSidebar
+        coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -164,13 +169,15 @@ module.exports.studentScheduleView = async (req, res) => {
     }
     const schedule = await StudentClass.findById(id).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId').populate('subjects.professorId');
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/studentScheduleView', {
         site_title: SITE_TITLE,
         title: 'Professors Schedule',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         schedule: schedule,
-        coursesSidebar: coursesSidebar
+        coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -196,6 +203,7 @@ module.exports.enrolledCancel = async (req, res) => {
 module.exports.studentProspectus = async (req, res) => {
     const students = await StudentProfile.find({ isVerified: true, isStudying: true }).populate('courseId')
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/studentProspectus', {
         site_title: SITE_TITLE,
         title: 'Prospectus',
@@ -204,6 +212,7 @@ module.exports.studentProspectus = async (req, res) => {
         req: req,
         students: students,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -216,6 +225,7 @@ module.exports.studentProspectusView = async (req, res) => {
     }
     const studentProspectus = await Prospectus.find({ studentId: studentId });
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/studentProspectusView', {
         site_title: SITE_TITLE,
         title: 'Prospectus',
@@ -224,12 +234,14 @@ module.exports.studentProspectusView = async (req, res) => {
         req: req,
         studentProspectus: studentProspectus,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
 module.exports.studentProspectusViewAll = async (req, res) => {
     const studentProspectus = await Prospectus.find();
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/studentProspectusViewAll', {
         site_title: SITE_TITLE,
         title: 'Prospectus',
@@ -238,5 +250,6 @@ module.exports.studentProspectusViewAll = async (req, res) => {
         req: req,
         studentProspectus: studentProspectus,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }

@@ -4,12 +4,14 @@ const Course = require('../../models/course');
 const Section = require('../../models/section');
 const mongoose = require('mongoose');
 const section = require('../../models/section');
+const AdminProfile = require('../../models/adminProfile');
 const StudentClass = require('../../models/studentClass');
 const SITE_TITLE = 'DSF';
 
 module.exports.index = async (req, res) => {
     const sections = await Section.find().populate('courseId');
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/sectionView', {
         site_title: SITE_TITLE,
         title: 'Sections',
@@ -18,6 +20,7 @@ module.exports.index = async (req, res) => {
         req: req,
         sections: sections,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -32,6 +35,7 @@ module.exports.create = async (req, res) => {
     }
     const courses = await Course.find()
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/sectionAdd', {
         site_title: SITE_TITLE,
         title: 'Section',
@@ -40,6 +44,7 @@ module.exports.create = async (req, res) => {
         req: req,
         courses: courses,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 module.exports.doCreate = async (req, res) => {
@@ -52,7 +57,7 @@ module.exports.doCreate = async (req, res) => {
         return res.status(404).render('404', { role: 'admin' });
     }
 
-    const course = await Course.findOne({ category: category }); 
+    const course = await Course.findOne({ category: category });
 
     if (!course) {
         console.log('No courses found. Please check the course name.');
@@ -86,7 +91,7 @@ module.exports.doCreate = async (req, res) => {
     console.log('Section created successfully.');
     req.flash('message', 'Section created successfully.');
     return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
-} 
+}
 
 module.exports.edit = async (req, res) => {
     const id = req.params.id;
@@ -100,10 +105,11 @@ module.exports.edit = async (req, res) => {
         return res.status(404).render('404', { role: 'admin' });
     }
     const section = await Section.findById(id);
-    if(!section){
+    if (!section) {
         return res.status(404).render('404', { role: 'admin' });
     }
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/sectionEdit', {
         site_title: SITE_TITLE,
         title: 'Subject',
@@ -112,6 +118,7 @@ module.exports.edit = async (req, res) => {
         req: req,
         section: section,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -148,8 +155,8 @@ module.exports.delete = async (req, res) => {
         req.flash('message', 'Query fields are empty');
         return res.status(404).render('404', { role: 'admin' });
     }
-    const studentClass = await StudentClass.find({sectionId: id});
-    if(studentClass.length > 0){
+    const studentClass = await StudentClass.find({ sectionId: id });
+    if (studentClass.length > 0) {
         req.flash('message', 'Cannot be deleted. There are student enrolled to this section.');
         return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`)
     }
@@ -158,8 +165,8 @@ module.exports.delete = async (req, res) => {
         req.flash('message', 'Section cannot be deleted if there are subjects assigned.');
         return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`);
     }
-    const deletedSection  = await Section.findByIdAndDelete(id);
-    if (deletedSection ) {
+    const deletedSection = await Section.findByIdAndDelete(id);
+    if (deletedSection) {
         return res.redirect(`/admin/category?category=${req.query.category}&year=${req.query.year}&semester=${req.query.semester}`)
     }
     return res.status(404).render('404', { role: 'admin' });

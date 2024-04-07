@@ -1,12 +1,14 @@
 const User = require('../../models/user')
 const Course = require('../../models/course');
 const Section = require('../../models/section');
+const AdminProfile = require('../../models/adminProfile');
 const SITE_TITLE = 'DSF';
 const mongoose = require('mongoose');
 
 module.exports.index = async (req, res) => {
     const courses = await Course.find();
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/courseView', {
         site_title: SITE_TITLE,
         title: 'Course',
@@ -15,11 +17,13 @@ module.exports.index = async (req, res) => {
         req: req,
         courses: courses,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
 module.exports.create = async (req, res) => {
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/courseAdd', {
         site_title: SITE_TITLE,
         title: 'Course',
@@ -27,6 +31,7 @@ module.exports.create = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 
@@ -55,6 +60,7 @@ module.exports.edit = async (req, res) => {
     }
     const course = await Course.findById(id);
     const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/courseEdit', {
         site_title: SITE_TITLE,
         title: 'Course',
@@ -63,6 +69,7 @@ module.exports.edit = async (req, res) => {
         req: req,
         course: course,
         coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
     });
 }
 

@@ -8,6 +8,7 @@ const authVerifyEditEmailController = require('../controllers/auth/verifyEditEma
 const authResetPassword = require('../controllers/auth/resetPassword/verifyForgot_password');
 
 //admin
+const adminIndexController = require('../controllers/admin/indexController');
 const adminCourseController = require('../controllers/admin/courseController');
 const adminEnrollmentController = require('../controllers/admin/enrollmentController');
 const adminSubjectController = require('../controllers/admin/subjectController');
@@ -79,6 +80,7 @@ module.exports = function (app) {
     /**
      * admin
      */
+    app.get('/admin', isAdmin, adminIndexController.index);
     app.get('/admin/courses', isAdmin, adminCourseController.index);
     app.post('/admin/courses', isAdmin, adminCourseController.delete);
     app.get('/admin/course/add', isAdmin, adminCourseController.create);

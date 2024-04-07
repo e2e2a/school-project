@@ -36,7 +36,7 @@ module.exports.enroll = async (req, res) => {
             return res.redirect('/courses');
         }
         if (studentProfile.isEnrolling) {
-            req.flash('message', 'You are already enrolling. Please check your form.')
+            req.flash('message', 'You are already enrolling. Please check your form.');
             return res.redirect('/courses');
         }
         await StudentProfile.findOneAndUpdate({ userId: userLogin._id }, { courseId: course._id, isEnrolling: true }, { new: true })
