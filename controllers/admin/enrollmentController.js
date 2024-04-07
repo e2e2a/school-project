@@ -137,7 +137,14 @@ module.exports.doEnroll = async (req, res) => {
                 return res.status(500).send('500', err);
             }
         } else if (actions === 'declined') {
-            console.log('e')
+            const studentId = req.body.studentId;
+            if (!mongoose.Types.ObjectId.isValid(studentId)) {
+                console.log('Invalid ObjectId:', studentId);
+                req.flash('message', 'Invalid studentId.');
+                return res.redirect('/admin/enrollments/enrolling');
+            }
+            await StudentProfile.findByIdAndUpdate( studentId , { isEnrolling: false }, { new: true })
+            return res.redirect('/admin/enrollments/enrolling');
         }
     } catch (error) {
         console.log('error', error);
