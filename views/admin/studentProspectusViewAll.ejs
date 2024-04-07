@@ -29,21 +29,28 @@
                                     <div class="page-body">
                                         <div class="row">
                                             <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Students Propestus</h5>
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                    <label for="searchProspectus">Search by name:</label>
+                                                                    <input type="text" class="form-control" name="searchProspectus" id="searchProspectus" placeholder="Student Name">
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
                                                 <% if(studentProspectus.length > 0) { %>
                                                     <% studentProspectus.forEach(student => { %>
-                                                        <div class="card">
+                                                        <div id="cardProspectus" class="card">
                                                             <div class="card-header">
                                                                 <h5><%= student.studentName.firstname %>, <%= student.studentName.middlename %> <%= student.studentName.lastname %></h5>
                                                                 <span><%= student.year %> - <%= student.semester %> - <%= student.section %> - <%= student.courseName %></span>
                                                                 <span>Batch: <%= student.batch %></span>
-                                                                <div class="card-header-right">
-                                                                    <ul class="list-unstyled card-option">
-                                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                    </ul>
-                                                                </div>
                                                             </div>
                                                             <div class="card-block table-border-style">
                                                                 <div class="table-responsive">
@@ -66,7 +73,7 @@
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.subject.unit %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.professorName.lastname %>, <%= subject.professorName.firstname %> <%= subject.professorName.middlename %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.startTime %> - <%= subject.endTime %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.grades  %></td>
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.grade %></td>
                                                                                 </tr>
                                                                             <% }) %>
                                                                         </tbody>
@@ -94,5 +101,26 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchProspectus');
+            const cards = document.querySelectorAll('#cardProspectus');
+
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+
+                cards.forEach(card => {
+                    const header = card.querySelector('.card-header h5');
+                    const studentName = header.textContent.trim().toLowerCase();
+
+                    if (studentName.includes(searchQuery)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

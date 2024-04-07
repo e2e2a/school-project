@@ -33,10 +33,18 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5>User Students</h5>
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6 form-float">
+                                                                    <label for="searchUserStudent">Search by Fullname:</label>
+                                                                    <input type="text" class="form-control" name="searchUserStudent" id="searchUserStudent" placeholder="Search Fullname">
+                                                                </div>
+                                                            </div>
+                                                        </span>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table class="table table-bordered">
+                                                            <table id="tableUserStudent" class="table table-bordered">
                                                                 <thead>
                                                                     <tr class="text-center" style="white-space: nowrap;">
                                                                         <th>Email</th>
@@ -83,5 +91,25 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchUserStudent');
+            const coursesRows = document.querySelectorAll('#tableUserStudent tbody tr');
+        
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+        
+                coursesRows.forEach(row => {
+                    const fullName = row.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
+        
+                    if (fullName.includes(searchQuery)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

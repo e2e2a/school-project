@@ -52,24 +52,9 @@
                                 <div class="page-wrapper">
                                     <div class="page-body">
                                         <div class="row">
+                                            
                                             <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="row">
-                                                            <div class="col-6 align-middle">
-                                                                <h5>Note: <code>This can only be press once all classes is ended.</code></h5>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <div class="justify-content-end align-items-center d-flex">
-                                                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal">Remark All Schedules</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <% if(schedules.length > 0) { %>
+                                                <% if(histories.length > 0) { %>
                                                     <div class="card">
                                                         <div class="card-header">
                                                             <h5>Professor's Schedules</h5>
@@ -88,22 +73,28 @@
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center">Fullname</th>
-                                                                            
                                                                             <th class="text-center">Actions</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody> 
-                                                                        <% schedules.forEach(schedule => { %>
-                                                                            <tr style="white-space: nowrap;">
-                                                                                <td class="align-middle text-capitalize text-center"><%= schedule.professorId.lastname %>, <%= schedule.professorId.firstname %> <%= schedule.professorId.middlename %></td>
-                                                                                <td class="align-middle text-capitalize text-center">
-                                                                                    <div class="d-flex justify-content-center align-items-center btn-group">
-                                                                                        <a href="/admin/professor/schedule/<%= schedule._id %>" class="btn btn-sm btn-primary"><i class="ti-eye"></i>View Schedule</a>
-                                                                                        <a href="/admin/professor/classes/<%= schedule._id %>" class="btn btn-sm btn-secondary"><i class="ti-eye"></i>View Classes</a>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        <% }) %>
+                                                                        <% 
+                                                                        // Create a Set to store unique full names
+                                                                        const uniqueNames = new Set();%>
+                                                                        
+                                                                        <% histories.forEach(history => {%>
+                                                                        <% const fullName = `${history.professorName.lastname}, ${history.professorName.firstname} ${history.professorName.middlename}`; %>
+                                                                            
+                                                                        <% if (!uniqueNames.has(fullName)) { %>
+                                                                        <% uniqueNames.add(fullName); %>
+                                                                        <tr style="white-space: nowrap;">
+                                                                            <td class="align-middle text-capitalize text-center"><%= fullName %></td>
+                                                                            <td class="align-middle text-capitalize text-center">
+                                                                                <div class="d-flex justify-content-center align-items-center btn-group">
+                                                                                    <a href="/admin/professors/schedule/history/<%= history.professorId._id %>" class="btn btn-sm btn-info"><i class="ti-eye"></i>View Old Schedules</a>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% }}); %>
                                                                     </tbody>
                                                                 </table>
                                                             </div>

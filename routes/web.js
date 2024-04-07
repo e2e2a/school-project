@@ -105,12 +105,13 @@ module.exports = function (app) {
     app.post('/admin/subject/add', isAdmin, adminSubjectController.doCreate);
     app.get('/admin/subject/edit/:id', isAdmin, adminSubjectController.edit);
     app.post('/admin/subject/edit/:id', isAdmin, adminSubjectController.doEdit);
-    // 
     app.get('/admin/category', isAdmin, adminCategoryController.index);
     app.post('/admin/category', isAdmin, adminCategoryController.actions);
     app.post('/admin/category/endSemester', isAdmin, adminEndSemesterController.endSemester)
     app.get('/admin/professors/schedule', isAdmin, adminScheduleController.professor);
-    app.get('/admin/professors/schedule/history/:id', isAdmin, adminScheduleController.professorHistory);
+    //
+    app.get('/admin/professors/schedule/histories', isAdmin, adminScheduleController.professorHistory);
+    app.get('/admin/professors/schedule/history/:id', isAdmin, adminScheduleController.professorHistoryView);
     app.post('/admin/professors/schedule/doHistory', isAdmin, adminScheduleController.professorDoHistory);
     app.get('/admin/professor/schedule/:id', isAdmin, adminScheduleController.professorView);
     app.get('/admin/professor/classes/:id', isAdmin, adminScheduleController.professorClassesView);

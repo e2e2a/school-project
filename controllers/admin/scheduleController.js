@@ -123,13 +123,17 @@ module.exports.professorDoHistory = async (req, res) => {
             { $set: { subjects: section.subjects.map(subject => ({ subjectId: subject.subjectId })) } }
         );
     }
-    const result = await Schedule.updateMany({}, { $set: { schedule: [] } });
-    console.log(`${result.nModified} documents updated.`);
+    const profSchedDeleted = await Schedule.deleteMany();
+    if(profSchedDeleted){
+        console.log(`sucess deleting the schedule of professor.`);
+    }
+    // const result = await Schedule.updateMany({}, { $set: { schedule: [] } });
+    // console.log(`${result.nModified} documents updated.`);
     req.flash('message', 'Schedule on Records.')
     return res.redirect('/admin/professors/schedule')
 }
 
-module.exports.professorHistory = async (req, res) => {
+module.exports.professorHistoryView = async (req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log('Invalid ObjectId:', id);
@@ -138,6 +142,19 @@ module.exports.professorHistory = async (req, res) => {
     const histories = await ProfessorScheduleHistory.find({ professorId: id }).populate('professorId');
     const coursesSidebar = await Course.find();
     res.render('admin/professorScheduleHistoryView', {
+        site_title: SITE_TITLE,
+        title: 'Professors Schedule',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        histories: histories,
+        coursesSidebar: coursesSidebar
+    });
+}
+
+module.exports.professorHistory = async (req, res) => {
+    const histories = await ProfessorScheduleHistory.find().populate('professorId');
+    const coursesSidebar = await Course.find();
+    res.render('admin/professorScheduleHistory', {
         site_title: SITE_TITLE,
         title: 'Professors Schedule',
         messages: req.flash(),

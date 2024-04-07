@@ -34,7 +34,7 @@
                                                     <div class="card-header">
                                                         <div class="row">
                                                             <div class="col-12 col-lg-9 col-xl-9 col-md-9 col-sm-9 align-items-center d-flex">
-                                                                <h5>Note: <code>Sections cannot be duplicated.</code> </h5>
+                                                                <h5>Note: <code>Sections can only be deleted if there is no subjects.</code> </h5>
                                                             </div>
                                                             <div class="col-12 col-lg-3 col-xl-3 col-md-3 col-sm-3 d-flex justify-content-end align-items-center mt-2">
                                                                 <a href="/admin/section/add?category=<%= category %>&year=<%= year %>&semester=<%= semester %>" class="btn btn-sm btn-success"><i class="ti-plus"></i> Add Section</a>
@@ -49,10 +49,10 @@
                                                         <div class="card">
                                                             <div class="card-header">
                                                                 <div class="row">
-                                                                    <div class="col-12 col-lg-8 col-xl-8">
+                                                                    <div class="col-12 col-xl-8">
                                                                         <h5 class=""><%= section.courseId.name %> - <%= section.year %> - <%= section.semester %> - <%= section.section %></h5>
                                                                     </div>
-                                                                    <div class="col-12 col-lg-4 col-xl-4 d-flex justify-content-end align-items-center mt-2">
+                                                                    <div class="col-12 col-xl-4 d-flex justify-content-end align-items-center mt-2">
                                                                         <!-- @todo task -->
                                                                         <form action="/admin/section/delete/<%= section._id %>?category=<%= section.courseId.category %>&year=<%= section.year %>&semester=<%= section.semester %>" method="post">
                                                                             <div class="btn-group d-flex">

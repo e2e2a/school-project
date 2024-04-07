@@ -33,18 +33,18 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5>Courses List</h5>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                            </ul>
-                                                        </div>
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6 form-float">
+                                                                    <label for="searchCourse">Search by course name:</label>
+                                                                    <input type="text" class="form-control" name="searchCourse" id="searchCourse" placeholder="Course Name">
+                                                                </div>
+                                                            </div>
+                                                        </span>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table class="table">
+                                                            <table id="tableCourse" class="table table-bordered">
                                                                 <thead>
                                                                     <tr class="text-center">
                                                                         <th>Name</th>
@@ -87,5 +87,25 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchCourse');
+            const coursesRows = document.querySelectorAll('#tableCourse tbody tr');
+        
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+        
+                coursesRows.forEach(row => {
+                    const fullName = row.querySelector('td:first-child').textContent.trim().toLowerCase();
+        
+                    if (fullName.includes(searchQuery)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

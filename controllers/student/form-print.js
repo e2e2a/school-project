@@ -64,6 +64,6 @@ module.exports.print = async (req, res) => {
         await StudentProfile.findByIdAndUpdate(studentId, { isEnrolling: false }, { new: true });
         return res.redirect('/form')
     } else {
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'student' });
     }
 }

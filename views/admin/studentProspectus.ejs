@@ -35,15 +35,41 @@
                                                         <div class="row">
                                                             <div class="col-12 col-lg-9 col-xl-9 col-md-9 col-sm-9">
                                                                 <h5>Students Propestus</h5>
+                                                                <span>
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                            <label for="searchProspectus">Search by name:</label>
+                                                                            <input type="text" class="form-control" name="searchProspectus" id="searchProspectus" placeholder="Student Name">
+                                                                        </div>
+                                                                    </div>
+                                                                </span>
+                                                                <span>
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                            <label for="categoryType" class="mt-2">filter by:</label>
+                                                                            <div class="mt-2">
+                                                                                <select name="categoryType" id="categoryType" class="border border -1 form-control" onchange="filterProspectos()">
+                                                                                    <option value="" disabled selected hidden>Please select</option>
+                                                                                    <option value="All">Select All</option>
+                                                                                    <option value="Diploma Program in Information Technology">DPIT</option>
+                                                                                    <option value="Diploma Program in Tourism and Hospitality Technology">DPTHT</option>
+                                                                                    <option value="Diploma Program in Welding Technology">DPWT</option>
+                                                                                    <option value="Diploma Program in Fishery Technology">DPFT</option>
+                                                                                    <option value="Diploma Program in Electrical Technology">DPET</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </span>
                                                             </div>
-                                                            <div class="col-12 col-lg-3 col-xl-3 col-md-3 col-sm-3 d-flex justify-content-end mt-2">
+                                                            <div class="col-12 col-lg-3 col-xl-3 col-md-3 text-right mt-2">
                                                                 <a href="/admin/enrollment/student/prospectus/view/all" class="btn btn-sm btn-secondary"><i class="ti-eye"></i> View All Prospectus </a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table class="table table-bordered">
+                                                            <table id="tableProspectus" class="table table-bordered">
                                                                 <thead>
                                                                     <tr class="text-center">
                                                                         <th>Fullname</th>
@@ -83,5 +109,45 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchProspectus');
+            const coursesRows = document.querySelectorAll('#tableProspectus tbody tr');
+        
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+        
+                coursesRows.forEach(row => {
+                    const fullName = row.querySelector('td:first-child').textContent.trim().toLowerCase();
+        
+                    if (fullName.includes(searchQuery)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        function filterProspectos() {
+        const selectedCategory = document.getElementById('categoryType').value.toLowerCase();
+        const rows = document.querySelectorAll('#tableProspectus tbody tr');
+        
+        rows.forEach(row => {
+            row.style.display = 'none';
+            
+            const courseDetailsCell = row.querySelector('td:nth-child(2)');
+            const courseDetails = courseDetailsCell.textContent.trim().toLowerCase();
+            
+            const [ name ] = courseDetails.split(' - ');
+
+            const categoryMatch = selectedCategory === 'All' || name.includes(selectedCategory);
+            
+            if (categoryMatch ) {
+                row.style.display = '';
+            }
+        });
+    }
+    </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

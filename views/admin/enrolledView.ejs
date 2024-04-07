@@ -33,19 +33,55 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5>Students Enrolled</h5>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                <li><i class="fa fa-trash close-card"></i></li>
-                                                            </ul>
-                                                        </div>
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                    <label for="searchEnrolled">Search by name:</label>
+                                                                    <input type="text" class="form-control" name="searchEnrolled" id="searchEnrolled" placeholder="Student Name">
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                    <label for="searchEnrolled" class="mt-2">filter by:</label>
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-lg-4 col-xl-4 mt-2">
+                                                                            <select name="categoryType" id="categoryType" class="border border -1 form-control" onchange="filterCourse()">
+                                                                                <option value="" disabled selected hidden>Please select</option>
+                                                                                <option value="All">Select All</option>
+                                                                                <option value="diploma program in information technology">DPIT</option>
+                                                                                <option value="Diploma Program in Tourism and Hospitality Technology">DPTHT</option>
+                                                                                <option value="Diploma Program in Welding Technology">DPWT</option>
+                                                                                <option value="Diploma Program in Fishery Technology">DPFT</option>
+                                                                                <option value="Diploma Program in Electrical Technology">DPET</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-12 col-lg-4 col-xl-4 mt-2">
+                                                                            <select name="year" id="year" class="border border -1 form-control" onchange="filterCourse()">
+                                                                                <option value="" disabled selected hidden>Please select</option>
+                                                                                <option value="All">Select All</option>
+                                                                                <option value="1st Year">1st Year</option>
+                                                                                <option value="2nd Year">2nd Year</option>
+                                                                                <option value="3rd Year">3rd Year</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-12 col-lg-4 col-xl-4 mt-2">
+                                                                            <select name="semester" id="semester" class="border border -1 form-control" onchange="filterCourse()">
+                                                                                <option value="" disabled selected hidden>Please select</option>
+                                                                                <option value="All">Select All</option>
+                                                                                <option value="1st Semester">1st Semester</option>
+                                                                                <option value="2nd Semester">2nd Semester</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </span>
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table class="table table-bordered">
+                                                            <table id="tableEnrolled" class="table table-bordered">
                                                                 <thead>
                                                                     <tr class="text-center">
                                                                         <th>Fullname</th>
@@ -89,5 +125,49 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchEnrolled');
+            const coursesRows = document.querySelectorAll('#tableEnrolled tbody tr');
+        
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+        
+                coursesRows.forEach(row => {
+                    const fullName = row.querySelector('td:first-child').textContent.trim().toLowerCase();
+        
+                    if (fullName.includes(searchQuery)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        function filterCourse() {
+        const selectedCategory = document.getElementById('categoryType').value.toLowerCase();
+        const selectedYear = document.getElementById('year').value.toLowerCase();
+        const selectedSemester = document.getElementById('semester').value.toLowerCase();
+        const rows = document.querySelectorAll('#tableEnrolled tbody tr');
+        
+        rows.forEach(row => {
+            row.style.display = 'none';
+            
+            const courseDetailsCell = row.querySelector('td:nth-child(2)');
+            const courseDetails = courseDetailsCell.textContent.trim().toLowerCase();
+            
+            const [name, year, semester, section] = courseDetails.split(' - ');
+
+            const categoryMatch = selectedCategory === 'All' || name.includes(selectedCategory);
+            const yearMatch = selectedYear === 'All' || year === selectedYear;
+            const semesterMatch = selectedSemester === 'All' || semester === selectedSemester;
+            
+            if (categoryMatch && yearMatch && semesterMatch) {
+                row.style.display = '';
+            }
+        });
+    }
+    </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

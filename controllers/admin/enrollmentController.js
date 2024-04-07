@@ -148,7 +148,7 @@ module.exports.enrolled = async (req, res) => {
     const coursesSidebar = await Course.find();
     res.render('admin/enrolledView', {
         site_title: SITE_TITLE,
-        title: 'Professors Schedule',
+        title: 'Enrolled',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         schedules: schedules,

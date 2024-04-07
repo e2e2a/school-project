@@ -28,10 +28,24 @@
                                 <div class="page-wrapper">
                                     <div class="page-body">
                                         <div class="row">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                    <label for="searchBatchYear">Search by batch:</label>
+                                                                    <input type="text" class="form-control" name="searchBatchYear" id="searchBatchYear" placeholder="Batch Year">
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <% if(histories.length > 0) { %>
                                                 <% histories.forEach(history => { %>
                                                     <div class="col-12">
-                                                        <div class="card">
+                                                        <div id="cardbatchYear" class="card">
                                                             <div class="card-header">
                                                                 <h5><%= history.professorName.lastname %>, <%= history.professorName.firstname %> <%= history.professorName.middlename %> </h5>
                                                                 <span>Batch year: <%= history.batch %></span>
@@ -87,5 +101,26 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchBatchYear');
+            const cards = document.querySelectorAll('#cardbatchYear');
+
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+
+                cards.forEach(card => {
+                    const header = card.querySelector('.card-header span');
+                    const studentName = header.textContent.trim().toLowerCase();
+
+                    if (studentName.includes(searchQuery)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>
