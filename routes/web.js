@@ -7,16 +7,6 @@ const authLogoutController = require('../controllers/auth/logoutController');
 const authVerifyEditEmailController = require('../controllers/auth/verifyEditEmailController');
 const authResetPassword = require('../controllers/auth/resetPassword/verifyForgot_password');
 
-//admin
-const adminIndexController = require('../controllers/admin/indexController');
-const adminCourseController = require('../controllers/admin/courseController');
-const adminEnrollmentController = require('../controllers/admin/enrollmentController');
-const adminSubjectController = require('../controllers/admin/subjectController');
-const adminsectionController = require('../controllers/admin/sectionController');
-const adminCategoryController = require('../controllers/admin/categoryController');
-const adminUserController = require('../controllers/admin/userController');
-const adminScheduleController = require('../controllers/admin/scheduleController');
-const adminEndSemesterController = require('../controllers/admin/endSemesterController');
 //user
 const userIndexController = require('../controllers/student/indexController');
 const userProfileController = require('../controllers/student/profileController');
@@ -31,6 +21,16 @@ const professorScheduleController = require('../controllers/professor/scheduleCo
 const professorClassController = require('../controllers/professor/classController');
 const professorRecordController = require('../controllers/professor/recordController');
 
+//admin
+const adminIndexController = require('../controllers/admin/indexController');
+const adminCourseController = require('../controllers/admin/courseController');
+const adminEnrollmentController = require('../controllers/admin/enrollmentController');
+const adminSubjectController = require('../controllers/admin/subjectController');
+const adminsectionController = require('../controllers/admin/sectionController');
+const adminCategoryController = require('../controllers/admin/categoryController');
+const adminUserController = require('../controllers/admin/userController');
+const adminScheduleController = require('../controllers/admin/scheduleController');
+const adminEndSemesterController = require('../controllers/admin/endSemesterController');
 
 module.exports = function (app) {
     /**
