@@ -36,7 +36,7 @@ module.exports = function (app) {
     /**
      * auth
      */
-    app.get('/login', authLoginController.login);
+    app.get('/', authLoginController.login);
     app.post('/doLogin', authLoginController.doLogin);
     app.get('/register', authRegisterController.register);
     app.post('/doRegister', authRegisterController.doRegister);
@@ -56,7 +56,7 @@ module.exports = function (app) {
     /**
      * student
      */
-    app.get('/', isStudent, isStudentProfileVerified, userIndexController.index);
+    app.get('/student', isStudent, isStudentProfileVerified, userIndexController.index);
     app.get('/profile', isStudent, userProfileController.index);
     app.post('/profile/update', isStudent, userProfileController.update);
     app.get('/courses', isStudent, isStudentProfileVerified, userCourseController.index);

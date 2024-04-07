@@ -5,7 +5,7 @@ module.exports.login = async (req, res) => {
         const userLogin = await User.findById(req.session.login);
         if (req.session.login) {
             if (userLogin.role === 'student') {
-                return res.redirect('/');
+                return res.redirect('/student');
             } else if (userLogin.role === 'professor') {
                 return res.redirect('/professor');
             }else if (userLogin.role === 'admin') {
@@ -34,7 +34,7 @@ module.exports.doLogin = async (req, res) => {
         if (!user) {
             // 400 Bad Request
             req.flash('error', 'Invalid email.');
-            return res.redirect('/login');
+            return res.redirect('/');
         } else {
             if (user.role === 'student') {
                 if (user.isVerified) {
@@ -45,14 +45,14 @@ module.exports.doLogin = async (req, res) => {
                         if (!valid) {
                             // 400 Bad Request
                             req.flash('error', 'Invalid password.');
-                            return res.redirect('/login');
+                            return res.redirect('/');
                         }
                         req.session.login = user.id;
-                        return res.redirect('/');
+                        return res.redirect('/student');
                     });
                 } else {
                     req.flash('error', 'Users not found.');
-                    return res.redirect('/login');
+                    return res.redirect('/');
                 }
             } else if (user.role === 'professor') {
                 console.log(user.role)
@@ -64,7 +64,7 @@ module.exports.doLogin = async (req, res) => {
                     if (!valid) {
                         // 400 Bad Request
                         req.flash('message', 'WARNING DETECTED!');
-                        return res.redirect('/login');
+                        return res.redirect('/');
                     }
                     req.session.login = user.id;
                     return res.redirect('/professor');
@@ -78,7 +78,7 @@ module.exports.doLogin = async (req, res) => {
                     if (!valid) {
                         // 400 Bad Request
                         req.flash('message', 'WARNING DETECTED!');
-                        return res.redirect('/login');
+                        return res.redirect('/');
                     }
                     req.session.login = user.id;
                     return res.redirect('/admin');

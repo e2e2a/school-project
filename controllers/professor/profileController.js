@@ -51,36 +51,32 @@ module.exports.update = async (req, res) => {
         const userLogin = await User.findById(req.session.login);
         if (actions === 'profile') {
             try {
-                if (userLogin) {
-                    const { firstname, middlename, lastname, contact, birthdate, age } = req.body;
+                const { firstname, middlename, lastname, contact, birthdate, age } = req.body;
 
-                    if (!firstname || !middlename || !lastname || !contact || !birthdate || !age) {
-                        console.log('One or more required fields are empty');
-                        req.flash('message', 'Required fields are empty');
-                        return res.status(404).render('404', { role: 'professor' });
-                    }
-                    const [birthYear, birthMonth, birthDay] = birthdate.split('-');
-                    const newData = {
-                        firstname: firstname,
-                        middlename: middlename,
-                        lastname: lastname,
-                        contact: contact,
-                        birthMonth: birthMonth,
-                        birthDay: birthDay,
-                        birthYear: birthYear,
-                        age: age,
-                        isVerified: true
-                    };
-                    const professorProfile = await ProfessorProfile.findOneAndUpdate({ userId: userLogin._id }, newData, { new: true });
-                    if (professorProfile) {
-                        req.flash('message', 'Updated Profile Successfully!');
-                        return res.redirect('/professor');
-                    } else {
-                        req.flash('message', 'Failed to Update Successfully!');
-                        return res.redirect('/professor');
-                    }
+                if (!firstname || !middlename || !lastname || !contact || !birthdate || !age) {
+                    console.log('One or more required fields are empty');
+                    req.flash('message', 'Required fields are empty');
+                    return res.status(404).render('404', { role: 'professor' });
+                }
+                const [birthYear, birthMonth, birthDay] = birthdate.split('-');
+                const newData = {
+                    firstname: firstname,
+                    middlename: middlename,
+                    lastname: lastname,
+                    contact: contact,
+                    birthMonth: birthMonth,
+                    birthDay: birthDay,
+                    birthYear: birthYear,
+                    age: age,
+                    isVerified: true
+                };
+                const professorProfile = await ProfessorProfile.findOneAndUpdate({ userId: userLogin._id }, newData, { new: true });
+                if (professorProfile) {
+                    req.flash('message', 'Updated Profile Successfully!');
+                    return res.redirect('/professor');
                 } else {
-                    return res.redirect('/login');
+                    req.flash('message', 'Failed to Update Successfully!');
+                    return res.redirect('/professor');
                 }
             } catch (error) {
                 console.log('error:', error)

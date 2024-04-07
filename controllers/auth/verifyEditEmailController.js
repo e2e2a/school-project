@@ -42,7 +42,7 @@ module.exports.verify = async (req, res) => {
                 return res.status(404).render('404')
             }
         } else {
-            return res.redirect('/login')
+            return res.redirect('/')
         }
     } catch (error) {
         console.error('Error rendering verification input form:', error);

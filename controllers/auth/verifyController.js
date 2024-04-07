@@ -109,7 +109,7 @@ module.exports.doVerify = async (req, res) => {
                             'Congratulation!',
                             emailContent
                         );
-                        res.redirect(`/`);
+                        res.redirect(`/student`);
                     } else {
                         console.log('Code expired', userToken.expirationCodeDate)
                         req.flash('error', 'Code has been expired.');

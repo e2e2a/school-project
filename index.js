@@ -38,7 +38,7 @@ app.use(function (req, res, next) {
 require('./routes/web')(app);
 app.use((req, res, next) => {
     if (!req.session.login) {
-        return res.redirect('/login');
+        return res.redirect('/');
     }
     next();
 });

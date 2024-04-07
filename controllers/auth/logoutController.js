@@ -6,7 +6,7 @@ module.exports.logout = (req, res) => {
             console.error('error destroying session', err);
         } else {
             console.log('user logout', login)
-            return res.redirect('/login');
+            return res.redirect('/');
         }
     })
 }

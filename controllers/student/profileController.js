@@ -50,56 +50,48 @@ module.exports.update = async (req, res) => {
         const userLogin = await User.findById(req.session.login);
         if (actions === 'profile') {
             try {
-                if (userLogin) {
-                    if (userLogin.role === 'student') {
-                        const { firstname, middlename, lastname, numberStreet, barangay, district, cityMunicipality, province, region, emailFbAcc, contact, nationality, sex, civilStatus, employmentStatus, birthdate, age, birthPlaceCity, birthPlaceProvince, birthPlaceRegion, educationAttainment, learnerOrTraineeOrStudentClassification } = req.body;
+                const { firstname, middlename, lastname, numberStreet, barangay, district, cityMunicipality, province, region, emailFbAcc, contact, nationality, sex, civilStatus, employmentStatus, birthdate, age, birthPlaceCity, birthPlaceProvince, birthPlaceRegion, educationAttainment, learnerOrTraineeOrStudentClassification } = req.body;
 
-                        if (!firstname || !middlename || !lastname || !numberStreet || !barangay || !district || !cityMunicipality || !province || !region || !emailFbAcc || !contact || !nationality || !sex || !civilStatus || !employmentStatus || !birthdate || !age || !birthPlaceCity || !birthPlaceProvince || !birthPlaceRegion || !educationAttainment || !learnerOrTraineeOrStudentClassification) {
-                            console.log('One or more required fields are empty');
-                            req.flash('message', 'Required fields are empty');
-                            return res.status(404).render('404', { role: 'student' });
-                        }
-                        const [birthYear, birthMonth, birthDay] = birthdate.split('-');
-                        const newData = {
-                            firstname: req.body.firstname,
-                            middlename: req.body.middlename,
-                            lastname: req.body.lastname,
-                            numberStreet: req.body.numberStreet,
-                            barangay: req.body.barangay,
-                            district: req.body.district,
-                            cityMunicipality: req.body.cityMunicipality,
-                            province: req.body.province,
-                            region: req.body.region,
-                            emailFbAcc: req.body.emailFbAcc,
-                            contact: req.body.contact,
-                            nationality: req.body.nationality,
-                            sex: req.body.sex,
-                            civilStatus: req.body.civilStatus,
-                            employmentStatus: req.body.employmentStatus,
-                            birthMonth: birthMonth,
-                            birthDay: birthDay,
-                            birthYear: birthYear,
-                            age: req.body.age,
-                            birthPlaceCity: req.body.birthPlaceCity,
-                            birthPlaceProvince: req.body.birthPlaceProvince,
-                            birthPlaceRegion: req.body.birthPlaceRegion,
-                            educationAttainment: req.body.educationAttainment,
-                            learnerOrTraineeOrStudentClassification: req.body.learnerOrTraineeOrStudentClassification,
-                            isVerified: true
-                        };
-                        const studentProfile = await StudentProfile.findOneAndUpdate({ userId: userLogin._id }, newData, { new: true });
-                        if (studentProfile) {
-                            req.flash('message', 'Updated Profile Successfully!');
-                            return res.redirect('/');
-                        } else {
-                            req.flash('message', 'Failed to Update Successfully!');
-                            return res.redirect('/');
-                        }
-                    } else {
-                        return res.status(404).render('404', { role: 'student' });
-                    }
+                if (!firstname || !middlename || !lastname || !numberStreet || !barangay || !district || !cityMunicipality || !province || !region || !emailFbAcc || !contact || !nationality || !sex || !civilStatus || !employmentStatus || !birthdate || !age || !birthPlaceCity || !birthPlaceProvince || !birthPlaceRegion || !educationAttainment || !learnerOrTraineeOrStudentClassification) {
+                    console.log('One or more required fields are empty');
+                    req.flash('message', 'Required fields are empty');
+                    return res.status(404).render('404', { role: 'student' });
+                }
+                const [birthYear, birthMonth, birthDay] = birthdate.split('-');
+                const newData = {
+                    firstname: req.body.firstname,
+                    middlename: req.body.middlename,
+                    lastname: req.body.lastname,
+                    numberStreet: req.body.numberStreet,
+                    barangay: req.body.barangay,
+                    district: req.body.district,
+                    cityMunicipality: req.body.cityMunicipality,
+                    province: req.body.province,
+                    region: req.body.region,
+                    emailFbAcc: req.body.emailFbAcc,
+                    contact: req.body.contact,
+                    nationality: req.body.nationality,
+                    sex: req.body.sex,
+                    civilStatus: req.body.civilStatus,
+                    employmentStatus: req.body.employmentStatus,
+                    birthMonth: birthMonth,
+                    birthDay: birthDay,
+                    birthYear: birthYear,
+                    age: req.body.age,
+                    birthPlaceCity: req.body.birthPlaceCity,
+                    birthPlaceProvince: req.body.birthPlaceProvince,
+                    birthPlaceRegion: req.body.birthPlaceRegion,
+                    educationAttainment: req.body.educationAttainment,
+                    learnerOrTraineeOrStudentClassification: req.body.learnerOrTraineeOrStudentClassification,
+                    isVerified: true
+                };
+                const studentProfile = await StudentProfile.findOneAndUpdate({ userId: userLogin._id }, newData, { new: true });
+                if (studentProfile) {
+                    req.flash('message', 'Updated Profile Successfully!');
+                    return res.redirect('/student');
                 } else {
-                    return res.redirect('/login');
+                    req.flash('message', 'Failed to Update Successfully!');
+                    return res.redirect('/student');
                 }
             } catch (error) {
                 console.log('error:', error)

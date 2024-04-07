@@ -7,9 +7,17 @@ const { customAlphabet } = require('nanoid');
 const sixDigitCode = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
 module.exports.register = async (req, res) => {
     try {
-        const userLogin = await User.findById(req.session.login);
         if (req.session.login) {
-            return res.redirect('/');
+            const userLogin = await User.findById(req.session.login);
+            if(userLogin.role === 'student'){
+                return res.redirect('/student');
+            } else if(userLogin.role === 'professor'){
+                return res.redirect('/professor');
+            } else if(userLogin.role === 'professor'){
+                return res.redirect('/professor');
+            } else {
+                return res.status(404).render('404');
+            }
         } else {
             res.render('auth/register', {
                 site_title: SITE_TITLE,
