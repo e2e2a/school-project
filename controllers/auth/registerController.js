@@ -25,7 +25,6 @@ module.exports.register = async (req, res) => {
                 session: req.session,
                 messages: req.flash(),
                 currentUrl: req.originalUrl,
-                userLogin: userLogin,
                 req: req,
             });
         }
