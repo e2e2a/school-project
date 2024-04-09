@@ -1,4 +1,7 @@
 <nav class="pcoded-navbar">
+    <% function activeClass(link) {
+        return currentUrl === link ? 'active' : '';
+    } %>
     <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
     <div class="pcoded-inner-navbar main-menu">
         <!-- <div class="">
@@ -29,7 +32,7 @@
         </div>
         <div class="pcoded-navigation-label">Navigation</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="active">
+            <li class="<%= activeClass('/admin') %>">
                 <a href="/admin" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Home</span>
@@ -39,7 +42,7 @@
         </ul>
         <div class="pcoded-navigation-label">Enrollment</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu ">
+            <li class="pcoded-hasmenu <%= activeClass('/admin/enrollments/enrolling') %> <%= activeClass('/admin/enrollments/enrolled') %> <%= activeClass('/admin/enrollment/student/prospectus') %>">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
                     <span class="pcoded-mtext">Enrollment</span>
@@ -72,7 +75,7 @@
         </ul>
         <div class="pcoded-navigation-label">Courses</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu ">
+            <li class="pcoded-hasmenu <%= activeClass('/admin/courses') %> <%= activeClass('/admin/course/add') %>">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
                     <span class="pcoded-mtext">Courses</span>
@@ -98,7 +101,7 @@
         </ul>
         <div class="pcoded-navigation-label">Sections</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
+            <li class="<%= activeClass('/admin/sections') %>">
                 <a href="/admin/sections" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Sections list</span>
@@ -108,7 +111,7 @@
         </ul>
         <div class="pcoded-navigation-label">Subjects</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
+            <li class="<%= activeClass('/admin/subjects') %>">
                 <a href="/admin/subjects" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Subjects list</span>
@@ -118,7 +121,7 @@
         </ul>
         <div class="pcoded-navigation-label">Timetable</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu ">
+            <li class="pcoded-hasmenu <%= activeClass('/admin/professors/schedule') %> <%= activeClass('/admin/professors/schedule/histories') %>">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
                     <span class="pcoded-mtext">Timetable</span>
@@ -144,7 +147,7 @@
         </ul>
         <div class="pcoded-navigation-label">Users</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu ">
+            <li class="pcoded-hasmenu <%= activeClass('/admin/user/student/list') %> <%= activeClass('/admin/user/add') %> <%= activeClass('/admin/user/admin/list') %> <%= activeClass('/admin/user/professor/list') %>">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
                     <span class="pcoded-mtext">Users</span>
@@ -183,10 +186,17 @@
             </li>
         </ul>
         <div class="pcoded-navigation-label">Category</div>
-
+        
         <% coursesSidebar.forEach(course => { %>
             <ul class="pcoded-item pcoded-left-item">
-                <li class="pcoded-hasmenu">
+                <li class="pcoded-hasmenu 
+                <%= activeClass(`/admin/category?category=${course.category}&year=1st%20Year&semester=1st%20Semester`) %>
+                <%= activeClass(`/admin/category?category=${course.category}&year=1st%20Year&semester=2nd%20Semester`) %>
+                <%= activeClass(`/admin/category?category=${course.category}&year=2nd%20Year&semester=1st%20Semester`) %>
+                <%= activeClass(`/admin/category?category=${course.category}&year=2nd%20Year&semester=2nd%20Semester`) %>
+                <%= activeClass(`/admin/category?category=${course.category}&year=3rd%20Year&semester=1st%20Semester`) %>
+                <%= activeClass(`/admin/category?category=${course.category}&year=3rd%20Year&semester=2nd%20Semester`) %>
+                ">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
                         <span class="pcoded-mtext"><%= course.category %></span>

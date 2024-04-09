@@ -1,4 +1,7 @@
 <nav class="pcoded-navbar">
+    <% function activeClass(link) {
+        return currentUrl === link ? 'active' : '';
+    } %>
     <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
     <div class="pcoded-inner-navbar main-menu">
         <!-- <div class="">
@@ -29,7 +32,7 @@
         </div>
         <div class="pcoded-navigation-label">Navigation</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="active">
+            <li class="<%= activeClass('/professor') %>">
                 <a href="/professor" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Home</span>
@@ -39,7 +42,7 @@
         </ul>
         <div class="pcoded-navigation-label">Schedule</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
+            <li class="<%= activeClass('/professor/schedule') %>">
                 <a href="/professor/schedule" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Schedule</span>
@@ -49,7 +52,7 @@
         </ul>
         <div class="pcoded-navigation-label">Classes</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
+            <li class="<%= activeClass('/professor/class') %>">
                 <a href="/professor/class" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Classes</span>
@@ -59,8 +62,7 @@
         </ul>
         <div class="pcoded-navigation-label">Records</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
-                <!-- @todo -->
+            <li class="<%= activeClass('/professor/records') %>">
                 <a href="/professor/records" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
                     <span class="pcoded-mtext">Records</span>

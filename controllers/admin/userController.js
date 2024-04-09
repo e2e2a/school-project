@@ -378,6 +378,7 @@ module.exports.doEdit = async (req, res) => {
 
 module.exports.create = async (req, res) => {
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
+    const coursesSidebar = await Course.find();
     res.render('admin/userAdd', {
         site_title: SITE_TITLE,
         title: 'User',
@@ -385,6 +386,7 @@ module.exports.create = async (req, res) => {
         currentUrl: req.originalUrl,
         req: req,
         adminProfile: adminProfile,
+        coursesSidebar: coursesSidebar,
     });
 }
 

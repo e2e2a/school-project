@@ -1,4 +1,7 @@
 <nav class="pcoded-navbar">
+    <% function activeClass(link) {
+        return currentUrl === link ? 'active' : '';
+    } %>
     <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
     <div class="pcoded-inner-navbar main-menu">
         <!-- <div class="">
@@ -29,7 +32,7 @@
         </div>
         <div class="pcoded-navigation-label">Navigation</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="active">
+            <li class="<%= activeClass('/student') %>">
                 <a href="/student" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Home</span>
@@ -39,7 +42,7 @@
         </ul>
         <div class="pcoded-navigation-label">Courses</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
+            <li class="<%= activeClass('/courses') %>">
                 <a href="/courses" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">Courses</span>
@@ -49,7 +52,7 @@
         </ul>
         <div class="pcoded-navigation-label">Form</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="">
+            <li class="<%= activeClass('/form') %>">
                 <a href="/form" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
                     <span class="pcoded-mtext">Form</span>
@@ -59,7 +62,7 @@
         </ul>
         <div class="pcoded-navigation-label">Enrollments</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu">
+            <li class="pcoded-hasmenu <%= activeClass('/enrollment/subjects') %> <%= activeClass('/enrollment/prospectus') %>">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-id-badge"></i><b>A</b></span>
                     <span class="pcoded-mtext">Enrollments</span>
