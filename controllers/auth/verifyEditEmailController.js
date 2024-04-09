@@ -95,7 +95,7 @@ module.exports.doVerify = async (req, res) => {
                             <div style="background-color: #36393f; padding: 20px; width: 70%; text-align: justify; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); display: inline-block;">
                                 <h2 style="color: #66c0f4;">Congratulations!</h2>
                                 <p style="color: #dcddde;">Dear ${user.email},</p>
-                                <p style="color: #dcddde;">We are delighted to inform you that your email address has been successfully verified.</p>
+                                <p style="color: #dcddde;">We are delighted to inform you that your email address has been successfully change.</p>
                                 <p style="color: #dcddde;">Thank you for taking this important step towards securing your account and accessing all the features our platform offers.</p>
                                 <p style="color: #dcddde;">If you have any questions or need further assistance, please don't hesitate to contact our support team.</p>
                                 <p style="color: #dcddde;">Once again, congratulations on successfully verifying your email address!</p>

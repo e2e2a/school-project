@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const { customAlphabet } = require('nanoid');
 const sixDigitCode = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
+const bcrypt = require('bcrypt')
 module.exports.register = async (req, res) => {
     try {
         if (req.session.login) {
@@ -65,17 +66,18 @@ module.exports.doRegister = async (req, res) => {
         console.log(existingUser)
         if (existingUser) {
             if (existingUser.isVerified) {
-                req.flash('message', 'Email Already Used!');
+                req.flash('error', 'Email Already Used. Please provide another email.');
                 return res.redirect('/register');
             } else {
                 if (password !== confirmPassword) {
-                    req.flash('message', 'Password does not match.');
+                    req.flash('error', 'Password does not match.');
                     return res.redirect('/register');
                 }
+                const hashedNewPassword = await bcrypt.hash(req.body.password, 10);
                 const userUpdate = {
                     email: req.body.email,
                     role: 'student',
-                    password: req.body.password,
+                    password: hashedNewPassword,
                     isVerified: false,
                 };
                 const updatedUser = await User.findByIdAndUpdate(existingUser._id, userUpdate, { new: true });
@@ -117,7 +119,7 @@ module.exports.doRegister = async (req, res) => {
             }
         } else {
             if (password !== confirmPassword) {
-                req.flash('message', 'Password does not match.');
+                req.flash('error', 'Password does not match.');
                 return res.redirect('/register');
             }
             const user = new User({

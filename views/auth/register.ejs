@@ -18,6 +18,11 @@
                                     <div class="col-md-12">
                                         <h3 class="text-center txt-primary">Sign up</h3>
                                     </div>
+                                    <% if (messages.error) { %>
+                                        <div class="col-md-12 mt-5 text-danger">
+                                            <p class="text-center"><%= messages.error %></p>
+                                        </div>
+                                    <% } %>
                                 </div>
                                 <div class="form-group form-primary">
                                     <input type="email" name="email" class="form-control" required>

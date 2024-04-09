@@ -32,18 +32,16 @@ module.exports.doLogin = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
-            // 400 Bad Request
-            req.flash('error', 'Invalid email.');
+            req.flash('error', 'User not found.');
             return res.redirect('/');
         } else {
             if (user.role === 'student') {
                 if (user.isVerified) {
                     user.comparePassword(req.body.password, (error, valid) => {
                         if (error) {
-                            return res.status(403).send('Forbidden'); // 403 Forbidden
+                            return res.status(403).send('Forbidden');
                         }
                         if (!valid) {
-                            // 400 Bad Request
                             req.flash('error', 'Invalid password.');
                             return res.redirect('/');
                         }
@@ -51,19 +49,17 @@ module.exports.doLogin = async (req, res) => {
                         return res.redirect('/student');
                     });
                 } else {
-                    req.flash('error', 'Users not found.');
+                    req.flash('error', 'User not found.');
                     return res.redirect('/');
                 }
             } else if (user.role === 'professor') {
                 console.log(user.role)
                 user.comparePassword(req.body.password, (error, valid) => {
                     if (error) {
-                        req.flash('message', 'WARNING DETECTED!');
                         return res.status(403).send('Forbidden');
                     }
                     if (!valid) {
-                        // 400 Bad Request
-                        req.flash('message', 'WARNING DETECTED!');
+                        req.flash('error', 'Invalid password.');
                         return res.redirect('/');
                     }
                     req.session.login = user.id;
@@ -72,12 +68,10 @@ module.exports.doLogin = async (req, res) => {
             } else {
                 user.comparePassword(req.body.password, (error, valid) => {
                     if (error) {
-                        req.flash('message', 'WARNING DETECTED!');
-                        return res.status(403).send('Forbidden');
+                        return res.status(403).send('Forbidden'); 
                     }
                     if (!valid) {
-                        // 400 Bad Request
-                        req.flash('message', 'WARNING DETECTED!');
+                        req.flash('error', 'Invalid password.');
                         return res.redirect('/');
                     }
                     req.session.login = user.id;

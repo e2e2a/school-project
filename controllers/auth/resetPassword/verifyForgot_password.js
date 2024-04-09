@@ -308,6 +308,7 @@ module.exports.doNewPassword = async (req, res) => {
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
             const user = await User.findOneAndUpdate({ email: req.session.email },{password:hashedNewPassword}, {new:true});
             await UserToken.findByIdAndDelete(userToken._id);
+            req.flash('message', 'Password change successfully.');
             res.redirect(`/login`);
         } else {
             console.log('Invalid or expired verification code.');

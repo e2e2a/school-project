@@ -92,14 +92,14 @@ module.exports.doVerify = async (req, res) => {
                         const emailContent = `
                         <div style="text-align: center;display: block;">
                             <div style="background-color: #36393f; padding: 20px; width: 70%; text-align: justify; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); display: inline-block;">
-                                <h3 style="color: #333; margin-bottom: 20px;"><a href="http://example.onrender.com" style="color: #007bff; text-decoration: none;">example.onrender.com</a></h3>
-                                <h4 style="color: #333;">Greetings, ${user.firstname}!</h4>
-                                <p style="color: #333;">Hooray! Your email verification is successfully completed!</p>
-                                <p style="color: #333;">Welcome to our community! Now that you're officially registered, it's time to embark on an exciting journey through our platform.</p>
-                                <p style="color: #333;">We extend our heartfelt gratitude to you for confirming your email address.</p>
-                                <p style="color: #333;">Ensuring account confirmation is a vital step in safeguarding our platform against spam and ensuring seamless communication with our valued users.</p>
-                                <p style="color: #333;">Moreover, email verification enhances security, reducing the risk of users registering with outdated or incorrect email addresses.</p>
-                                <p style="color: #333;">As you dive into our customer portal, rest assured that all accounts are rigorously validated to maintain a secure and user-centric environment.</p>
+                                <h3 style="color: #66c0f4; margin-bottom: 20px;"><a href="http://example.onrender.com" style="color: #007bff; text-decoration: none;">example.onrender.com</a></h3>
+                                <h4 style="color: #dcddde;">Greetings, ${user.email}!</h4>
+                                <p style="color: #dcddde;">Hooray! Your email verification is successfully completed!</p>
+                                <p style="color: #dcddde;">Welcome to our community! Now that you're officially registered, it's time to embark on an exciting journey through our platform.</p>
+                                <p style="color: #dcddde;">We extend our heartfelt gratitude to you for confirming your email address.</p>
+                                <p style="color: #dcddde;">Ensuring account confirmation is a vital step in safeguarding our platform against spam and ensuring seamless communication with our valued users.</p>
+                                <p style="color: #dcddde;">Moreover, email verification enhances security, reducing the risk of users registering with outdated or incorrect email addresses.</p>
+                                <p style="color: #dcddde;">As you dive into our customer portal, rest assured that all accounts are rigorously validated to maintain a secure and user-centric environment.</p>
                             </div>
                         </div>
                         `;
