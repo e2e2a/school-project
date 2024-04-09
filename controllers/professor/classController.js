@@ -22,7 +22,7 @@ module.exports.index = async (req, res) => {
     const studentClasses = await StudentClass.find({ 'subjects.professorId': professorProfile._id }).populate('subjects.subjectId').populate('studentId');
     res.render('professor/class', {
         site_title: SITE_TITLE,
-        title: 'Class',
+        title: 'Classes',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         userLogin: userLogin,
