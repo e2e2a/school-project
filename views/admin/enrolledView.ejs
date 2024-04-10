@@ -43,14 +43,14 @@
                                                         </span>
                                                         <span>
                                                             <div class="row">
-                                                                <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                <div class="col-12 col-lg-12 col-xl-12 ">
                                                                     <label for="searchEnrolled" class="mt-2">filter by:</label>
                                                                     <div class="row">
                                                                         <div class="col-12 col-lg-4 col-xl-4 mt-2">
-                                                                            <select name="categoryType" id="categoryType" class="border border -1 form-control" onchange="filterCourse()">
-                                                                                <option value="" disabled selected hidden>Please select</option>
+                                                                            <select name="categoryType" id="categoryType" class="border border -1 form-control" onchange="filterCourses()">
+                                                                                <option value="All" disabled selected hidden>Select Category</option>
                                                                                 <option value="All">Select All</option>
-                                                                                <option value="diploma program in information technology">DPIT</option>
+                                                                                <option value="Diploma Program in Information Technology">DPIT</option>
                                                                                 <option value="Diploma Program in Tourism and Hospitality Technology">DPTHT</option>
                                                                                 <option value="Diploma Program in Welding Technology">DPWT</option>
                                                                                 <option value="Diploma Program in Fishery Technology">DPFT</option>
@@ -58,8 +58,8 @@
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-12 col-lg-4 col-xl-4 mt-2">
-                                                                            <select name="year" id="year" class="border border -1 form-control" onchange="filterCourse()">
-                                                                                <option value="" disabled selected hidden>Please select</option>
+                                                                            <select name="year" id="year" class="border border -1 form-control" onchange="filterCourses()">
+                                                                                <option value="All" disabled selected hidden>Select Year</option>
                                                                                 <option value="All">Select All</option>
                                                                                 <option value="1st Year">1st Year</option>
                                                                                 <option value="2nd Year">2nd Year</option>
@@ -67,8 +67,8 @@
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-12 col-lg-4 col-xl-4 mt-2">
-                                                                            <select name="semester" id="semester" class="border border -1 form-control" onchange="filterCourse()">
-                                                                                <option value="" disabled selected hidden>Please select</option>
+                                                                            <select name="semester" id="semester" class="border border -1 form-control" onchange="filterCourses()">
+                                                                                <option value="All" disabled selected hidden>Select Semester</option>
                                                                                 <option value="All">Select All</option>
                                                                                 <option value="1st Semester">1st Semester</option>
                                                                                 <option value="2nd Semester">2nd Semester</option>
@@ -83,8 +83,9 @@
                                                         <div class="table-responsive">
                                                             <table id="tableEnrolled" class="table table-bordered">
                                                                 <thead>
-                                                                    <tr class="text-center">
+                                                                    <tr class="text-center" style="white-space: nowrap;">
                                                                         <th>Fullname</th>
+                                                                        <th>Student Type</th>
                                                                         <th>Category</th>
                                                                         <th>Batch</th>
                                                                         <th>Actions</th>
@@ -95,13 +96,14 @@
                                                                         <form action="/admin/enrollment/enrolled/cancel" method="post">
                                                                             <tr class="text-center" style="white-space: nowrap;">
                                                                                 <td class="align-middle text-capitalize"><%= schedule.studentId.lastname %>, <%= schedule.studentId.firstname %> <%= schedule.studentId.middlename %></td>
+                                                                                <td class="align-middle text-capitalize"><%= schedule.type %></td>
                                                                                 <td class="align-middle"><%= schedule.courseId.name %> - <%= schedule.sectionId.year %> - <%= schedule.sectionId.semester %> - <%= schedule.sectionId.section %></td>
                                                                                 <td class="align-middle text-capitalize"><%= schedule.batch %></td>
                                                                                 <input type="hidden" name="studentClassId" id="studentClassId" value="<%= schedule._id %>">
                                                                                 <input type="hidden" name="studentId" id="studentId" value="<%= schedule.studentId._id %>">
                                                                                 <td class="text-center align-middle">
                                                                                     <div class="btn-group d-flex">
-                                                                                        <a href="/admin/enrollment/student/schedule/<%= schedule._id %>" value="approved" class="btn btn-sm btn-primary"><i class="ti-eye"></i> View Subjects</a>
+                                                                                        <a href="/admin/enrollment/student/schedule/<%= schedule._id %>/<%= schedule.type %>" value="approved" class="btn btn-sm btn-primary"><i class="ti-eye"></i> View Subjects</a>
                                                                                         <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel Enrolled</button>
                                                                                     </div>
                                                                                 </td>
@@ -145,29 +147,38 @@
             });
         });
 
-        function filterCourse() {
-        const selectedCategory = document.getElementById('categoryType').value.toLowerCase();
-        const selectedYear = document.getElementById('year').value.toLowerCase();
-        const selectedSemester = document.getElementById('semester').value.toLowerCase();
-        const rows = document.querySelectorAll('#tableEnrolled tbody tr');
-        
-        rows.forEach(row => {
-            row.style.display = 'none';
-            
-            const courseDetailsCell = row.querySelector('td:nth-child(2)');
-            const courseDetails = courseDetailsCell.textContent.trim().toLowerCase();
-            
-            const [name, year, semester, section] = courseDetails.split(' - ');
+        document.addEventListener('DOMContentLoaded', function() {
+    const categoryTypeSelect = document.getElementById('categoryType');
+    const yearSelect = document.getElementById('year');
+    const semesterSelect = document.getElementById('semester');
+    const coursesRows = document.querySelectorAll('#tableEnrolled tbody tr');
 
-            const categoryMatch = selectedCategory === 'All' || name.includes(selectedCategory);
+    function filterCourses() {
+        const selectedCategory = categoryTypeSelect.value;
+        const selectedYear = yearSelect.value;
+        const selectedSemester = semesterSelect.value;
+
+        coursesRows.forEach(row => {
+            const rowData = row.querySelector('td:nth-child(3)').textContent.trim();
+            const [category, year, semester, section] = rowData.split(' - ');
+
+            const categoryMatch = selectedCategory === 'All' || category === selectedCategory;
             const yearMatch = selectedYear === 'All' || year === selectedYear;
             const semesterMatch = selectedSemester === 'All' || semester === selectedSemester;
-            
+
             if (categoryMatch && yearMatch && semesterMatch) {
                 row.style.display = '';
+            } else {
+                row.style.display = 'none';
             }
         });
     }
+
+    categoryTypeSelect.addEventListener('change', filterCourses);
+    yearSelect.addEventListener('change', filterCourses);
+    semesterSelect.addEventListener('change', filterCourses);
+
+});
     </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

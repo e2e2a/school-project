@@ -33,8 +33,15 @@
                                                     <% professorSchedule.schedule.forEach(schedule => { %>
                                                             <div class="card">
                                                                 <div class="card-header">
-                                                                    <h5><%= schedule.subjectId.courseId.name %> - <%= schedule.subjectId.year %> - <%= schedule.subjectId.semester %> - <%= schedule.subjectId.section %></h5>
-                                                                    <span>Subject: <%= schedule.subjectId.subjectCode %> - <%= schedule.subjectId.name %> <code>Time: <%= schedule.startTime ? schedule.startTime : 'N/A' %> - <%= schedule.endTime ? schedule.endTime : 'N/A'  %></code> </span>
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-lg-8 col-xl-8">
+                                                                            <h5><%= schedule.subjectId.courseId.name %> - <%= schedule.subjectId.year %> - <%= schedule.subjectId.semester %> - <%= schedule.subjectId.section %></h5>
+                                                                            <span>Subject: <%= schedule.subjectId.subjectCode %> - <%= schedule.subjectId.name %> <code>Time: <%= schedule.startTime ? schedule.startTime : 'N/A' %> - <%= schedule.endTime ? schedule.endTime : 'N/A'  %></code> </span>
+                                                                        </div>
+                                                                        <div class="col-12 col-lg-4 col-xl-4 text-right mt-2">
+                                                                            <a href="/professor/class/single/<%= schedule.subjectId._id %>" class="btn btn-sm btn-secondary mb-3 text-white"><i class="ti-eye"></i>View Single</a>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="card-block table-border-style">
                                                                     <div class="table-responsive">
@@ -54,7 +61,7 @@
                                                                                 <% studentClasses.forEach(studentClass => { %>
                                                                                     <% studentClass.subjects.forEach(subject => { %>
                                                                                         <% if (subject.subjectId._id.toString() === schedule.subjectId._id.toString()) { %> 
-                                                                                            <form action="/professor/class/doGrade" method="post">                                                                                      <tr style="white-space: nowrap;">
+                                                                                            <form action="/professor/class/doGrade" method="post">
                                                                                                 <tr class="text-center" style="white-space: nowrap;">    
                                                                                                     <input type="hidden" name="studentClassId" id="studentClassId" value="<%= studentClass._id %>">
                                                                                                     <input type="hidden" name="subjectId" id="subjectId" value="<%= subject._id %>">

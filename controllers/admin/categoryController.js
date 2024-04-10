@@ -23,7 +23,7 @@ module.exports.index = async (req, res) => {
         semester: semester,
     }).populate('courseId').populate('subjects.subjectId').populate('subjects.professorId').exec();
     const professors = await ProfessorProfile.find().populate('userId').exec();
-    const studentClass = await StudentClass.find()
+    const studentClass = await StudentClass.find({type: 'Regular'})
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/categoryView', {

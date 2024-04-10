@@ -32,33 +32,33 @@
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <h5>Subjects List</h5>
+                                                        <h5>Students Enrolled</h5>
                                                         <span>
                                                             <div class="row">
                                                                 <div class="col-12 col-lg-6 col-xl-6 ">
-                                                                    <label for="searchSubject">Search by Subject name:</label>
-                                                                    <input type="text" class="form-control" name="searchSubject" id="searchSubject" placeholder="Subject Name">
+                                                                    <label for="searchEnrolled">Search by name:</label>
+                                                                    <input type="text" class="form-control" name="searchEnrolled" id="searchEnrolled" placeholder="Student Name">
                                                                 </div>
                                                             </div>
                                                         </span>
                                                         <span>
                                                             <div class="row">
-                                                                <div class="col-12 col-lg-6 col-xl-6 ">
-                                                                    <label for="categoryType" class="mt-2">filter by:</label>
+                                                                <div class="col-12 col-lg-12 col-xl-12 ">
+                                                                    <label for="searchEnrolled" class="mt-2">filter by:</label>
                                                                     <div class="row">
                                                                         <div class="col-12 col-lg-4 col-xl-4 mt-2">
-                                                                            <select name="categoryType" id="categoryType" class="border border -1 form-control" onchange="filterSubjects()">
+                                                                            <select name="categoryType" id="categoryType" class="border border -1 form-control" onchange="filterCourse()">
                                                                                 <option value="All" disabled selected hidden>Select Category</option>
                                                                                 <option value="All">Select All</option>
-                                                                                <option value="DPIT">DPIT</option>
-                                                                                <option value="DPTHT">DPTHT</option>
-                                                                                <option value="DPWT">DPWT</option>
-                                                                                <option value="DPFT">DPFT</option>
-                                                                                <option value="DPET">DPET</option>
+                                                                                <option value="Diploma Program in Information Technology">DPIT</option>
+                                                                                <option value="Diploma Program in Tourism and Hospitality Technology">DPTHT</option>
+                                                                                <option value="Diploma Program in Welding Technology">DPWT</option>
+                                                                                <option value="Diploma Program in Fishery Technology">DPFT</option>
+                                                                                <option value="Diploma Program in Electrical Technology">DPET</option>
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-12 col-lg-4 col-xl-4 mt-2">
-                                                                            <select name="year" id="year" class="border border -1 form-control" onchange="filterSubjects()">
+                                                                            <select name="year" id="year" class="border border -1 form-control" onchange="filterCourse()">
                                                                                 <option value="All" disabled selected hidden>Select Year</option>
                                                                                 <option value="All">Select All</option>
                                                                                 <option value="1st Year">1st Year</option>
@@ -67,7 +67,7 @@
                                                                             </select>
                                                                         </div>
                                                                         <div class="col-12 col-lg-4 col-xl-4 mt-2">
-                                                                            <select name="semester" id="semester" class="border border -1 form-control" onchange="filterSubjects()">
+                                                                            <select name="semester" id="semester" class="border border -1 form-control" onchange="filterCourse()">
                                                                                 <option value="All" disabled selected hidden>Select Semester</option>
                                                                                 <option value="All">Select All</option>
                                                                                 <option value="1st Semester">1st Semester</option>
@@ -81,28 +81,34 @@
                                                     </div>
                                                     <div class="card-block table-border-style">
                                                         <div class="table-responsive">
-                                                            <table id="tableSubjects" class="table table-bordered">
+                                                            <table id="tableEnrolled" class="table table-bordered">
                                                                 <thead>
                                                                     <tr class="text-center" style="white-space: nowrap;">
-                                                                        <th>Subject Code</th>
-                                                                        <th>Name</th>
-                                                                        <th>Unit</th>
+                                                                        <th>Fullname</th>
+                                                                        <th>Student Type</th>
                                                                         <th>Category</th>
-                                                                        <th>Description</th>
+                                                                        <th>Batch</th>
+                                                                        <th>Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <% subjects.forEach(subject => { %>
-                                                                    <form action="" method="post">
-                                                                        <tr class="text-center">
-                                                                            <td class="align-middle text-capitalize" style="white-space: nowrap;"> <%= subject.subjectCode %></td>
-                                                                            <td class="align-middle text-capitalize" style="white-space: nowrap;"> <%= subject.name %></td>
-                                                                            <td class="align-middle text-capitalize" style="white-space: nowrap;"> <%= subject.unit %></td>
-                                                                            <td class="align-middle text-capitalize" style="white-space: nowrap;"> <%= subject.category %> - <%= subject.year %> - <%= subject.semester %> - <%= subject.section %></td>
-                                                                            <td class="align-middle text-capitalize" style="width: 30%;"> <%= subject.description %></td>
-                                                                            <input type="hidden" name="subjectId" id="subjectId" value="<%= subject._id %>">
-                                                                        </tr>
-                                                                    </form>
+                                                                    <% schedules.forEach(schedule => { %>
+                                                                        <form action="/admin/enrollment/enrolled/cancel" method="post">
+                                                                            <tr class="text-center" style="white-space: nowrap;">
+                                                                                <td class="align-middle text-capitalize"><%= schedule.studentId.lastname %>, <%= schedule.studentId.firstname %> <%= schedule.studentId.middlename %></td>
+                                                                                <td class="align-middle text-capitalize"><%= schedule.type %></td>
+                                                                                <td class="align-middle"><%= schedule.courseId.name %> - <%= schedule.year %> - <%= schedule.semester %> </td>
+                                                                                <td class="align-middle text-capitalize"><%= schedule.batch %></td>
+                                                                                <input type="hidden" name="studentClassId" id="studentClassId" value="<%= schedule._id %>">
+                                                                                <input type="hidden" name="studentId" id="studentId" value="<%= schedule.studentId._id %>">
+                                                                                <td class="text-center align-middle">
+                                                                                    <div class="btn-group d-flex">
+                                                                                        <a href="/admin/enrollment/student/schedule/irregular/<%= schedule._id %>/<%= schedule.type %>" value="approved" class="btn btn-sm btn-primary"><i class="ti-eye"></i> View Subjects</a>
+                                                                                        <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel Enrolled</button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </form>
                                                                     <% }) %>
                                                                 </tbody>
                                                             </table>
@@ -123,14 +129,14 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchSubject');
-            const coursesRows = document.querySelectorAll('#tableSubjects tbody tr');
+            const searchInput = document.getElementById('searchEnrolled');
+            const coursesRows = document.querySelectorAll('#tableEnrolled tbody tr');
         
             searchInput.addEventListener('input', function() {
                 const searchQuery = this.value.trim().toLowerCase();
         
                 coursesRows.forEach(row => {
-                    const fullName = row.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
+                    const fullName = row.querySelector('td:first-child').textContent.trim().toLowerCase();
         
                     if (fullName.includes(searchQuery)) {
                         row.style.display = '';
@@ -141,22 +147,27 @@
             });
         });
 
-        function filterSubjects() {
-        const selectedCategory = document.getElementById('categoryType').value.toLowerCase();
-        const selectedYear = document.getElementById('year').value.toLowerCase();
-        const selectedSemester = document.getElementById('semester').value.toLowerCase();
-        const rows = document.querySelectorAll('#tableSubjects tbody tr');
-        
-        rows.forEach(row => {
-            const courseDetailsCell = row.querySelector('td:nth-child(4)');
-            const courseDetails = courseDetailsCell.textContent.trim().toLowerCase();
-            
-            const [name, year, semester, section] = courseDetails.split(' - ');
+        document.addEventListener('DOMContentLoaded', function() {
+    const studentTypeSelect = document.getElementById('studentType');
+    const categoryTypeSelect = document.getElementById('categoryType');
+    const yearSelect = document.getElementById('year');
+    const semesterSelect = document.getElementById('semester');
+    const coursesRows = document.querySelectorAll('#tableEnrolled tbody tr');
 
-            const categoryMatch = selectedCategory === 'all' || name.includes(selectedCategory);
-            const yearMatch = selectedYear === 'all' || year === selectedYear;
-            const semesterMatch = selectedSemester === 'all' || semester === selectedSemester;
-            
+    function filterCourses() {
+        const selectedCategory = categoryTypeSelect.value;
+        const selectedYear = yearSelect.value;
+        const selectedSemester = semesterSelect.value;
+
+        coursesRows.forEach(row => {
+            const studentType = row.querySelector('td:nth-child(2)').textContent.trim();
+            const rowData = row.querySelector('td:nth-child(3)').textContent.trim();
+            const [category, year, semester, section] = rowData.split(' - ');
+
+            const categoryMatch = selectedCategory === 'All' || category === selectedCategory;
+            const yearMatch = selectedYear === 'All' || year === selectedYear;
+            const semesterMatch = selectedSemester === 'All' || semester === selectedSemester;
+
             if (categoryMatch && yearMatch && semesterMatch) {
                 row.style.display = '';
             } else {
@@ -164,6 +175,13 @@
             }
         });
     }
+
+    studentTypeSelect.addEventListener('change', filterCourses);
+    categoryTypeSelect.addEventListener('change', filterCourses);
+    yearSelect.addEventListener('change', filterCourses);
+    semesterSelect.addEventListener('change', filterCourses);
+
+});
     </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

@@ -46,8 +46,9 @@
                                                         <div class="table-responsive">
                                                             <table id="tableEnrollment" class="table table-bordered">
                                                                 <thead>
-                                                                    <tr class="text-center">
+                                                                    <tr class="text-center" style="white-space: nowrap;">
                                                                         <th>Fullname</th>
+                                                                        <th>Student Type</th>
                                                                         <th>Course</th>
                                                                         <th>Year</th>
                                                                         <th>Semester</th>
@@ -62,9 +63,16 @@
                                                                     <form action="/admin/enrollment/doEnroll" method="post">
                                                                         <tr style="white-space: nowrap;">
                                                                             <td class="align-middle text-capitalize"><%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %></td>
+                                                                            <td class="align-middle">
+                                                                                <select name="type" class="form-control" id="type" style="width: 200px;" onclick="toggleDropdowns()">
+                                                                                    <option value="" selected hidden>Select Type</option>
+                                                                                    <option value="Regular">Regular</option>
+                                                                                    <option value="Irregular">Irregular</option>
+                                                                                </select>
+                                                                            </td>
                                                                             <td class="align-middle"><%= profile.courseId.name %></td>
                                                                             <td class="align-middle">
-                                                                                <select name="year" class="form-control" id="year" style="width: 200px;" >
+                                                                                <select name="year" class="form-control" id="year" style="width: 200px;">
                                                                                     <option value="" selected hidden>Select Year</option>
                                                                                     <option value="1st Year">1st Year</option>
                                                                                     <option value="2nd Year">2nd Year</option>
@@ -72,17 +80,20 @@
                                                                                 </select>
                                                                             </td>
                                                                             <td class="align-middle">
-                                                                                <select name="semester" class="form-control" id="semester" style="width: 200px;" >
+                                                                                <select name="semester" class="form-control" id="semester" style="width: 200px;">
                                                                                     <option value="" selected hidden>Select Semester</option>
                                                                                     <option value="1st Semester">1st Semester</option>
                                                                                     <option value="2nd Semester">2nd Semester</option>
                                                                                 </select>
                                                                             </td>
                                                                             <td class="align-middle">
-                                                                                <select name="section" class="form-control" id="section" style="width: 200px;" >
+                                                                                <select name="section" class="form-control" id="section" style="width: 200px;" disabled>
                                                                                     <option value="" selected hidden>Select Section</option>
                                                                                     <option value="Section 1">Section 1</option>
                                                                                     <option value="Section 2">Section 2</option>
+                                                                                    <option value="Section 3">Section 3</option>
+                                                                                    <option value="Section 4">Section 4</option>
+                                                                                    <option value="Section 5">Section 5</option>
                                                                                 </select>
                                                                             </td>
                                                                             <td class="align-middle">
@@ -137,6 +148,25 @@
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const typeSelect = document.getElementById('type');
+        const sectionSelect = document.getElementById('section');
+
+        function toggleDropdowns() {
+            const selectedType = typeSelect.value;
+            const isRegular = selectedType === 'Regular';
+
+            sectionSelect.disabled = !isRegular;
+
+            if (!isRegular) {
+                sectionSelect.selectedIndex = 0;
+            }
+        }
+
+        // Listen for changes in the type dropdown and toggle the dropdowns accordingly
+        typeSelect.addEventListener('change', toggleDropdowns);
+    });
     </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

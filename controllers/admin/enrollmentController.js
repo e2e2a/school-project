@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
 const puppeteerConfig = require('../../puppeteer.config.cjs');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
-
+const Schedule = require('../../models/schedule');
 const User = require('../../models/user')
 const Course = require('../../models/course');
 const StudentClass = require('../../models/studentClass');
@@ -48,38 +48,74 @@ module.exports.doEnroll = async (req, res) => {
                     req.flash('message', 'Invalid courseId.');
                     return res.redirect('/admin/enrollments/enrolling');
                 }
-                if (!req.body.year || !req.body.semester || !req.body.section || !req.body.batch) {
-                    console.log('Required fields are missing in the request body');
-                    req.flash('message', 'Please make sure to put year, semester, section and batch.');
+                const course = await Course.findById(courseId)
+                if (!req.body.type) {
+                    console.log('Student Type is Required.');
+                    req.flash('message', 'Student Type is Required.');
                     return res.redirect('/admin/enrollments/enrolling');
                 }
-                const course = await Course.findById(courseId)
-                const checkSection = await Section.findOne({
-                    courseId: course._id,
-                    year: req.body.year,
-                    semester: req.body.semester,
-                    section: req.body.section
-                }).populate('subjects.subjectId');
-                if (checkSection) {
-                    const subjects = checkSection.subjects.map(subject => ({
-                        subjectId: subject.subjectId,
-                        professorId: subject.professorId,
-                        startTime: subject.startTime,
-                        endTime: subject.endTime,
-                        grade: null
-                    }));
+                if (req.body.type === 'Regular') {
+                    if (!req.body.year || !req.body.semester || !req.body.section || !req.body.batch) {
+                        console.log('Required fields are missing in the request body');
+                        req.flash('message', 'Please make sure to put year, semester, section and batch.');
+                        return res.redirect('/admin/enrollments/enrolling');
+                    }
+                    const checkSection = await Section.findOne({
+                        courseId: course._id,
+                        year: req.body.year,
+                        semester: req.body.semester,
+                        section: req.body.section
+                    }).populate('subjects.subjectId');
+                    if (checkSection) {
+                        const subjects = checkSection.subjects.map(subject => ({
+                            subjectId: subject.subjectId,
+                            professorId: subject.professorId,
+                            days: subject.days,
+                            startTime: subject.startTime,
+                            endTime: subject.endTime,
+                            grade: null
+                        }));
 
+                        const studentClass = new StudentClass({
+                            studentId: studentProfile._id,
+                            courseId: studentProfile.courseId,
+                            sectionId: checkSection._id,
+                            subjects: subjects,
+                            courseName: course.name,
+                            category: course.category,
+                            year: req.body.year,
+                            semester: req.body.semester,
+                            section: req.body.section,
+                            batch: req.body.batch,
+                            type: req.body.type,
+                            status: true,
+                        });
+                        console.log('student', studentClass)
+                        await studentClass.save();
+                        await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false }, { new: true });
+                        console.log('student class save.');
+                        req.flash('message', 'Student enrolled sucessfully.');
+                        return res.redirect('/admin/enrollments/enrolling');
+                    } else {
+                        console.log('no section found to enroll.');
+                        req.flash('message', 'No Section found to enroll the student.');
+                        return res.redirect('/admin/enrollments/enrolling');
+                    }
+                } else if (req.body.type === 'Irregular') {
+                    if (!req.body.year || !req.body.semester || !req.body.batch) {
+                        console.log('Required fields are missing in the request body');
+                        req.flash('message', 'Please make sure to put year, semester and batch.');
+                        return res.redirect('/admin/enrollments/enrolling');
+                    }
                     const studentClass = new StudentClass({
                         studentId: studentProfile._id,
                         courseId: studentProfile.courseId,
-                        sectionId: checkSection._id,
-                        subjects: subjects,
                         courseName: course.name,
                         category: course.category,
                         year: req.body.year,
                         semester: req.body.semester,
-                        section: req.body.section,
                         batch: req.body.batch,
+                        type: req.body.type,
                         status: true,
                     });
                     console.log('student', studentClass)
@@ -87,10 +123,6 @@ module.exports.doEnroll = async (req, res) => {
                     await StudentProfile.findByIdAndUpdate(studentProfile._id, { isEnrolled: true, isEnrolling: false }, { new: true });
                     console.log('student class save.');
                     req.flash('message', 'Student enrolled sucessfully.');
-                    return res.redirect('/admin/enrollments/enrolling');
-                } else {
-                    console.log('no section found to enroll.');
-                    req.flash('message', 'No Section found to enroll the student.');
                     return res.redirect('/admin/enrollments/enrolling');
                 }
             } else {
@@ -143,7 +175,7 @@ module.exports.doEnroll = async (req, res) => {
                 req.flash('message', 'Invalid studentId.');
                 return res.redirect('/admin/enrollments/enrolling');
             }
-            await StudentProfile.findByIdAndUpdate( studentId , { isEnrolling: false }, { new: true })
+            await StudentProfile.findByIdAndUpdate(studentId, { isEnrolling: false }, { new: true })
             return res.redirect('/admin/enrollments/enrolling');
         }
     } catch (error) {
@@ -154,12 +186,27 @@ module.exports.doEnroll = async (req, res) => {
 }
 
 module.exports.enrolled = async (req, res) => {
-    const schedules = await StudentClass.find().populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId');
+    const schedules = await StudentClass.find({ type: 'Regular' }).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/enrolledView', {
         site_title: SITE_TITLE,
-        title: 'Enrolled',
+        title: 'Enrolled Regular',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        schedules: schedules,
+        coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
+    });
+}
+
+module.exports.enrolledIrregular = async (req, res) => {
+    const schedules = await StudentClass.find({ type: 'Irregular' }).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId');
+    const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
+    res.render('admin/enrolledtIrregularView', {
+        site_title: SITE_TITLE,
+        title: 'Enrolled Irregular',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         schedules: schedules,
@@ -174,17 +221,86 @@ module.exports.studentScheduleView = async (req, res) => {
         console.log('Invalid ObjectId:', id);
         return res.status(404).render('404');
     }
-    const schedule = await StudentClass.findById(id).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId').populate('subjects.professorId');
+    const type = req.params.type;
+    let schedule;
+    switch (type) {
+        case 'Regular':
+            schedule = await StudentClass.findById(id).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId').populate('subjects.professorId');
+            break;
+        default:
+            console.log('Role not recognized:', type);
+            return res.status(404).render('404', { role: 'admin' });
+    }
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/studentScheduleView', {
         site_title: SITE_TITLE,
-        title: 'Professors Schedule',
+        title: 'Student Schedule',
         messages: req.flash(),
         currentUrl: req.originalUrl,
         schedule: schedule,
         coursesSidebar: coursesSidebar,
         adminProfile: adminProfile,
+    });
+}
+
+module.exports.studentIrregularScheduleView = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid ObjectId:', id);
+        return res.status(404).render('404');
+    }
+    const type = req.params.type;
+    let schedule;
+    switch (type) {
+        case 'Irregular':
+            schedule = await StudentClass.findById(id).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId').populate('subjects.professorId');
+            break;
+        default:
+            console.log('Role not recognized:', type);
+            return res.status(404).render('404', { role: 'admin' });
+    }
+    const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
+    res.render('admin/studentIrregularScheduleView', {
+        site_title: SITE_TITLE,
+        title: 'Student Schedule',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        schedule: schedule,
+        coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
+    });
+}
+
+module.exports.studentIrregularAddSubject = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid ObjectId:', id);
+        return res.status(404).render('404');
+    }
+    const type = req.params.type;
+    let schedule;
+    switch (type) {
+        case 'Irregular':
+            schedule = await StudentClass.findById(id).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('subjects.professorId');
+            break;
+        default:
+            console.log('Role not recognized:', type);
+            return res.status(404).render('404', { role: 'admin' });
+    }
+    const professorSchedule = await Schedule.find().populate('professorId').populate('schedule.subjectId');
+    const coursesSidebar = await Course.find();
+    const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
+    res.render('admin/studentIrregularSubjects', {
+        site_title: SITE_TITLE,
+        title: 'Student Schedule',
+        messages: req.flash(),
+        currentUrl: req.originalUrl,
+        schedule: schedule,
+        coursesSidebar: coursesSidebar,
+        adminProfile: adminProfile,
+        professorSchedule: professorSchedule,
     });
 }
 

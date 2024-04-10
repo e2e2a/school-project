@@ -17,7 +17,7 @@ var schema = mongoose.Schema({
     courseName: {
         type: String,
     },
-    category: { 
+    category: {
         type: String
     },
     year: {
@@ -56,6 +56,9 @@ var schema = mongoose.Schema({
             type: Number,
         },
     }],
+    type: {
+        type: String,
+    },
     //if true show subjects if false show continue studying
     status: {
         type: Boolean,

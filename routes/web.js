@@ -74,6 +74,8 @@ module.exports = function (app) {
     app.post('/professor/profile', isProfessor, professorProfileController.update);
     app.get('/professor/schedule', isProfessor, isProfessorProfileVerified, professorScheduleController.schedule);
     app.get('/professor/class', isProfessor, isProfessorProfileVerified, professorClassController.index);
+    app.get('/professor/class/single/:id', isProfessor, isProfessorProfileVerified, professorClassController.singleClass);
+    app.post('/professor/class/single/:id', isProfessor, isProfessorProfileVerified, professorClassController.singleClassDoGrade);
     app.post('/professor/class/doGrade', isProfessor, isProfessorProfileVerified, professorClassController.doGrade);
     app.get('/professor/records', isProfessor, isProfessorProfileVerified, professorRecordController.professorRecord);
 
@@ -90,7 +92,12 @@ module.exports = function (app) {
     app.get('/admin/enrollments/enrolling', isAdmin, adminEnrollmentController.index);
     app.post('/admin/enrollment/doEnroll', isAdmin, adminEnrollmentController.doEnroll);
     app.get('/admin/enrollments/enrolled', isAdmin, adminEnrollmentController.enrolled);
-    app.get('/admin/enrollment/student/schedule/:id', isAdmin, adminEnrollmentController.studentScheduleView);
+    app.get('/admin/enrollments/enrolled/irregular', isAdmin, adminEnrollmentController.enrolledIrregular);
+    app.get('/admin/enrollment/student/schedule/irregular/:id/:type', isAdmin, adminEnrollmentController.studentIrregularScheduleView);
+    app.get('/admin/enrollment/student/schedule/irregular/add/subjects/:id/:type', isAdmin, adminEnrollmentController.studentIrregularAddSubject);
+    // irregular
+
+    app.get('/admin/enrollment/student/schedule/:id/:type', isAdmin, adminEnrollmentController.studentScheduleView);
     app.post('/admin/enrollment/enrolled/cancel', isAdmin, adminEnrollmentController.enrolledCancel);
     app.get('/admin/enrollment/student/prospectus', isAdmin, adminEnrollmentController.studentProspectus);
     app.get('/admin/enrollment/student/prospectus/:id', isAdmin, adminEnrollmentController.studentProspectusView);

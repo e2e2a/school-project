@@ -63,7 +63,7 @@
                                                                                 <td class="align-middle text-capitalize"><%= subject.subjectId.unit %></td>
                                                                                 <td class="align-middle text-capitalize"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
                                                                                 <td class="align-middle text-capitalize"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
-                                                                                <td class="align-middle text-capitalize"><%= subject.days.length ? subject.days.join(', ') : 'N/A' %></td>
+                                                                                <td class="align-middle text-capitalize"><%= subject.days.length ? subject.days : 'N/A' %></td>
                                                                                 <td class="align-middle text-capitalize"><%= subject.grade %></td>
                                                                             </tr>
                                                                         <% }) %>

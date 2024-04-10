@@ -40,6 +40,7 @@ module.exports.enroll = async (req, res) => {
             return res.redirect('/courses');
         }
         await StudentProfile.findOneAndUpdate({ userId: userLogin._id }, { courseId: course._id, isEnrolling: true }, { new: true })
+        req.flash('message', 'Enrollment Pending.')
         return res.redirect('/courses');
     } else {
         console.log('no course found to be enrolled.')

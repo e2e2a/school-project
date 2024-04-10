@@ -1,0 +1,106 @@
+<%- include('../partials/header/header_css.ejs'); %>
+
+<body>
+    <%- include('../partials/spinner/spinner.ejs'); %>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../partials/nav/nav_professor.ejs') %>
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../partials/nav/sidebar_professor.ejs') %>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 text-center">
+                                        <div class="page-header-title">
+                                            <h3 class="m-b-10"><%= title %></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <% const filteredSchedule = schedule.schedule.find(item => item.subjectId._id.toString() === subjectId); %>
+                                                    <% if (filteredSchedule) { %>
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5><%= filteredSchedule.subjectId.courseId.name %> - <%= filteredSchedule.subjectId.year %> - <%= filteredSchedule.subjectId.semester %> - <%= filteredSchedule.subjectId.section %></h5>
+                                                                <span>Subject: <%= filteredSchedule.subjectId.subjectCode %> - <%= filteredSchedule.subjectId.name %> <code>Time: <%= filteredSchedule.startTime ? filteredSchedule.startTime : 'N/A' %> - <%= filteredSchedule.endTime ? filteredSchedule.endTime : 'N/A'  %></code> </span>
+                                                            </div>
+                                                            <div class="card-block table-border-style">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-bordered">
+                                                                        <thead>
+                                                                            <tr class="text-center" style="white-space: nowrap;">
+                                                                                <th>Student Name</th>
+                                                                                <th>Subject Code</th>
+                                                                                <th>Descriptive Title</th>
+                                                                                <th>Units</th>
+                                                                                <th>Grades</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <!-- Iterate over studentClasses to find matching subjectIds -->
+                                                                            <% let irregularEncountered = false; %>
+                                                                            <% studentClasses.forEach(studentClass => { %>
+                                                                                <% studentClass.subjects.forEach(subject => { %>
+                                                                                    <% if (subject.subjectId._id.toString() === filteredSchedule.subjectId._id.toString()) { %> 
+                                                                                        <form action="" method="post">
+                                                                                            <tr class="text-center" style="white-space: nowrap;">    
+                                                                                                <input type="hidden" name="studentClassId" id="studentClassId" value="<%= studentClass._id %>">
+                                                                                                <input type="hidden" name="subjectId" id="subjectId" value="<%= subject._id %>">
+                                                                                                <td class="align-middle text-capitalize"><%= studentClass.studentId.lastname %>, <%= studentClass.studentId.firstname %> <%= studentClass.studentId.middlename %></td>
+                                                                                                <td class="align-middle text-capitalize"><%= subject.subjectId.subjectCode %></td>
+                                                                                                <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
+                                                                                                <td class="align-middle text-capitalize"><%= subject.subjectId.unit %></td>
+                                                                                                <td class="align-middle">
+                                                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                                                        <input type="text" name="grade" id="grade" class="form-control border border-primary" style="width: 200px;" placeholder="Grades" value="<%= subject.grade %>">
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                                                        <button type="submit" name="actions" value="update" class="btn btn-sm btn-primary"><i class="ti-check-box"></i> Update</button>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </form> 
+                                                                                    <% } %>
+                                                                                <% }) %>
+                                                                            <% }) %>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <% } else { %>
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>No Classes found.</h5>
+                                                            </div>
+                                                        </div>
+                                                    <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include('../partials/footer/footer_js.ejs'); %>
