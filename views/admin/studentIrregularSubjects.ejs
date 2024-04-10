@@ -61,7 +61,6 @@
                                                                 <tbody>
                                                                     <% professorSchedule.forEach(scheds => { %>
                                                                         <% scheds.schedule.forEach(subject => { %>
-                                                                            <% console.log(subject.subjectId.semester, schedule.semester) %>
                                                                             <% if(subject.subjectId.category === schedule.category && subject.subjectId.year === schedule.year && subject.subjectId.semester === schedule.semester) {%>
                                                                                 <form action="" method="post">
                                                                                     <tr class="text-center"  style="white-space: nowrap;">
@@ -72,7 +71,8 @@
                                                                                         <td class="align-middle text-capitalize"> <%= scheds.professorId.lastname %>, <%= scheds.professorId.firstname %> <%= scheds.professorId.middlename %></td>
                                                                                         <td class="align-middle text-capitalize"> <%= subject.startTime %> - <%= subject.endTime %></td>
                                                                                         <td class="align-middle text-capitalize"> <%= subject.days %></td>
-                                                                                        <input type="hidden" name="subjectId" id="subjectId" value="<%= subject._id %>">
+                                                                                        <input type="hidden" name="professorId" id="professorId" value="<%= scheds.professorId._id %>">
+                                                                                        <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
                                                                                         <td class="text-capitalize">
                                                                                             <div class="btn-group d-flex justify-content-center align-items-center">
                                                                                                 <button type="submit" class="btn btn-sm btn-success d-flex"><i class="ti-plus"> Add Subject</i></button>

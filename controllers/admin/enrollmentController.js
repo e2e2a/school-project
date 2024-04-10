@@ -219,7 +219,7 @@ module.exports.studentScheduleView = async (req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log('Invalid ObjectId:', id);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const type = req.params.type;
     let schedule;
@@ -248,7 +248,7 @@ module.exports.studentIrregularScheduleView = async (req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log('Invalid ObjectId:', id);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const type = req.params.type;
     let schedule;
@@ -277,7 +277,7 @@ module.exports.studentIrregularAddSubject = async (req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log('Invalid ObjectId:', id);
-        return res.status(404).render('404');
+        return res.status(404).render('404', { role: 'admin' });
     }
     const type = req.params.type;
     let schedule;
@@ -302,6 +302,54 @@ module.exports.studentIrregularAddSubject = async (req, res) => {
         adminProfile: adminProfile,
         professorSchedule: professorSchedule,
     });
+}
+
+module.exports.studentIrregularDoAddSubject = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid id:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const subjectId = req.body.subjectId;
+    if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+        console.log('Invalid subjectId:', subjectId);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const type = req.params.type;
+    let schedule;
+    switch (type) {
+        case 'Irregular':
+            schedule = await StudentClass.findById(id).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('subjects.professorId');
+            break;
+        default:
+            console.log('Role not recognized:', type);
+            return res.status(404).render('404', { role: 'admin' });
+    }
+    const professorId = req.body.professorId;
+    if (!mongoose.Types.ObjectId.isValid(professorId)) {
+        console.log('Invalid professorId:', professorId);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const professorSchedule = await Schedule.findOne({ professorId: professorId }).populate('professorId').populate('schedule.subjectId');
+
+    const foundSubject = professorSchedule.schedule.find(subject => subject.subjectId._id.toString() === subjectId); // Using find instead of findIndex
+    console.log('foundSubject', foundSubject);
+
+    const existingStudentSubject = schedule.subjects.find(subject => subject.subjectId && subject.subjectId._id.toString() === subjectId);
+    console.log(existingStudentSubject)
+    if (existingStudentSubject) {
+        console.log('Subject already added');
+        req.flash('message', 'subject is already added.');
+        return res.redirect(`/admin/enrollment/student/schedule/irregular/add/subjects/${id}/${type}`);
+    } else {
+        const { subjectId, days, startTime, endTime } = foundSubject;
+
+        schedule.subjects.push({ subjectId, professorId, days, startTime, endTime, });
+
+        await schedule.save();
+    }
+    console.log('subject added to student:', schedule);
+    res.redirect(`/admin/enrollment/student/schedule/irregular/add/subjects/${id}/${type}`);
 }
 
 module.exports.enrolledCancel = async (req, res) => {
