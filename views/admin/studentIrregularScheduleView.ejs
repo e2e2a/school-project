@@ -56,19 +56,28 @@
                                                                             <th class="text-center">Time</th>
                                                                             <th class="text-center">Days</th>
                                                                             <th class="text-center">Grades</th>
+                                                                            <th class="text-center">Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody> 
                                                                         <% schedule.subjects.forEach(subject => { %>
-                                                                            <tr style="white-space: nowrap;">
-                                                                                <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
+                                                                            <form action="" method="post">
+                                                                                <tr style="white-space: nowrap;">
+                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.days ? subject.days : 'N/A' %></td>
                                                                                     <td class="align-middle text-capitalize text-center"><%= subject.grade ? subject.grade : 'N/A' %></td>
-                                                                            </tr>
+                                                                                    <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
+                                                                                    <td class="align-middle text-capitalize text-center">
+                                                                                        <div class="btn-group d-flex justify-content-center align-items-center">
+                                                                                            <button type="submit" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete</button>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </form>
                                                                         <% }) %>
                                                                     </tbody>
                                                                 </table>

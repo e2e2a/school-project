@@ -32,8 +32,16 @@
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <h5><%= schedule.studentId.lastname %>, <%= schedule.studentId.firstname %> <%= schedule.studentId.middlename %> </h5>
-                                                        <span><%= schedule.courseId.category %> - <%= schedule.year %> - <%= schedule.semester %> </span>
+                                                        <div class="row">
+                                                            <div class="col-12 col-lg-6 col-xl-6">
+                                                                <h5><%= schedule.studentId.lastname %>, <%= schedule.studentId.firstname %> <%= schedule.studentId.middlename %> </h5>
+                                                                <span><%= schedule.courseId.category %> - <%= schedule.year %> - <%= schedule.semester %> </span>
+                                                            </div>
+                                                            <div class="col-12 col-lg-6 col-xl-6 text-right mt-3 mb-3">
+                                                                <a href="/admin/enrollment/student/schedule/irregular/<%= schedule._id %>/<%= schedule.type %>" class="btn btn-sm btn-primary text-white"><i class="ti-eye"></i> View Student Subject</a>
+                                                            </div>
+                                                        </div>
+                                                        
                                                         <span>
                                                             <div class="row">
                                                                 <div class="col-12 col-lg-6 col-xl-6 ">

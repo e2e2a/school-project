@@ -349,7 +349,42 @@ module.exports.studentIrregularDoAddSubject = async (req, res) => {
         await schedule.save();
     }
     console.log('subject added to student:', schedule);
-    res.redirect(`/admin/enrollment/student/schedule/irregular/add/subjects/${id}/${type}`);
+    return res.redirect(`/admin/enrollment/student/schedule/irregular/add/subjects/${id}/${type}`);
+}
+
+module.exports.studentIrregularRemoveAddSubject = async (req, res) => {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.log('Invalid id:', id);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const subjectId = req.body.subjectId;
+    if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+        console.log('Invalid subjectId:', subjectId);
+        return res.status(404).render('404', { role: 'admin' });
+    }
+    const type = req.params.type;
+    let schedule;
+    switch (type) {
+        case 'Irregular':
+            schedule = await StudentClass.findById(id).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('subjects.professorId');
+            break;
+        default:
+            console.log('Role not recognized:', type);
+            return res.status(404).render('404', { role: 'admin' });
+    }
+
+    const existingStudentSubjectIndex = schedule.subjects.findIndex(subject => subject.subjectId && subject.subjectId._id.toString() === subjectId);
+    if (existingStudentSubjectIndex !== -1) {
+        schedule.subjects.splice(existingStudentSubjectIndex, 1); // Remove the subject from the array
+    } else {
+        console.log('No Subject found to delete.');
+        req.flash('message', 'No Subject found to delete.');
+        return res.redirect(`/admin/enrollment/student/schedule/irregular/add/subjects/${id}/${type}`);
+    }
+    await schedule.save();
+    console.log('student subject deleted:', schedule);
+    return res.redirect(`admin/enrollment/student/schedule/${type}/${id}`);
 }
 
 module.exports.enrolledCancel = async (req, res) => {
