@@ -93,6 +93,7 @@ module.exports = function (app) {
     app.post('/admin/enrollment/doEnroll', isAdmin, adminEnrollmentController.doEnroll);
     app.get('/admin/enrollments/enrolled', isAdmin, adminEnrollmentController.enrolled);
     app.get('/admin/enrollments/enrolled/irregular', isAdmin, adminEnrollmentController.enrolledIrregular);
+    app.post('/admin/enrollments/enrolled/irregular', isAdmin, adminEndSemesterController.irregularEndSemester);
     app.get('/admin/enrollment/student/schedule/irregular/:id/:type', isAdmin, adminEnrollmentController.studentIrregularScheduleView);
     app.post('/admin/enrollment/student/schedule/irregular/:id/:type', isAdmin, adminEnrollmentController.studentIrregularRemoveAddSubject);
     app.get('/admin/enrollment/student/schedule/irregular/add/subjects/:id/:type', isAdmin, adminEnrollmentController.studentIrregularAddSubject);

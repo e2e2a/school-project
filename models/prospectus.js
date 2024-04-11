@@ -68,6 +68,9 @@ var schema = mongoose.Schema({
             type: Number,
         },
     }],
+    type: {
+        type: String,
+    },
 }, {
     versionKey: false,
     timestamps: true
