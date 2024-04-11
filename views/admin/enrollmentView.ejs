@@ -60,56 +60,59 @@
                                                                 <tbody>
                                                                     <% studentProfiles.forEach(profile => { %>
                                                                         <% if(profile.courseId && !profile.isEnrolled){ %>
-                                                                    <form action="/admin/enrollment/doEnroll" method="post">
-                                                                        <tr style="white-space: nowrap;">
-                                                                            <td class="align-middle text-capitalize"><%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %></td>
-                                                                            <td class="align-middle">
-                                                                                <select name="type" class="form-control" id="type" style="width: 200px;" onclick="toggleDropdowns()">
-                                                                                    <option value="" selected hidden>Select Type</option>
-                                                                                    <option value="Regular">Regular</option>
-                                                                                    <option value="Irregular">Irregular</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td class="align-middle"><%= profile.courseId.name %></td>
-                                                                            <td class="align-middle">
-                                                                                <select name="year" class="form-control" id="year" style="width: 200px;">
-                                                                                    <option value="" selected hidden>Select Year</option>
-                                                                                    <option value="1st Year">1st Year</option>
-                                                                                    <option value="2nd Year">2nd Year</option>
-                                                                                    <option value="3rd Year">3rd Year</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                <select name="semester" class="form-control" id="semester" style="width: 200px;">
-                                                                                    <option value="" selected hidden>Select Semester</option>
-                                                                                    <option value="1st Semester">1st Semester</option>
-                                                                                    <option value="2nd Semester">2nd Semester</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                <select name="section" class="form-control" id="section" style="width: 200px;" disabled>
-                                                                                    <option value="" selected hidden>Select Section</option>
-                                                                                    <option value="Section 1">Section 1</option>
-                                                                                    <option value="Section 2">Section 2</option>
-                                                                                    <option value="Section 3">Section 3</option>
-                                                                                    <option value="Section 4">Section 4</option>
-                                                                                    <option value="Section 5">Section 5</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td class="align-middle">
-                                                                                <input type="text" class="form-control" pattern="\d{4}-\d{4}" name="batch" id="batch" style="width: 200px;" >
-                                                                            </td>
-                                                                            <input type="hidden" name="courseId" id="courseId" value="<%= profile.courseId._id %>">
-                                                                            <input type="hidden" name="studentId" id="studentId" value="<%= profile._id %>">
-                                                                            <td class="text-center align-middle">
-                                                                                <div class="btn-group d-flex">
-                                                                                    <button type="submit" name="actions" value="approved" class="btn btn-sm btn-success"><i class="ti-check-box"></i> Approved</button>
-                                                                                    <button type="submit" name="actions" value="print" class="btn btn-sm btn-secondary"><i class="ti-download"></i> Print</button>
-                                                                                    <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Declined</button>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </form>
+                                                                            <% if(profile.year === '3rd Year' && profile.semester === '2nd Semester') {%>
+                                                                            <% } else{ %>
+                                                                                <form action="/admin/enrollment/doEnroll" method="post">
+                                                                                    <tr style="white-space: nowrap;">
+                                                                                        <td class="align-middle text-capitalize"><%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %></td>
+                                                                                        <td class="align-middle">
+                                                                                            <select name="type" class="form-control" id="type" style="width: 200px;" onclick="toggleDropdowns()">
+                                                                                                <option value="" selected hidden>Select Type</option>
+                                                                                                <option value="Regular">Regular</option>
+                                                                                                <option value="Irregular">Irregular</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td class="align-middle"><%= profile.courseId.name %></td>
+                                                                                        <td class="align-middle">
+                                                                                            <select name="year" class="form-control" id="year" style="width: 200px;">
+                                                                                                <option value="" selected hidden>Select Year</option>
+                                                                                                <option value="1st Year">1st Year</option>
+                                                                                                <option value="2nd Year">2nd Year</option>
+                                                                                                <option value="3rd Year">3rd Year</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td class="align-middle">
+                                                                                            <select name="semester" class="form-control" id="semester" style="width: 200px;">
+                                                                                                <option value="" selected hidden>Select Semester</option>
+                                                                                                <option value="1st Semester">1st Semester</option>
+                                                                                                <option value="2nd Semester">2nd Semester</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td class="align-middle">
+                                                                                            <select name="section" class="form-control" id="section" style="width: 200px;" disabled>
+                                                                                                <option value="" selected hidden>Select Section</option>
+                                                                                                <option value="Section 1">Section 1</option>
+                                                                                                <option value="Section 2">Section 2</option>
+                                                                                                <option value="Section 3">Section 3</option>
+                                                                                                <option value="Section 4">Section 4</option>
+                                                                                                <option value="Section 5">Section 5</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td class="align-middle">
+                                                                                            <input type="text" class="form-control" pattern="\d{4}-\d{4}" name="batch" id="batch" style="width: 200px;" >
+                                                                                        </td>
+                                                                                        <input type="hidden" name="courseId" id="courseId" value="<%= profile.courseId._id %>">
+                                                                                        <input type="hidden" name="studentId" id="studentId" value="<%= profile._id %>">
+                                                                                        <td class="text-center align-middle">
+                                                                                            <div class="btn-group d-flex">
+                                                                                                <button type="submit" name="actions" value="approved" class="btn btn-sm btn-success"><i class="ti-check-box"></i> Approved</button>
+                                                                                                <button type="submit" name="actions" value="print" class="btn btn-sm btn-secondary"><i class="ti-download"></i> Print</button>
+                                                                                                <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Declined</button>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </form>
+                                                                            <% } %>
                                                                         <% } %>
                                                                     <% }) %>
                                                                 </tbody>
@@ -150,23 +153,27 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-        const typeSelect = document.getElementById('type');
-        const sectionSelect = document.getElementById('section');
+    const typeSelects = document.querySelectorAll('#type');
+    const sectionSelects = document.querySelectorAll('#section');
 
-        function toggleDropdowns() {
-            const selectedType = typeSelect.value;
-            const isRegular = selectedType === 'Regular';
+    function toggleDropdowns(event) {
+        const selectedType = event.target.value;
+        const isRegular = selectedType === 'Regular';
+        const sectionSelect = event.target.parentElement.parentElement.querySelector('#section'); // Find the corresponding section dropdown
 
-            sectionSelect.disabled = !isRegular;
-
-            if (!isRegular) {
-                sectionSelect.selectedIndex = 0;
-            }
+        // Toggle the section dropdown based on the selected type
+        sectionSelect.disabled = !isRegular;
+        if (!isRegular) {
+            sectionSelect.selectedIndex = 0;
         }
+    }
 
-        // Listen for changes in the type dropdown and toggle the dropdowns accordingly
+    // Add event listener to each type dropdown
+    typeSelects.forEach(function(typeSelect) {
         typeSelect.addEventListener('change', toggleDropdowns);
     });
+});
+
     </script>
 </body>
 <%- include('../partials/footer/footer_js.ejs'); %>

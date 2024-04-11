@@ -38,9 +38,11 @@
                                                                 <h5>Students Enrolled</h5>
                                                             </div>
                                                             <div class="col-12 col-lg-6 col-xl-6 text-right">
-                                                                <form action="" method="post">
-                                                                    <button type="submit" class="btn btn-sm btn-warning"><i class=""></i>End Semester</button>
-                                                                </form>
+                                                                <% if(schedules.length > 0) { %>
+                                                                    <form action="" method="post">
+                                                                        <button type="submit" class="btn btn-sm btn-warning"><i class=""></i>End Semester</button>
+                                                                    </form>
+                                                                <% } %>
                                                             </div>
                                                         </div>
                                                         <span>
@@ -123,7 +125,7 @@
                                                                     <% }) %>
                                                                 <% } else { %>
                                                                     <div class="text-center m-3">
-                                                                        No irregular student found
+                                                                        No irregular student found.
                                                                     </div>
                                                                 <% } %>
                                                                 </tbody>
