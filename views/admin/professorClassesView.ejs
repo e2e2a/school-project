@@ -60,7 +60,15 @@
                                                                             </thead>
                                                                             <tbody>
                                                                                 <!-- we need to compare if the schedule.subjectId._id === studentClasses.subjectId._id -->
-                                                                                <% studentClasses.forEach(studentClass => { %>
+                                                                                <% studentClasses.sort((a, b) => {
+                                                                                    // Compare lastnames
+                                                                                    const lastNameComparison = a.studentId.lastname.localeCompare(b.studentId.lastname);
+                                                                                    if (lastNameComparison !== 0) {
+                                                                                        return lastNameComparison;
+                                                                                    }
+                                                                                    // If lastnames are the same, compare firstnames
+                                                                                    return a.studentId.firstname.localeCompare(b.studentId.firstname);
+                                                                                }).forEach(studentClass => { %>
                                                                                     <% studentClass.subjects.forEach(subject => { %>
                                                                                         <% if (subject.subjectId._id.toString() === schedule.subjectId._id.toString()) { %> 
                                                                                             <form action="/professor/class/doGrade" method="post">                                                                                      <tr style="white-space: nowrap;">

@@ -78,7 +78,15 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <% students.forEach(student => { %>
+                                                                    <% students.sort((a, b) => {
+                                                                        // Compare lastnames
+                                                                        const lastNameComparison = a.lastname.localeCompare(b.lastname);
+                                                                        if (lastNameComparison !== 0) {
+                                                                            return lastNameComparison;
+                                                                        }
+                                                                        // If lastnames are the same, compare firstnames
+                                                                        return a.firstname.localeCompare(b.firstname);
+                                                                    }).forEach(student => { %>
                                                                         <form action="" method="post">
                                                                             <tr class="text-center" style="white-space: nowrap;">
                                                                                 <td class="align-middle text-capitalize"><%= student.lastname %>, <%= student.firstname %> <%= student.middlename %></td>

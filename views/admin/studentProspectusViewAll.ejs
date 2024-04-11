@@ -45,10 +45,18 @@
                                             </div>
                                             <div class="col-12">
                                                 <% if(studentProspectus.length > 0) { %>
-                                                    <% studentProspectus.forEach(student => { %>
+                                                    <% studentProspectus.sort((a, b) => {
+                                                        // Compare lastnames
+                                                        const lastNameComparison = a.studentName.lastname.localeCompare(b.studentName.lastname);
+                                                        if (lastNameComparison !== 0) {
+                                                            return lastNameComparison;
+                                                        }
+                                                        // If lastnames are the same, compare firstnames
+                                                        return a.studentName.firstname.localeCompare(b.studentName.firstname);
+                                                    }).forEach(student => { %>
                                                         <div id="cardProspectus" class="card">
                                                             <div class="card-header">
-                                                                <h5><%= student.studentName.firstname %>, <%= student.studentName.middlename %> <%= student.studentName.lastname %></h5>
+                                                                <h5><%= student.studentName.lastname %>, <%= student.studentName.middlename %> <%= student.studentName.firstname %></h5>
                                                                 <span><%= student.year %> - <%= student.semester %> - <%= student.section %> - <%= student.courseName %></span>
                                                                 <span>Batch: <%= student.batch %></span>
                                                             </div>
@@ -56,24 +64,30 @@
                                                                 <div class="table-responsive">
                                                                     <table class="table table-bordered">
                                                                         <thead>
-                                                                            <tr>
-                                                                                <th class="text-center">Subject Code</th>
+                                                                            <tr class="text-center" style="white-space: nowrap;">
+                                                                                <th>Subject Code</th>
                                                                                 <th>Descriptive Title</th>
-                                                                                <th class="text-center">Units</th>
-                                                                                <th class="text-center">Professor</th>
-                                                                                <th class="text-center">Time</th>
-                                                                                <th class="text-center">Grades</th>
+                                                                                <th>Units</th>
+                                                                                <th>Professor</th>
+                                                                                <th>Time</th>
+                                                                                <th>Grades</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <% student.subjects.forEach(subject => { %>
-                                                                                <tr style="white-space: nowrap;">
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subject.subjectCode %></td>
+                                                                            <% 
+                                                                            const sortedSchedule = student.subjects.sort((a, b) => {
+                                                                                const [aStartHour, aStartMinute] = a.startTime.split(':').map(Number);
+                                                                                const [bStartHour, bStartMinute] = b.startTime.split(':').map(Number);
+                                                                                return aStartHour - bStartHour || aStartMinute - bStartMinute;
+                                                                            }); %>
+                                                                            <% sortedSchedule.forEach(subject => { %>
+                                                                                <tr style="white-space: nowrap;" class="text-center">  
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subject.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subject.name %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subject.unit %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.professorName.lastname %>, <%= subject.professorName.firstname %> <%= subject.professorName.middlename %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.startTime %> - <%= subject.endTime %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.grade %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subject.unit %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.professorName.lastname %>, <%= subject.professorName.firstname %> <%= subject.professorName.middlename %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.startTime %> - <%= subject.endTime %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.grade %></td>
                                                                                 </tr>
                                                                             <% }) %>
                                                                         </tbody>

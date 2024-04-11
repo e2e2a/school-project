@@ -63,8 +63,8 @@
                                                                             const [aStartHour, aStartMinute] = a.startTime.split(':').map(Number);
                                                                             const [bStartHour, bStartMinute] = b.startTime.split(':').map(Number);
                                                                             return aStartHour - bStartHour || aStartMinute - bStartMinute;
-                                                                        });
-                                                                        sortedSchedule.forEach(subject => { %>
+                                                                        }); %>
+                                                                        <% sortedSchedule.forEach(subject => { %>
                                                                             <tr style="white-space: nowrap;">
                                                                                 <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
