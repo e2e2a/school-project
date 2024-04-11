@@ -48,30 +48,30 @@
                                                             <div class="table-responsive">
                                                                 <table class="table table-bordered">
                                                                     <thead>
-                                                                        <tr>
-                                                                            <th class="text-center">Subject Code</th>
+                                                                        <tr class="text-center" style="white-space: nowrap;">
+                                                                            <th>Subject Code</th>
                                                                             <th>Descriptive Title</th>
-                                                                            <th class="text-center">Units</th>
-                                                                            <th class="text-center">Professor</th>
-                                                                            <th class="text-center">Time</th>
-                                                                            <th class="text-center">Days</th>
-                                                                            <th class="text-center">Grades</th>
-                                                                            <th class="text-center">Action</th>
+                                                                            <th>Units</th>
+                                                                            <th>Professor</th>
+                                                                            <th>Time</th>
+                                                                            <th>Days</th>
+                                                                            <th>Grades</th>
+                                                                            <th>Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody> 
                                                                         <% schedule.subjects.forEach(subject => { %>
                                                                             <form action="" method="post">
-                                                                                <tr style="white-space: nowrap;">
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
+                                                                                <tr class="text-center" style="white-space: nowrap;">
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.subjectId.unit %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.days ? subject.days : 'N/A' %></td>
-                                                                                    <td class="align-middle text-capitalize text-center"><%= subject.grade ? subject.grade : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.unit %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.days ? subject.days : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.grade ? subject.grade : 'N/A' %></td>
                                                                                     <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
-                                                                                    <td class="align-middle text-capitalize text-center">
+                                                                                    <td class="align-middle text-capitalize">
                                                                                         <div class="btn-group d-flex justify-content-center align-items-center">
                                                                                             <button type="submit" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete</button>
                                                                                         </div>
