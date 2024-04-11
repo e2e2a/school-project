@@ -69,7 +69,7 @@
                                                                 <tbody>
                                                                     <% professorSchedule.forEach(scheds => { %>
                                                                         <% scheds.schedule.forEach(subject => { %>
-                                                                            <% if(subject.subjectId.category === schedule.category && subject.subjectId.year === schedule.year && subject.subjectId.semester === schedule.semester) {%>
+                                                                            <% if(subject.subjectId.category === schedule.category) {%>
                                                                                 <form action="" method="post">
                                                                                     <tr class="text-center"  style="white-space: nowrap;">
                                                                                         <td class="align-middle text-capitalize"> <%= subject.subjectId.subjectCode %></td>

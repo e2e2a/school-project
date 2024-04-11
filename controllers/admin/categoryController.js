@@ -23,7 +23,7 @@ module.exports.index = async (req, res) => {
         semester: semester,
     }).populate('courseId').populate('subjects.subjectId').populate('subjects.professorId').exec();
     const professors = await ProfessorProfile.find().populate('userId').exec();
-    const studentClass = await StudentClass.find({type: 'Regular'})
+    const studentClass = await StudentClass.find({ type: 'Regular' })
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     res.render('admin/categoryView', {
@@ -95,6 +95,7 @@ module.exports.actions = async (req, res) => {
                 if (index !== -1) {
                     professorSchedule.schedule.splice(index, 1);
                 }
+                await professorSchedule.save();
                 //
 
                 const isConflict = professorSchedule.schedule.some(existingSchedule => {
@@ -156,6 +157,18 @@ module.exports.actions = async (req, res) => {
 
                 let subjectToUpdate = sectionExists.subjects.find(sub => sub.subjectId.toString() === subjectId);
                 if (subjectToUpdate) {
+                    let oldProfessorSchedule = await Schedule.findOne({ professorId: subjectToUpdate.professorId });
+                    if (oldProfessorSchedule) {
+                        let oldProfessorScheduleExist = await oldProfessorSchedule.schedule.findIndex(sub => sub.subjectId.toString() === subjectId);
+                        console.log(oldProfessorScheduleExist)
+                        if (oldProfessorScheduleExist !== -1) {
+                            oldProfessorSchedule.schedule.splice(oldProfessorScheduleExist, 1);
+                        }
+                        await oldProfessorSchedule.save();
+                        console.log('oldProfessorScheduleExist', oldProfessorScheduleExist)
+                        console.log('professorSchedule', sectionExists.subjects.professorId);
+                    }
+                    
                     // Subject found, update it
                     subjectToUpdate.professorId = professorId;
                     subjectToUpdate.days = days;

@@ -384,7 +384,7 @@ module.exports.studentIrregularRemoveAddSubject = async (req, res) => {
     }
     await schedule.save();
     console.log('student subject deleted:', schedule);
-    return res.redirect(`admin/enrollment/student/schedule/${type}/${id}`);
+    return res.redirect(`admin/enrollment/student/schedule/irregular/${id}/${type}`);
 }
 
 module.exports.enrolledCancel = async (req, res) => {
