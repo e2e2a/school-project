@@ -59,7 +59,13 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <% student.subjects.forEach(subject => { %>
+                                                                            <% 
+                                                                            const sortedSchedule = student.subjects.sort((a, b) => {
+                                                                                const [aStartHour, aStartMinute] = a.startTime.split(':').map(Number);
+                                                                                const [bStartHour, bStartMinute] = b.startTime.split(':').map(Number);
+                                                                                return aStartHour - bStartHour || aStartMinute - bStartMinute;
+                                                                            }); %>
+                                                                            <% sortedSchedule.forEach(subject => { %>
                                                                                 <tr class="text-center" style="white-space: nowrap;">
                                                                                     <td class="align-middle text-capitalize"><%= subject.subject.subjectCode %></td>
                                                                                     <td class="align-middle text-capitalize"><%= subject.subject.name %></td>
