@@ -98,8 +98,6 @@ module.exports = function (app) {
     app.post('/admin/enrollment/student/schedule/irregular/:id/:type', isAdmin, adminEnrollmentController.studentIrregularRemoveAddSubject);
     app.get('/admin/enrollment/student/schedule/irregular/add/subjects/:id/:type', isAdmin, adminEnrollmentController.studentIrregularAddSubject);
     app.post('/admin/enrollment/student/schedule/irregular/add/subjects/:id/:type', isAdmin, adminEnrollmentController.studentIrregularDoAddSubject);
-    // irregular
-
     app.get('/admin/enrollment/student/schedule/:id/:type', isAdmin, adminEnrollmentController.studentScheduleView);
     app.post('/admin/enrollment/enrolled/cancel', isAdmin, adminEnrollmentController.enrolledCancel);
     app.get('/admin/enrollment/student/prospectus', isAdmin, adminEnrollmentController.studentProspectus);
