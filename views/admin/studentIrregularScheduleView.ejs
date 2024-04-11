@@ -60,7 +60,13 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody> 
-                                                                        <% schedule.subjects.forEach(subject => { %>
+                                                                        <% 
+                                                                        const sortedSchedule = schedule.subjects.sort((a, b) => {
+                                                                            const [aStartHour, aStartMinute] = a.startTime.split(':').map(Number);
+                                                                            const [bStartHour, bStartMinute] = b.startTime.split(':').map(Number);
+                                                                            return aStartHour - bStartHour || aStartMinute - bStartMinute;
+                                                                        });
+                                                                        sortedSchedule.forEach(subject => { %>
                                                                             <form action="" method="post">
                                                                                 <tr class="text-center" style="white-space: nowrap;">
                                                                                     <td class="align-middle text-capitalize"><%= subject.subjectId.subjectCode %></td>
