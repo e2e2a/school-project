@@ -53,7 +53,6 @@ module.exports.doLogin = async (req, res) => {
                     return res.redirect('/');
                 }
             } else if (user.role === 'professor') {
-                console.log(user.role)
                 user.comparePassword(req.body.password, (error, valid) => {
                     if (error) {
                         return res.status(403).send('Forbidden');

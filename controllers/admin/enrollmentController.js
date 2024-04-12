@@ -348,7 +348,7 @@ module.exports.studentIrregularDoAddSubject = async (req, res) => {
 
         await schedule.save();
     }
-    console.log('subject added to student:', schedule);
+    console.log('subject added to irregular student');
     return res.redirect(`/admin/enrollment/student/schedule/irregular/add/subjects/${id}/${type}`);
 }
 

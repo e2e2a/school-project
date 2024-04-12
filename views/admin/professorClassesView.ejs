@@ -29,8 +29,12 @@
                                     <div class="page-body">
                                         <div class="row">
                                             <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h4 class="text-capitalize">Professor Fullname: <%= professorSchedule.professorId.lastname %>, <%= professorSchedule.professorId.firstname %> <%= professorSchedule.professorId.middlename %></h4>
+                                                    </div>
+                                                </div>
                                                 <% if(professorSchedule.schedule.length > 0) { %>
-                                                    <h4 class="text-center mb-5 mt-3 text-capitalize">Professor: <%= professorSchedule.professorId.lastname %>, <%= professorSchedule.professorId.firstname %> <%= professorSchedule.professorId.middlename %></h4>
                                                     <% professorSchedule.schedule.forEach(schedule => { %>
                                                             <div class="card">
                                                                 <div class="card-header">
