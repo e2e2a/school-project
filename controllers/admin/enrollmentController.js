@@ -344,6 +344,42 @@ module.exports.studentIrregularDoAddSubject = async (req, res) => {
     } else {
         const { subjectId, days, startTime, endTime } = foundSubject;
 
+        function getTimeInMinutes(time) {
+            const [hour, minute] = time.split(':').map(Number);
+            return hour * 60 + minute;
+        }
+
+        const isConflict = schedule.subjects.some(subject => {
+            const overlapDays = Array.isArray(days) ? days.filter(day => subject.days.includes(day)) : [days];
+            if (overlapDays.length > 0) {
+                const newStartTime = getTimeInMinutes(startTime);
+                const newEndTime = getTimeInMinutes(endTime);
+                const existingStartTime = getTimeInMinutes(subject.startTime);
+                const existingEndTime = getTimeInMinutes(subject.endTime);
+
+                if (
+                    (newStartTime === existingEndTime && newEndTime > existingStartTime) ||
+                    (newEndTime === existingStartTime && newStartTime < existingEndTime)
+                ) {
+                    console.log(newEndTime, existingStartTime, newStartTime, existingEndTime)
+                    return false;
+                }
+
+                if (
+                    (newStartTime < existingEndTime && newEndTime > existingStartTime) ||
+                    (newStartTime === existingEndTime || newEndTime === existingStartTime)
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        if (isConflict) {
+            console.log('Irregular student has already a class with provided time.');
+            req.flash('message', 'Irregular student has already a class with provided time.')
+            return res.redirect(`/admin/enrollment/student/schedule/irregular/add/subjects/${id}/${type}`);
+        }
+
         schedule.subjects.push({ subjectId, professorId, days, startTime, endTime, });
 
         await schedule.save();

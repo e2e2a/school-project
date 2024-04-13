@@ -89,14 +89,13 @@ module.exports.actions = async (req, res) => {
                     req.flash('message', 'Invalid time range');
                     return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
                 }
-                //
+
                 const index = professorSchedule.schedule.findIndex(entry => entry.subjectId.toString() === subjectId);
                 // If the subject is found in the professor's schedule, remove the existing entry
                 if (index !== -1) {
                     professorSchedule.schedule.splice(index, 1);
                 }
                 await professorSchedule.save();
-                //
 
                 const isConflict = professorSchedule.schedule.some(existingSchedule => {
                     const overlapDays = Array.isArray(days) ? days.filter(day => existingSchedule.days.includes(day)) : [days];
@@ -130,14 +129,6 @@ module.exports.actions = async (req, res) => {
                     return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
                 }
 
-                professorSchedule.schedule.push({
-                    subjectId,
-                    days,
-                    startTime,
-                    endTime
-                });
-
-                await professorSchedule.save();
                 //student class
                 let studentClass = await StudentClass.find(sectionFilter);
                 if (studentClass.length > 0) {
@@ -166,27 +157,34 @@ module.exports.actions = async (req, res) => {
                         }
                         await oldProfessorSchedule.save();
                         console.log('oldProfessorScheduleExist', oldProfessorScheduleExist)
-                        console.log('professorSchedule', sectionExists.subjects.professorId);
+                        console.log('professorSchedule', sectionExists.professorId);
+
                     }
-                    
-                    // Subject found, update it
+
+                    // Subject found and update
                     subjectToUpdate.professorId = professorId;
                     subjectToUpdate.days = days;
                     subjectToUpdate.startTime = startTime;
                     subjectToUpdate.endTime = endTime;
-                } else {
-                    sectionExists.subjects.push({
-                        subjectId,
-                        professorId,
-                        days,
-                        startTime,
-                        endTime
-                    });
-                }
 
-                await sectionExists.save();
-                req.flash('message', 'Schedule saved successfully')
-                res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
+                    await sectionExists.save();
+
+                    professorSchedule.schedule.push({
+                        subjectId: subjectId,
+                        days: days,
+                        startTime: startTime,
+                        endTime: endTime
+                    });
+
+                    await professorSchedule.save();
+                } else {
+                    console.log('no subject found in sections');
+                    req.flash('message', 'No subject found to update in section.')
+                    return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
+                }
+                
+                req.flash('message', 'Schedule saved successfully');
+                return res.redirect(`/admin/category?category=${category}&year=${year}&semester=${semester}`);
             } catch (error) {
                 console.error('Error saving schedule:', error);
                 res.status(500).send('Error saving schedule');
