@@ -55,7 +55,7 @@ module.exports.doRegister = async (req, res) => {
                 };
                 const user = await User.findByIdAndUpdate(existingUser._id, userUpdate, { new: true });
                 const tokenObject = await userTokenUpdate(user);
-                const emailHtmlContent = await emailContent(user, userToken);
+                const emailHtmlContent = await emailContent(user, tokenObject);
                 sendEmail(
                     'example.onrender.com <school@gmail.com>',
                     user.email,
@@ -76,8 +76,8 @@ module.exports.doRegister = async (req, res) => {
                 isVerified: false,
             });
             await user.save();
-            const tokenObject = await userToken(user);
-            const emailHtmlContent = await emailContent(user, userToken);
+            const tokenObject = await userTokenUpdate(user);
+            const emailHtmlContent = await emailContent(user, tokenObject);
             sendEmail(
                 'example.onrender.com <example@gmail.com>',
                 user.email,

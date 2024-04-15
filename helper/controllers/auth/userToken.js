@@ -20,17 +20,23 @@ async function userToken(user) {
 }
 
 async function userTokenUpdate(user) {
+    
+    const checkUserToken = await UserToken.findOne({ userId: user._id })
+    if(!checkUserToken){
+        const newUserToken = await userToken(user);
+        return newUserToken;
+    }
     const registrationToken = jwt.sign({ userId: user._id }, 'Reymond_Godoy_Secret7777', { expiresIn: '1d' });
     const verificationCode = sixDigitCode();
 
-    const userToken = {
+    const updatedToken  = {
         token: registrationToken,
         verificationCode: verificationCode,
         expirationDate: new Date(new Date().getTime() + 24 * 5 * 60 * 1000),
         expirationCodeDate: new Date(new Date().getTime() + 5 * 60 * 1000)
     };
-    await UserToken.findOneAndUpdate({ userId: user._id }, userToken, { new: true })
-    return userToken;
+    await UserToken.findOneAndUpdate({ userId: user._id }, updatedToken, { new: true })
+    return updatedToken ;
 }
 
 module.exports = {

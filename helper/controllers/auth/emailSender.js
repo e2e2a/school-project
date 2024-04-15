@@ -19,14 +19,14 @@ async function sendEmail(from, to, subject, htmlContent) {
     }
 }
 
-async function emailContent(user, userToken) {
+async function emailContent(user, tokenObject) {
     const emailContent = `
                         <div style="text-align: center;">
                             <div style="background-color: #36393f; padding: 20px; width: 70%; text-align: justify; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); display: inline-block;">
                                 <h2 style="color: #66c0f4;">Hello ${user.email},</h2>
                                 <p style="color: #dcddde;">Welcome aboard!</p>
                                 <p style="color: #dcddde;">To unlock all the features our platform offers, please verify your email address by clicking the link below:</p>
-                                <p style="color: #dcddde;">Your unique verification code is: <strong>${userToken.verificationCode}</strong></p>
+                                <p style="color: #dcddde;">Your unique verification code is: <strong>${tokenObject.verificationCode}</strong></p>
                                 <p style="color: #dcddde;">By verifying your email, you're helping us maintain a secure environment for all our users.</p>
                                 <p style="color: #dcddde;">This process ensures that your account remains accessible only to you, safeguarding your data and privacy.</p>
                                 <p style="color: #dcddde;">If you have any questions or encounter any issues, our support team is here to assist you.</p>
