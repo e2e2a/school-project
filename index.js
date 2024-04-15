@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const MongoDBSessionStore = require('connect-mongodb-session')(session);
+// const MongoDBSessionStore = require('connect-mongodb-session')(session);
 const bodyparser = require('body-parser');
 var path = require('path');
 const dbConnect = require('./database/dbConnect');
@@ -10,10 +10,10 @@ const app = express();
 const conn = dbConnect();
 const User = require('./models/user');
 
-const store = new MongoDBSessionStore({
-    uri: process.env.MONGODB_CONNECT_URI,
-    collection: 'sessions'
-});
+// const store = new MongoDBSessionStore({
+//     uri: process.env.MONGODB_CONNECT_URI,
+//     collection: 'sessions'
+// });
 
 app.use(session({
     secret: 'sessionsecret777',
@@ -22,7 +22,7 @@ app.use(session({
     },
     resave: false,
     saveUninitialized: true,
-    store: store,
+    // store: store,
 }));
 
 app.use(bodyparser.urlencoded({ extended: true }));

@@ -1,4 +1,5 @@
 const { isAdmin, isProfessor, isProfessorProfileVerified, isStudent, isStudentProfileVerified } = require('../helper/auth-helper');
+const { checkActiveUsers, decreaseActiveUsers } = require('../helper/controllers/auth/loginCheck');
 
 const authRegisterController = require('../controllers/auth/registerController');
 const authVerifyController = require('../controllers/auth/verifyController');
@@ -37,14 +38,12 @@ module.exports = function (app) {
      * auth
      */
     app.get('/', authLoginController.login);
-    app.post('/doLogin', authLoginController.doLogin);
-    app.get('/register', authRegisterController.register);
+    app.post('/doLogin', checkActiveUsers, authLoginController.doLogin);
+    app.get('/register',authRegisterController.register);
     app.post('/doRegister', authRegisterController.doRegister);
     app.get('/verify', authVerifyController.verify)
     app.post('/verify', authVerifyController.doVerify)
-    app.get('/verify/email', authVerifyEditEmailController.verify)
-    app.post('/verify/email', authVerifyEditEmailController.doVerify)
-    app.get('/logout', authLogoutController.logout);
+    app.get('/logout',  decreaseActiveUsers, authLogoutController.logout);
     //forget_password
     app.get('/email', authResetPassword.index);
     app.post('/email', authResetPassword.email);
@@ -53,6 +52,11 @@ module.exports = function (app) {
     app.get('/new/password/verify', authResetPassword.newPassword);
     app.post('/new/password/verify', authResetPassword.doNewPassword);
 
+    /**
+     * Change Email
+     */
+    app.get('/verify/email', authVerifyEditEmailController.verify)
+    app.post('/verify/email', authVerifyEditEmailController.doVerify)
     /**
      * student
      */
@@ -65,7 +69,7 @@ module.exports = function (app) {
     app.get('/enrollment/prospectus', isStudent, isStudentProfileVerified, userEnrollmentController.prospectus);
     app.get('/form', isStudent, isStudentProfileVerified, userFormPrintController.index);
     app.post('/form/print', isStudent, isStudentProfileVerified, userFormPrintController.print);
-    
+
     /**
      * professor
      */
