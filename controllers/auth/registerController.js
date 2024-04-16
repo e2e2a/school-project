@@ -7,7 +7,7 @@ const { customAlphabet } = require('nanoid');
 const sixDigitCode = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
 const bcrypt = require('bcrypt');
 const { sendEmail, emailContent } = require('../../helper/controllers/auth/emailSender');
-const { userToken, userTokenUpdate } = require('../../helper/controllers/auth/userToken');
+const { userToken } = require('../../helper/controllers/auth/userToken');
 
 module.exports.register = async (req, res) => {
     if (req.session.login) {
@@ -54,7 +54,7 @@ module.exports.doRegister = async (req, res) => {
                     isVerified: false,
                 };
                 const user = await User.findByIdAndUpdate(existingUser._id, userUpdate, { new: true });
-                const tokenObject = await userTokenUpdate(user);
+                const tokenObject = await userToken(user);
                 const emailHtmlContent = await emailContent(user, tokenObject);
                 sendEmail(
                     'example.onrender.com <school@gmail.com>',
@@ -76,7 +76,7 @@ module.exports.doRegister = async (req, res) => {
                 isVerified: false,
             });
             await user.save();
-            const tokenObject = await userTokenUpdate(user);
+            const tokenObject = await userToken(user);
             const emailHtmlContent = await emailContent(user, tokenObject);
             sendEmail(
                 'example.onrender.com <example@gmail.com>',
