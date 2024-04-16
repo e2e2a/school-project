@@ -153,7 +153,7 @@ module.exports.doEdit = async (req, res) => {
                 email: emailToChange,
                 isVerified: true
             };
-            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            await User.findByIdAndUpdate(profile.userId, newData, { new: true });
             req.flash('message', 'Updated profile success.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'professor') {
@@ -181,7 +181,7 @@ module.exports.doEdit = async (req, res) => {
                 email: emailToChange,
                 isVerified: true
             };
-            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            await User.findByIdAndUpdate(profile.userId, newData, { new: true });
             req.flash('message', 'Updated profile success.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'admin') {
@@ -209,7 +209,7 @@ module.exports.doEdit = async (req, res) => {
                 email: emailToChange,
                 isVerified: true
             };
-            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            await User.findByIdAndUpdate(profile.userId, newData, { new: true });
             req.flash('message', 'Updated profile success.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else {
@@ -225,7 +225,6 @@ module.exports.doEdit = async (req, res) => {
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
-                console.log('new password is not equal to re-type password');
                 req.flash('message', 'New password is not equal to re-type password.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
@@ -234,7 +233,7 @@ module.exports.doEdit = async (req, res) => {
                 password: hashedNewPassword,
                 isVerified: true
             };
-            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            await User.findByIdAndUpdate(profile.userId, newData, { new: true });
             req.flash('message', 'Password Change Successfully.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'professor') {
@@ -246,7 +245,6 @@ module.exports.doEdit = async (req, res) => {
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
-                console.log('new password is not equal to re-type password');
                 req.flash('message', 'New password is not equal to re-type password.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
@@ -255,7 +253,7 @@ module.exports.doEdit = async (req, res) => {
                 password: hashedNewPassword,
                 isVerified: true
             };
-            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            await User.findByIdAndUpdate(profile.userId, newData, { new: true });
             req.flash('message', 'Password Change Successfully.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
         } else if (profile.userId.role === 'admin') {
@@ -267,7 +265,6 @@ module.exports.doEdit = async (req, res) => {
             const newPassword = req.body.newPassword;
             const confirmPassword = req.body.confirmPassword;
             if (newPassword !== confirmPassword) {
-                console.log('new password is not equal to re-type password');
                 req.flash('message', 'New password is not equal to re-type password.');
                 return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
@@ -276,11 +273,9 @@ module.exports.doEdit = async (req, res) => {
                 password: hashedNewPassword,
                 isVerified: true
             };
-            const updatedUser = await User.findByIdAndUpdate(profile.userId, newData, { new: true });
+            await User.findByIdAndUpdate(profile.userId, newData, { new: true });
             req.flash('message', 'Password Change Successfully.');
             return res.redirect(`/admin/user/${profile.userId.role}/list`);
-        } else {
-            console.log('forbidden')
         }
     } else if (actions === 'changeProfile') {
         if (profile.userId.role === 'student') {

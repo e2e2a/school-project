@@ -123,7 +123,7 @@ module.exports.update = async (req, res) => {
                 return res.redirect('/profile');
             }
             if (newPassword !== confirmPassword) {
-                console.log('new password is not equal to re-type password')
+                req.flash('message', 'New password is not equal to re-type password');
                 return res.redirect('/profile')
             }
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);

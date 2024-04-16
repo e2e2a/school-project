@@ -110,12 +110,11 @@ module.exports.update = async (req, res) => {
                 return res.status(403).send('Forbidden');
             }
             if (!valid) {
-                req.flash('error', 'Invalid password.');
-                console.log('password not match in userLogin.password')
+                req.flash('message', 'Current password does not match.');
                 return res.redirect('/professor/profile');
             }
             if (newPassword !== confirmPassword) {
-                console.log('new password is not equal to re-type password')
+                req.flash('message', 'New password is not equal to re-type password');
                 return res.redirect('/professor/profile')
             }
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
