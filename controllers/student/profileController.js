@@ -127,10 +127,8 @@ module.exports.update = async (req, res) => {
                 return res.redirect('/profile')
             }
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
             await User.findOneAndUpdate(user._id, { password: hashedNewPassword }, { new: true })
-
-            console.log('Password changed successfully');
+            req.flash('message', 'Password changed successfully');
             return res.redirect('/profile');
         });
     }

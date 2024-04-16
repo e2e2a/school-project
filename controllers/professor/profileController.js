@@ -107,26 +107,20 @@ module.exports.update = async (req, res) => {
 
         user.comparePassword(currentPassword, async (error, valid) => {
             if (error) {
-                return res.status(403).send('Forbidden'); // 403 Forbidden
+                return res.status(403).send('Forbidden');
             }
             if (!valid) {
-                // 400 Bad Request
                 req.flash('error', 'Invalid password.');
                 console.log('password not match in userLogin.password')
                 return res.redirect('/professor/profile');
             }
-            // Hash the new password before updating it in the database
             if (newPassword !== confirmPassword) {
                 console.log('new password is not equal to re-type password')
                 return res.redirect('/professor/profile')
             }
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-            // Update the password in the database
-            user.password = hashedNewPassword;
             await User.findOneAndUpdate(user._id, { password: hashedNewPassword }, { new: true })
-
-            console.log('Password changed successfully')
+            req.flash('message', 'Password changed successfully');
             return res.redirect('/professor/profile');
         });
     }
