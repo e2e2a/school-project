@@ -1,16 +1,7 @@
 const User = require('../../models/user')
 const StudentProfile = require('../../models/studentProfile')
 const SITE_TITLE = 'DSF';
-const UserToken = require('../../models/userToken');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const { customAlphabet } = require('nanoid');
-const sixDigitCode = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
 const bcrypt = require('bcrypt');
-/**
- * 
- * Added emailSender
- */
 const { sendEmail, emailContentEditEmail } = require('../../helper/controllers/auth/emailSender');
 const { userToken } = require('../../helper/controllers/auth/userToken');
 
@@ -80,24 +71,24 @@ module.exports.update = async (req, res) => {
         const existingEmail = await User.findOne({ email: emailToChange })
         if (user.email === emailToChange) {
             console.log('You are already using this email.');
+            req.flash('message', 'You are already using this email.');
             return res.redirect('/profile');
         }
         if (existingEmail) {
             if (existingEmail.isVerified) {
                 console.log('Email is already used. Try another email.');
+                req.flash('message', 'Email is already used. Try another email.');
                 return res.redirect('/profile');
             } else {
                 await User.findByIdAndDelete(existingEmail._id)
                 const tokenObject = await userToken(user);
                 const emailHtmlContent = await emailContentEditEmail(user, tokenObject);
-               //
                 sendEmail(
                     'example.onrender.com <school@gmail.com>',
                     user.email,
                     'Verify your new email',
                     emailHtmlContent
                 );
-                console.log(user.email)
                 req.session.emailToChange = emailToChange;
                 return res.redirect(`/verify/email?token=${tokenObject.token}&sendcode=true`,);
             }
@@ -125,11 +116,10 @@ module.exports.update = async (req, res) => {
 
         user.comparePassword(currentPassword, async (error, valid) => {
             if (error) {
-                return res.status(403).send('Forbidden'); // 403 Forbidden
+                return res.status(403).send('Forbidden');
             }
             if (!valid) {
-                req.flash('error', 'Invalid password.');
-                console.log('password not match in user.password')
+                req.flash('message', 'Current password does not match.');
                 return res.redirect('/profile');
             }
             if (newPassword !== confirmPassword) {
@@ -138,10 +128,9 @@ module.exports.update = async (req, res) => {
             }
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
-            user.password = hashedNewPassword;
             await User.findOneAndUpdate(user._id, { password: hashedNewPassword }, { new: true })
 
-            console.log('Password changed successfully')
+            console.log('Password changed successfully');
             return res.redirect('/profile');
         });
     }

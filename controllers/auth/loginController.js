@@ -1,5 +1,5 @@
 const User = require('../../models/user')
-const SITE_TITLE = 'shope';
+const SITE_TITLE = 'DSF';
 module.exports.login = async (req, res) => {
     try {
         const userLogin = await User.findById(req.session.login);

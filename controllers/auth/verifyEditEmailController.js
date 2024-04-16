@@ -1,4 +1,4 @@
-const SITE_TITLE = 'shope';
+const SITE_TITLE = 'DSF';
 const User = require('../../models/user');
 const UserToken = require('../../models/userToken');
 const jwt = require('jsonwebtoken');

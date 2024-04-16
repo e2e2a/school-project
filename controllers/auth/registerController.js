@@ -1,10 +1,5 @@
 const User = require('../../models/user')
 const SITE_TITLE = 'DSF';
-const UserToken = require('../../models/userToken');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const { customAlphabet } = require('nanoid');
-const sixDigitCode = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 6);
 const bcrypt = require('bcrypt');
 const { sendEmail, emailContent } = require('../../helper/controllers/auth/emailSender');
 const { userToken } = require('../../helper/controllers/auth/userToken');
