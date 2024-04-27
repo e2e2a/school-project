@@ -1,0 +1,113 @@
+<%- include('../../partials/header/header_css.ejs'); %>
+
+<body>
+    <%- include('../../partials/spinner/spinner.ejs'); %>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../../partials/nav/nav_admin.ejs') %>
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../../partials/nav/sidebar_admin.ejs') %>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 text-center">
+                                        <div class="page-header-title">
+                                            <h3 class="m-b-10"><%= title %></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <% if(schedule) { %>
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6">
+                                                                    <h5><%= schedule.studentId.lastname %>, <%= schedule.studentId.firstname %> <%= schedule.studentId.middlename %> </h5>
+                                                                    <span><%= schedule.courseId.category %> - <%= schedule.year %> - <%= schedule.semester %> </span>
+                                                                </div>
+                                                                <div class="col-12 col-lg-6 col-xl-6 text-right">
+                                                                    <a href="/admin/enrollment/student/schedule/irregular/add/subjects/<%= schedule._id %>/<%= schedule.type %>" class="btn btn-sm btn-success"><i class="ti-plus"></i> Add Subject</a>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            
+                                                        </div>
+                                                        <div class="card-block table-border-style">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr class="text-center" style="white-space: nowrap;">
+                                                                            <th>Subject Code</th>
+                                                                            <th>Descriptive Title</th>
+                                                                            <th>Units</th>
+                                                                            <th>Professor</th>
+                                                                            <th>Time</th>
+                                                                            <th>Days</th>
+                                                                            <th>Grades</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody> 
+                                                                        <% 
+                                                                        const sortedSchedule = schedule.subjects.sort((a, b) => {
+                                                                            const [aStartHour, aStartMinute] = a.startTime.split(':').map(Number);
+                                                                            const [bStartHour, bStartMinute] = b.startTime.split(':').map(Number);
+                                                                            return aStartHour - bStartHour || aStartMinute - bStartMinute;
+                                                                        });
+                                                                        sortedSchedule.forEach(subject => { %>
+                                                                            <form action="" method="post">
+                                                                                <tr class="text-center" style="white-space: nowrap;">
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.subjectCode %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.name %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.subjectId.unit %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.professorId ? subject.professorId.lastname : 'N/A' %>, <%= subject.professorId ? subject.professorId.firstname : 'N/A' %> <%= subject.professorId ? subject.professorId.middlename : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.days ? subject.days : 'N/A' %></td>
+                                                                                    <td class="align-middle text-capitalize"><%= subject.grade ? subject.grade : 'N/A' %></td>
+                                                                                    <input type="hidden" name="subjectId" id="subjectId" value="<%= subject.subjectId._id %>">
+                                                                                    <td class="align-middle text-capitalize">
+                                                                                        <div class="btn-group d-flex justify-content-center align-items-center">
+                                                                                            <button type="submit" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete</button>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </form>
+                                                                        <% }) %>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% } else { %>
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>No Schedule Found.</h5>
+                                                        </div>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include('../../partials/footer/footer_js.ejs'); %>

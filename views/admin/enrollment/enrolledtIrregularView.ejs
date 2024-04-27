@@ -1,0 +1,202 @@
+<%- include('../../partials/header/header_css.ejs'); %>
+
+<body>
+    <%- include('../../partials/spinner/spinner.ejs'); %>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../../partials/nav/nav_admin.ejs') %>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../../partials/nav/sidebar_admin.ejs') %>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 text-center">
+                                        <div class="page-header-title">
+                                            <h3 class="m-b-10"><%= title %></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        
+                                                        <div class="row">
+                                                            <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                <h5>Students Enrolled</h5>
+                                                            </div>
+                                                            <div class="col-12 col-lg-6 col-xl-6 text-right">
+                                                                <% if(schedules.length > 0) { %>
+                                                                    <form action="" method="post">
+                                                                        <button type="submit" class="btn btn-sm btn-warning"><i class=""></i>End Semester</button>
+                                                                    </form>
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6 ">
+                                                                    <label for="searchEnrolled">Search by name:</label>
+                                                                    <input type="text" class="form-control" name="searchEnrolled" id="searchEnrolled" placeholder="Student Name">
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-12 col-xl-12 ">
+                                                                    <label for="searchEnrolled" class="mt-2">filter by:</label>
+                                                                    <div class="row">
+                                                                        <div class="col-12 col-lg-4 col-xl-4 mt-2">
+                                                                            <select name="categoryType" id="categoryType" class="border border -1 form-control" onchange="filterCourses()">
+                                                                                <option value="All" disabled selected hidden>Select Category</option>
+                                                                                <option value="All">Select All</option>
+                                                                                <option value="diploma program in information technology">DPIT</option>
+                                                                                <option value="diploma program in tourism and hospitality technology">DPTHT</option>
+                                                                                <option value="diploma program in welding technology">DPWT</option>
+                                                                                <option value="diploma program in fishery technology">DPFT</option>
+                                                                                <option value="diploma program in electrical technology">DPET</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-12 col-lg-4 col-xl-4 mt-2">
+                                                                            <select name="year" id="year" class="border border -1 form-control" onchange="filterCourses()">
+                                                                                <option value="All" disabled selected hidden>Select Year</option>
+                                                                                <option value="All">Select All</option>
+                                                                                <option value="1st Year">1st Year</option>
+                                                                                <option value="2nd Year">2nd Year</option>
+                                                                                <option value="3rd Year">3rd Year</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-12 col-lg-4 col-xl-4 mt-2">
+                                                                            <select name="semester" id="semester" class="border border -1 form-control" onchange="filterCourses()">
+                                                                                <option value="All" disabled selected hidden>Select Semester</option>
+                                                                                <option value="All">Select All</option>
+                                                                                <option value="1st Semester">1st Semester</option>
+                                                                                <option value="2nd Semester">2nd Semester</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                    <div class="card-block table-border-style">
+                                                        <div class="table-responsive">
+                                                            <table id="tableEnrolled" class="table table-bordered">
+                                                                <thead>
+                                                                    <tr class="text-center" style="white-space: nowrap;">
+                                                                        <th>Fullname</th>
+                                                                        <th>Student Type</th>
+                                                                        <th>Category</th>
+                                                                        <th>Batch</th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <% if(schedules.length > 0) { %>
+                                                                    <% schedules.forEach(schedule => { %>
+                                                                        <form action="/admin/enrollment/enrolled/cancel" method="post">
+                                                                            <tr class="text-center" style="white-space: nowrap;">
+                                                                                <td class="align-middle text-capitalize"><%= schedule.studentId.lastname %>, <%= schedule.studentId.firstname %> <%= schedule.studentId.middlename %></td>
+                                                                                <td class="align-middle text-capitalize"><%= schedule.type %></td>
+                                                                                <td class="align-middle"><%= schedule.courseId.name %> - <%= schedule.year %> - <%= schedule.semester %> </td>
+                                                                                <td class="align-middle text-capitalize"><%= schedule.batch %></td>
+                                                                                <input type="hidden" name="studentClassId" id="studentClassId" value="<%= schedule._id %>">
+                                                                                <input type="hidden" name="studentId" id="studentId" value="<%= schedule.studentId._id %>">
+                                                                                <td class="text-center align-middle">
+                                                                                    <div class="btn-group d-flex">
+                                                                                        <a href="/admin/enrollment/student/schedule/irregular/<%= schedule._id %>/<%= schedule.type %>" value="approved" class="btn btn-sm btn-primary"><i class="ti-eye"></i> View Subjects</a>
+                                                                                        <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Cancel Enrolled</button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </form>
+                                                                    <% }) %>
+                                                                <% } else { %>
+                                                                    <div class="text-center m-3">
+                                                                        No irregular student found.
+                                                                    </div>
+                                                                <% } %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchEnrolled');
+            const coursesRows = document.querySelectorAll('#tableEnrolled tbody tr');
+        
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+        
+                coursesRows.forEach(row => {
+                    const fullName = row.querySelector('td:first-child').textContent.trim().toLowerCase();
+        
+                    if (fullName.includes(searchQuery)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const categoryTypeSelect = document.getElementById('categoryType');
+    const yearSelect = document.getElementById('year');
+    const semesterSelect = document.getElementById('semester');
+    const coursesRows = document.querySelectorAll('#tableEnrolled tbody tr');
+
+    function filterCourses() {
+        const selectedCategory = categoryTypeSelect.value;
+        const selectedYear = yearSelect.value;
+        const selectedSemester = semesterSelect.value;
+
+        coursesRows.forEach(row => {
+            const rowData = row.querySelector('td:nth-child(3)').textContent.trim().toLowerCase();
+            const [category, year, semester, section] = rowData.split(' - ');
+
+            const categoryMatch = selectedCategory === 'All' || category === selectedCategory;
+            const yearMatch = selectedYear === 'All' || year === selectedYear;
+            const semesterMatch = selectedSemester === 'All' || semester === selectedSemester;
+
+            if (categoryMatch && yearMatch && semesterMatch) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    categoryTypeSelect.addEventListener('change', filterCourses);
+    yearSelect.addEventListener('change', filterCourses);
+    semesterSelect.addEventListener('change', filterCourses);
+
+});
+    </script>
+</body>
+<%- include('../../partials/footer/footer_js.ejs'); %>

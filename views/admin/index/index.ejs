@@ -1,0 +1,174 @@
+<%- include('../../partials/header/header_css.ejs'); %>
+<body>
+    <%- include('../../partials/spinner/spinner.ejs'); %>
+    <!-- Pre-loader end -->
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../../partials/nav/nav_admin.ejs') %>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../../partials/nav/sidebar_admin.ejs') %>
+                    <div class="pcoded-content">
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 text-center">
+                                        <div class="page-header-title">
+                                            <h3 class="m-b-10"><%= title %></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <!-- Main-body start -->
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <!-- Page-body start -->
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header text-center">
+                                                        <h4>Current Enrolled</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Material statustic card start -->
+                                            <div class="col-xl-4 col-md-12">
+                                                <div class="card mat-stat-card text-center">
+                                                    <div class="card-header">
+                                                        <h4>1st Year</h4>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="row align-items-center b-b-default">
+                                                            <div class="col-sm-6 b-r-default p-b-20 p-t-20">
+                                                                <div class="row align-items-center d-flex justify-content-center text-center">
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5><%= firstYearFirstSemesterCount %></h5>
+                                                                        <p class="text-muted m-b-0">1st Semester</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 p-b-20 p-t-20">
+                                                                <div class="row align-items-center d-flex justify-content-center text-center">
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5><%= firstYearSecondSemesterCount %></h5>
+                                                                        <p class="text-muted m-b-0">2nd Semester</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-md-12">
+                                                <div class="card mat-stat-card text-center">
+                                                    <div class="card-header">
+                                                        <h4>2nd Year</h4>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="row align-items-center b-b-default">
+                                                            <div class="col-sm-6 b-r-default p-b-20 p-t-20">
+                                                                <div class="row align-items-center d-flex justify-content-center text-center">
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5><%= secondYearFirstSemesterCount %></h5>
+                                                                        <p class="text-muted m-b-0">1st Semester</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 p-b-20 p-t-20">
+                                                                <div class="row align-items-center d-flex justify-content-center text-center">
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5><%= secondYearSecondSemesterCount %></h5>
+                                                                        <p class="text-muted m-b-0">2nd Semester</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-xl-4 col-md-12">
+                                                <div class="card mat-stat-card text-center">
+                                                    <div class="card-header">
+                                                        <h4>3rd Year</h4>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="row align-items-center b-b-default">
+                                                            <div class="col-sm-6 b-r-default p-b-20 p-t-20">
+                                                                <div class="row align-items-center d-flex justify-content-center text-center">
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5><%= thirdYearFirstSemesterCount %></h5>
+                                                                        <p class="text-muted m-b-0">1st Semester</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6 p-b-20 p-t-20">
+                                                                <div class="row align-items-center d-flex justify-content-center text-center">
+                                                                    <div class="col-8 p-l-0">
+                                                                        <h5><%= thirdYearSecondSemesterCount %></h5>
+                                                                        <p class="text-muted m-b-0">2nd Semester</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-xl-12 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="card text-center order-visitor-card">
+                                                            <div class="card-block">
+                                                                <h6 class="m-b-0">Enrolled Students</h6>
+                                                                <h4 class="m-t-15 m-b-15"><%= studentEnrolled %></h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card text-center order-visitor-card">
+                                                            <div class="card-block">
+                                                                <h6 class="m-b-0">Total Recent Enrolled</h6>
+                                                                <h4 class="m-t-15 m-b-15"><%= studentRecentEnrolled %></h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card text-center order-visitor-card">
+                                                            <div class="card-block">
+                                                                <h6 class="m-b-0">Total Enrolling Students</h6>
+                                                                <h4 class="m-t-15 m-b-15"><%= studentEnrolling %></h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="card text-center order-visitor-card">
+                                                            <div class="card-block">
+                                                                <h6 class="m-b-0">Total Users</h6>
+                                                                <h4 class="m-t-15 m-b-15"><%= users.length %></h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="styleSelector"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%- include('../../partials/footer/footer.ejs'); %>
+        </div>
+    </div>
+</body>    
+<%- include('../../partials/footer/footer_js.ejs'); %>

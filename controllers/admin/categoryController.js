@@ -26,7 +26,7 @@ module.exports.index = async (req, res) => {
     const studentClass = await StudentClass.find({ type: 'Regular' })
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/categoryView', {
+    res.render('admin/category/categoryView', {
         site_title: SITE_TITLE,
         title: 'Category',
         messages: req.flash(),

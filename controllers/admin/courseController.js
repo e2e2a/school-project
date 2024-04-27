@@ -9,7 +9,7 @@ module.exports.index = async (req, res) => {
     const courses = await Course.find();
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/courseView', {
+    res.render('admin/course/courseView', {
         site_title: SITE_TITLE,
         title: 'Course',
         messages: req.flash(),
@@ -24,7 +24,7 @@ module.exports.index = async (req, res) => {
 module.exports.create = async (req, res) => {
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/courseAdd', {
+    res.render('admin/course/courseAdd', {
         site_title: SITE_TITLE,
         title: 'Course',
         messages: req.flash(),
@@ -61,7 +61,7 @@ module.exports.edit = async (req, res) => {
     const course = await Course.findById(id);
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/courseEdit', {
+    res.render('admin/course/courseEdit', {
         site_title: SITE_TITLE,
         title: 'Course',
         messages: req.flash(),

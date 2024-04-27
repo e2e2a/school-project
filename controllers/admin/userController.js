@@ -14,7 +14,7 @@ module.exports.student = async (req, res) => {
     const studentProfiles = await StudentProfile.find().populate('userId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/userStudentView', {
+    res.render('admin/user/userStudentView', {
         site_title: SITE_TITLE,
         title: 'Users',
         messages: req.flash(),
@@ -25,11 +25,12 @@ module.exports.student = async (req, res) => {
         adminProfile: adminProfile,
     });
 }
+
 module.exports.professor = async (req, res) => {
     const professorProfiles = await ProfessorProfile.find().populate('userId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/userProfessorView', {
+    res.render('admin/user/userProfessorView', {
         site_title: SITE_TITLE,
         title: 'Users',
         messages: req.flash(),
@@ -40,11 +41,12 @@ module.exports.professor = async (req, res) => {
         adminProfile: adminProfile,
     });
 }
+
 module.exports.admin = async (req, res) => {
     const adminProfiles = await AdminProfile.find().populate('userId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/userAdminView', {
+    res.render('admin/user/userAdminView', {
         site_title: SITE_TITLE,
         title: 'Users',
         messages: req.flash(),
@@ -85,7 +87,7 @@ module.exports.edit = async (req, res) => {
     if (profile) {
         const coursesSidebar = await Course.find();
         const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-        res.render('admin/userEdit', {
+        res.render('admin/user/userEdit', {
             site_title: SITE_TITLE,
             title: 'User Edit',
             messages: req.flash(),
@@ -374,7 +376,7 @@ module.exports.doEdit = async (req, res) => {
 module.exports.create = async (req, res) => {
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
     const coursesSidebar = await Course.find();
-    res.render('admin/userAdd', {
+    res.render('admin/user/userAdd', {
         site_title: SITE_TITLE,
         title: 'User',
         messages: req.flash(),

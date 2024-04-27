@@ -28,7 +28,7 @@ module.exports.index = async (req, res) => {
     const thirdYearFirstSemesterCount = await StudentClass.countDocuments({ year: '3rd Year', semester: '1st Semester' });
     const thirdYearSecondSemesterCount = await StudentClass.countDocuments({ year: '3rd Year', semester: '2nd Semester' });
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/index', {
+    res.render('admin/index/index', {
         site_title: SITE_TITLE,
         title: 'Home',
         messages: req.flash(),

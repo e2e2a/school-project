@@ -18,7 +18,7 @@ module.exports.index = async (req, res) => {
     const studentProfiles = await StudentProfile.find().populate('courseId')
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/enrollmentView', {
+    res.render('admin/enrollment/enrollmentView', {
         site_title: SITE_TITLE,
         title: 'Enrollments',
         messages: req.flash(),
@@ -189,7 +189,7 @@ module.exports.enrolled = async (req, res) => {
     const schedules = await StudentClass.find({ type: 'Regular' }).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/enrolledView', {
+    res.render('admin/enrollment/enrolledView', {
         site_title: SITE_TITLE,
         title: 'Enrolled Regular',
         messages: req.flash(),
@@ -204,7 +204,7 @@ module.exports.enrolledIrregular = async (req, res) => {
     const schedules = await StudentClass.find({ type: 'Irregular' }).populate('subjects.subjectId').populate('studentId').populate('courseId').populate('sectionId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/enrolledtIrregularView', {
+    res.render('admin/enrollment/enrolledtIrregularView', {
         site_title: SITE_TITLE,
         title: 'Enrolled Irregular',
         messages: req.flash(),
@@ -233,7 +233,7 @@ module.exports.studentScheduleView = async (req, res) => {
     }
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/studentScheduleView', {
+    res.render('admin/student/studentScheduleView', {
         site_title: SITE_TITLE,
         title: 'Student Schedule',
         messages: req.flash(),
@@ -262,7 +262,7 @@ module.exports.studentIrregularScheduleView = async (req, res) => {
     }
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/studentIrregularScheduleView', {
+    res.render('admin/student/studentIrregularScheduleView', {
         site_title: SITE_TITLE,
         title: 'Student Schedule',
         messages: req.flash(),
@@ -292,7 +292,7 @@ module.exports.studentIrregularAddSubject = async (req, res) => {
     const professorSchedule = await Schedule.find().populate('professorId').populate('schedule.subjectId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/studentIrregularSubjects', {
+    res.render('admin/student/studentIrregularSubjects', {
         site_title: SITE_TITLE,
         title: 'Student Schedule',
         messages: req.flash(),
@@ -446,7 +446,7 @@ module.exports.studentProspectus = async (req, res) => {
     const students = await StudentProfile.find({ isVerified: true, isStudying: true }).populate('courseId')
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/studentProspectus', {
+    res.render('admin/student/studentProspectus', {
         site_title: SITE_TITLE,
         title: 'Prospectus',
         messages: req.flash(),
@@ -468,7 +468,7 @@ module.exports.studentProspectusView = async (req, res) => {
     const studentProspectus = await Prospectus.find({ studentId: studentId });
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/studentProspectusView', {
+    res.render('admin/student/studentProspectusView', {
         site_title: SITE_TITLE,
         title: 'Prospectus',
         messages: req.flash(),
@@ -484,7 +484,7 @@ module.exports.studentProspectusViewAll = async (req, res) => {
     const studentProspectus = await Prospectus.find();
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/studentProspectusViewAll', {
+    res.render('admin/student/studentProspectusViewAll', {
         site_title: SITE_TITLE,
         title: 'Prospectus',
         messages: req.flash(),

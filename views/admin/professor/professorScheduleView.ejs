@@ -1,0 +1,98 @@
+<%- include('../../partials/header/header_css.ejs'); %>
+
+<body>
+    <%- include('../../partials/spinner/spinner.ejs'); %>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../../partials/nav/nav_admin.ejs') %>
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../../partials/nav/sidebar_admin.ejs') %>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 text-center">
+                                        <div class="page-header-title">
+                                            <h3 class="m-b-10"><%= title %></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <% if(schedule) { %>
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5><%= schedule.professorId.lastname %>, <%= schedule.professorId.firstname %> <%= schedule.professorId.middlename %> </h5>
+                                                            <div class="card-header-right">
+                                                                <ul class="list-unstyled card-option">
+                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-block table-border-style">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center">Time</th>
+                                                                            <th class="text-center">Category</th>
+                                                                            <th class="text-center">Subject Code</th>
+                                                                            <th class="text-center">Descriptive Title</th>
+                                                                            <th class="text-center">Days</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <% 
+                                                                        const sortedSchedule = schedule.schedule.sort((a, b) => {
+                                                                            const [aStartHour, aStartMinute] = a.startTime.split(':').map(Number);
+                                                                            const [bStartHour, bStartMinute] = b.startTime.split(':').map(Number);
+                                                                            return aStartHour - bStartHour || aStartMinute - bStartMinute;
+                                                                        }); %>
+                                                                        <% sortedSchedule.forEach(subject => { %>
+                                                                            <tr style="white-space: nowrap;">
+                                                                                <td class="align-middle text-capitalize text-center"><%= subject.startTime ? subject.startTime : 'N/A' %> - <%= subject.endTime ? subject.endTime : 'N/A'  %></td>
+                                                                                <td class="align-middle text-capitalize text-center"><%= subject.subjectId.category %> - <%= subject.subjectId.year %> - <%= subject.subjectId.semester %> - <%= subject.subjectId.section %></td>
+                                                                                <td class="align-middle text-capitalize text-center"><%= subject.subjectId.subjectCode %></td>
+                                                                                <td class="align-middle text-capitalize text-center"><%= subject.subjectId.name %></td>
+                                                                                <td class="align-middle text-capitalize text-center"><%= subject.days %></td>
+                                                                            </tr>
+                                                                        <% }) %>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% } else { %>
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>No Schedule Found.</h5>
+                                                        </div>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include('../../partials/footer/footer_js.ejs'); %>

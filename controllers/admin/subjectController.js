@@ -11,7 +11,7 @@ module.exports.index = async (req, res) => {
     const subjects = await Subject.find()
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/subjectView', {
+    res.render('admin/subject/subjectView', {
         site_title: SITE_TITLE,
         title: 'Subjects',
         messages: req.flash(),
@@ -32,7 +32,7 @@ module.exports.create = async (req, res) => {
     const courses = await Course.find()
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/subjectAdd', {
+    res.render('admin/subject/subjectAdd', {
         site_title: SITE_TITLE,
         title: 'Subject',
         messages: req.flash(),
@@ -121,7 +121,7 @@ module.exports.edit = async (req, res) => {
     }
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/subjectEdit', {
+    res.render('admin/subject/subjectEdit', {
         site_title: SITE_TITLE,
         title: 'Subject',
         messages: req.flash(),

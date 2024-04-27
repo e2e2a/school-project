@@ -15,7 +15,7 @@ module.exports.professor = async (req, res) => {
     const schedules = await Schedule.find().populate('schedule.subjectId').populate('professorId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/professorSchedules', {
+    res.render('admin/professor/professorSchedules', {
         site_title: SITE_TITLE,
         title: 'Professors Schedule',
         messages: req.flash(),
@@ -35,7 +35,7 @@ module.exports.professorView = async (req, res) => {
     const schedule = await Schedule.findById(id).populate('schedule.subjectId').populate('professorId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/professorScheduleView', {
+    res.render('admin/professor/professorScheduleView', {
         site_title: SITE_TITLE,
         title: 'Professors Schedule',
         messages: req.flash(),
@@ -66,7 +66,7 @@ module.exports.professorClassesView = async (req, res) => {
     const studentClasses = await StudentClass.find({ 'subjects.professorId': professorSchedule.professorId }).populate('subjects.subjectId').populate('studentId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/professorClassesView', {
+    res.render('admin/professor/professorClassesView', {
         site_title: SITE_TITLE,
         title: 'Professor Classes',
         messages: req.flash(),
@@ -151,7 +151,7 @@ module.exports.professorHistoryView = async (req, res) => {
     const histories = await ProfessorScheduleHistory.find({ professorId: id }).populate('professorId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/professorScheduleHistoryView', {
+    res.render('admin/professor/professorScheduleHistoryView', {
         site_title: SITE_TITLE,
         title: 'Professors Schedule',
         messages: req.flash(),
@@ -166,7 +166,7 @@ module.exports.professorHistory = async (req, res) => {
     const histories = await ProfessorScheduleHistory.find().populate('professorId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/professorScheduleHistory', {
+    res.render('admin/professor/professorScheduleHistory', {
         site_title: SITE_TITLE,
         title: 'Professors Schedule',
         messages: req.flash(),

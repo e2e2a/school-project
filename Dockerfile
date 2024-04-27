@@ -1,20 +1,27 @@
 # Use an official Node.js runtime as the base image
 FROM node:20
 
+# Create app folder
+RUN mkdir /app
+
 # Set the working directory in the container to /app
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+COPY package-lock.json package.json ./
 
-# Install the application dependencies
-RUN npm install
+# Clean npm cache
+RUN npm cache clean --force
 
-# If there are production dependencies, use this instead
-# RUN npm ci --only=production
+# Install npm and verify installation
 
-# Install pm2 globally
-RUN npm install pm2 -g
+RUN npm install --verbose
+
+# Install the application dependencies using npm ci
+RUN npm install --update
+
+# Install global dependencies
+RUN npm install -g nodemon pm2
 
 # Bundle the app source inside the Docker image
 COPY . .
@@ -22,7 +29,8 @@ COPY . .
 # The application's default port
 EXPOSE 8080
 
-# Define the command to run the app using pm2
-# CMD [ "pm2-runtime", "start", "index.js" ]
+# Run npm update to update packages
+RUN npm update
 
+# Define the command to run the app using npm start
 CMD ["npm", "start"]

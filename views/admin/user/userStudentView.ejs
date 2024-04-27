@@ -1,0 +1,127 @@
+<%- include('../../partials/header/header_css.ejs'); %>
+
+<body>
+    <%- include('../../partials/spinner/spinner.ejs'); %>
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <%- include('../../partials/nav/nav_admin.ejs') %>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <%- include('../../partials/nav/sidebar_admin.ejs') %>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12 text-center">
+                                        <div class="page-header-title">
+                                            <h3 class="m-b-10"><%= title %></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>User Students</h5>
+                                                        <span>
+                                                            <div class="row">
+                                                                <div class="col-12 col-lg-6 col-xl-6 form-float">
+                                                                    <label for="searchUserStudent">Search by Fullname:</label>
+                                                                    <input type="text" class="form-control" name="searchUserStudent" id="searchUserStudent" placeholder="Search Fullname">
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                    <div class="card-block table-border-style">
+                                                        <div class="table-responsive">
+                                                            <table id="tableUserStudent" class="table table-bordered">
+                                                                <thead>
+                                                                    <tr class="text-center" style="white-space: nowrap;">
+                                                                        <th>Email</th>
+                                                                        <th>Fullname</th>
+                                                                        <th>Contact</th>
+                                                                        <th>Role</th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <% studentProfiles.forEach(profile => { %>
+                                                                        <% if(profile.userId.isVerified){ %>
+                                                                    <form action="/admin/enrollment/doEnroll" method="post">
+                                                                        <tr class="text-center" style="white-space: nowrap;">
+                                                                            <td class="align-middle"> <%= profile.userId.email %></td>
+                                                                            <td class="align-middle text-capitalize <% if (!profile.lastname) { %> text-danger <% } %>">
+                                                                            <% if (profile.lastname) { %>
+                                                                                <%= profile.lastname %>, <%= profile.firstname %> <%= profile.middlename %>
+                                                                            <% } else { %>
+                                                                                Profile not verified
+                                                                            <% } %>
+                                                                            </td>
+                                                                            <td class="align-middle text-capitalize">
+                                                                            <% if (profile.contact) { %> 
+                                                                                <%= profile.contact %>
+                                                                            <% } else { %>
+                                                                                N/A
+                                                                            <% } %>
+                                                                            </td>
+                                                                            <td class="align-middle text-capitalize"> <%= profile.userId.role %></td>
+                                                                            <input type="hidden" name="studentId" id="studentId" value="<%= profile._id %>">
+                                                                            <td class="text-center align-middle">
+                                                                                <div class="btn-group d-flex justify-content-center align-items-center">
+                                                                                    <a href="/admin/user/edit/<%= profile._id %>/<%= profile.userId.role %>" value="edit" class="btn text-white btn-sm btn-primary"><i class="ti-check-box"></i> Edit</a>
+                                                                                    <button type="submit" name="actions" value="declined" class="btn btn-sm btn-danger"><i class="ti-close"></i> Delete</button>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </form>
+                                                                        <% } %>
+                                                                    <% }) %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchUserStudent');
+            const coursesRows = document.querySelectorAll('#tableUserStudent tbody tr');
+        
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+        
+                coursesRows.forEach(row => {
+                    const fullName = row.querySelector('td:nth-child(2)').textContent.trim().toLowerCase();
+        
+                    if (fullName.includes(searchQuery)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+<%- include('../../partials/footer/footer_js.ejs'); %>

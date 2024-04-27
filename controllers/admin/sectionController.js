@@ -12,7 +12,7 @@ module.exports.index = async (req, res) => {
     const sections = await Section.find().populate('courseId');
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/sectionView', {
+    res.render('admin/section/sectionView', {
         site_title: SITE_TITLE,
         title: 'Sections',
         messages: req.flash(),
@@ -36,7 +36,7 @@ module.exports.create = async (req, res) => {
     const courses = await Course.find()
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/sectionAdd', {
+    res.render('admin/section/sectionAdd', {
         site_title: SITE_TITLE,
         title: 'Section',
         messages: req.flash(),
@@ -47,6 +47,7 @@ module.exports.create = async (req, res) => {
         adminProfile: adminProfile,
     });
 }
+
 module.exports.doCreate = async (req, res) => {
     const category = req.query.category;
     const year = req.query.year;
@@ -110,7 +111,7 @@ module.exports.edit = async (req, res) => {
     }
     const coursesSidebar = await Course.find();
     const adminProfile = await AdminProfile.findOne({ userId: req.session.login });
-    res.render('admin/sectionEdit', {
+    res.render('admin/section/sectionEdit', {
         site_title: SITE_TITLE,
         title: 'Subject',
         messages: req.flash(),

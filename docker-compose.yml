@@ -2,7 +2,8 @@ version: '3'
 services:
   app:
     container_name: school_app
-    build: .
+    build:
+      context: .
     volumes:
       # connect the current project directory to
       # ./app directory inside the docker container
@@ -16,8 +17,8 @@ services:
     networks:
       - app-network
   mongo:
-    container_name: school_mongo
-    image: mongo
+    container_name: mongo
+    image: mongo:latest
     restart: always
     environment:
       MONGO_INITDB_DATABASE: ${MONGO_DBNAME}
