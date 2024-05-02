@@ -137,6 +137,10 @@ module.exports.doEdit = async (req, res) => {
                 return res.status(404).render('404', { role: 'admin' });
             }
             const emailToChange = req.body.email;
+            if (!/^[\w.-]+@gmail\.com$/.test(emailToChange)) {
+                req.flash('error', 'Invalid email address. Please use a Gmail address.');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
+            }
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
                 req.flash('message', 'You are already using this email.');
@@ -165,6 +169,10 @@ module.exports.doEdit = async (req, res) => {
                 req.flash('message', 'Required field are empty');
                 return res.status(404).render('404', { role: 'admin' });
             }
+            if (!/^[\w.-]+@gmail\.com$/.test(emailToChange)) {
+                req.flash('error', 'Invalid email address. Please use a Gmail address.');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
+            }
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');
                 req.flash('message', 'You are already using this email.');
@@ -192,6 +200,10 @@ module.exports.doEdit = async (req, res) => {
                 console.log('required field are empty');
                 req.flash('message', 'Required field are empty');
                 return res.status(404).render('404', { role: 'admin' });
+            }
+            if (!/^[\w.-]+@gmail\.com$/.test(emailToChange)) {
+                req.flash('error', 'Invalid email address. Please use a Gmail address.');
+                return res.redirect(`/admin/user/${profile.userId.role}/list`);
             }
             if (profile.email === emailToChange) {
                 console.log('You are already using this email.');

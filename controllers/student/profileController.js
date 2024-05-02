@@ -68,6 +68,10 @@ module.exports.update = async (req, res) => {
             req.flash('message', 'Required field are empty');
             return res.status(404).render('404', { role: 'student' });
         }
+        if (!/^[\w.-]+@gmail\.com$/.test(emailToChange)) {
+            req.flash('error', 'Invalid email address. Please use a Gmail address.');
+            return res.redirect('/profile');
+        }
         const existingEmail = await User.findOne({ email: emailToChange })
         if (user.email === emailToChange) {
             console.log('You are already using this email.');

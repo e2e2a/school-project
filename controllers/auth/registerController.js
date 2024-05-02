@@ -32,15 +32,19 @@ module.exports.doRegister = async (req, res) => {
     try {
         const { email, password, confirmPassword } = req.body;
         const existingUser = await User.findOne({ email: email });
+        if (password !== confirmPassword) {
+            req.flash('error', 'Password does not match.');
+            return res.redirect('/register');
+        }
+        if (!/^[\w.-]+@gmail\.com$/.test(email)) {
+            req.flash('error', 'Invalid email address. Please use a Gmail address.');
+            return res.redirect('/register');
+        }
         if (existingUser) {
             if (existingUser.isVerified) {
                 req.flash('error', 'Email Already Used. Please provide another email.');
                 return res.redirect('/register');
             } else {
-                if (password !== confirmPassword) {
-                    req.flash('error', 'Password does not match.');
-                    return res.redirect('/register');
-                }
                 const hashedNewPassword = await bcrypt.hash(req.body.password, 10);
                 const userUpdate = {
                     email: req.body.email,
@@ -60,10 +64,6 @@ module.exports.doRegister = async (req, res) => {
                 return res.redirect(`/verify?token=${tokenObject.token}&sendcode=true`,);
             }
         } else {
-            if (password !== confirmPassword) {
-                req.flash('error', 'Password does not match.');
-                return res.redirect('/register');
-            }
             const user = new User({
                 email: req.body.email,
                 role: 'student',
