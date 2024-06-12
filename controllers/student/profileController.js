@@ -6,6 +6,7 @@ const { sendEmail, emailContentEditEmail } = require('../../helper/controllers/a
 const { userToken } = require('../../helper/controllers/auth/userToken');
 
 module.exports.index = async (req, res) => {
+    console.log(req.session.view++)
     const userLogin = await User.findById(req.session.login);
     const studentProfile = await StudentProfile.findOne({ userId: userLogin._id });
     res.render('user/profile', {

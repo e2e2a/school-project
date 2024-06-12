@@ -57,7 +57,7 @@
                                                                 <tbody class="text-center">
                                                                     <form action="/form/print" method="post">
                                                                         <tr style="white-space: nowrap;">
-                                                                            <td class="align-middle text-capitalize"> <%= studentProfile.userId.email %></td>
+                                                                            <td class="align-middle"> <%= studentProfile.userId.email %></td>
                                                                             <td class="align-middle text-capitalize"><%= studentProfile.lastname %>, <%= studentProfile.firstname %> <%= studentProfile.middlename %></td>
                                                                             <td class="align-middle text-capitalize"> <%= studentProfile.courseId.name %></td>
                                                                             <input type="hidden" name="studentId" id="studentId" value="<%= studentProfile._id %>">
