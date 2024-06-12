@@ -9,7 +9,7 @@ const flash = require('express-flash');
 const app = express();
 const conn = dbConnect();
 const User = require('./models/user');
-
+const port = process.env.PORT || 8081;
 // const store = new MongoDBSessionStore({
 //     uri: process.env.MONGODB_CONNECT_URI,
 //     collection: 'sessions'
@@ -50,7 +50,6 @@ app.use(async (req, res, next) => {
     });
 });
 
-const PORT = process.env.PORT
-app.listen(PORT, async () => {
+app.listen(port, async () => {
     console.log("Server is running at port", PORT);
 });
